@@ -1,0 +1,26 @@
+--- Makefile.orig	2011-11-14 13:56:35.426165313 -0500
++++ Makefile	2011-11-14 13:58:05.791162663 -0500
+@@ -16,12 +16,12 @@
+ FORT := fort 
+ AWK  := gawk
+ 
+-MNOCYGWIN     ?= $(shell $(OCAMLC) -verbose foo.c 2>&1 | $(AWK) "NR==1 { print \$$3 }")	
++MNOCYGWIN     ?= $(shell $(OCAMLC) -verbose foo.c 2>&1 | $(AWK) 'NR==1 { print $3 }')	
+ ifeq ($(MNOCYGWIN),-mnocygwin)
+ OCAML_BACKEND := mingw
+ endif
+ 
+-OCAML_BACKEND ?= $(shell $(OCAMLC) -verbose foo.c 2>&1 | $(AWK) "NR==1 { print \$$2 }")
++OCAML_BACKEND ?= $(shell $(OCAMLC) -verbose foo.c 2>&1 | $(AWK) 'NR==1 { print $2 }')
+ OCAML_VERSION ?= $(shell $(OCAMLC) -version)
+ 
+ OCAMLBCFLAGS := -g 
+@@ -94,7 +94,7 @@
+ ifeq ($(OCAML_BACKEND),cl)
+ include msvc.mak
+ else
+-ifeq ($(OCAML_BACKEND:gcc%=gcc),gcc)
++ifneq (,$(findstring gcc,$(OCAML_BACKEND)))
+ include gcc.mak
+ else
+ include mingw.mak

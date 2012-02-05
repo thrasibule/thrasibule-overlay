@@ -1,0 +1,64 @@
+# ChangeLog for sci-mathematics/scilab
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  24 Jun 2011; Justin Lecher <jlec@gentoo.org> scilab-5.2.1.ebuild,
+  scilab-5.3.2.ebuild:
+  Sort inherit and/or USE
+
+  16 Jun 2011; Guillaume Horel <guillaume.horel@gmail.com> scilab-5.3.2.ebuild,
+  +files/scilib-5.3.2-scilib-fix.patch:
+  Fixed jgraphx version dependency and disabled mpi support in hdf
+
+*scilab-5.3.2 (10 Jun 2011)
+
+  10 Jun 2011; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/bug_9268.diff, +scilab-5.3.2.ebuild, +files/java-heap-5.3.2.patch:
+  Version bump and ebuild cleanup
+
+*scilab-5.2.1 (25 Feb 2010)
+
+  25 Feb 2010; Sébastien Fabbro <bicatali@gentoo.org>
+  -scilab-5.2.0-r3.ebuild, +scilab-5.2.1.ebuild,
+  -files/ImplicitPointerConversions.diff, +files/full_support.diff,
+  +files/renesas-sh.diff, +files/sparc64.diff:
+  Version bump
+
+*scilab-5.2.0-r3 (12 Feb 2010)
+
+  12 Feb 2010; Sébastien Fabbro <bicatali@gentoo.org>
+  -files/jgraphx-1.2.0.diff, -scilab-5.2.0-r2.ebuild,
+  +scilab-5.2.0-r3.ebuild,
+  +files/scilab-5.2.0-disable-build-help-failed.patch,
+  +files/scilab-5.2.0-hdf-java-2.6.patch, +files/scilab-5.2.0-jgraphx.patch,
+  -files/jhdf2.6.diff, -files/scilab-5.2.0-jeuclid-detect.patch,
+  +files/scilab-5.2.0-scilib-fix.patch, -files/librarypath.diff,
+  metadata.xml:
+  Added more patches for doc building, a first very basic localization
+  implementation
+
+*scilab-5.2.0-r2 (12 Feb 2010)
+
+  12 Feb 2010; Sébastien Fabbro <bicatali@gentoo.org>
+  +files/jgraphx-1.2.0.diff, -scilab-5.2.0-r1.ebuild,
+  +scilab-5.2.0-r2.ebuild, +files/scilab-5.2.0-java-heap.patch,
+  +files/scilab-5.2.0-jeuclid-detect.patch,
+  +files/ImplicitPointerConversions.diff, +files/addchapter.diff,
+  +files/adddemo.diff, +files/buildDocPT_BR.diff, +files/jhdf2.6.diff,
+  +files/librarypath.diff, +files/missingaddchapter.diff,
+  +files/modelicac-not-available.diff, +files/s390javadetection.diff:
+  Added (blindly) a whole bunch of Debian patches, and a few fixes suggested
+  in bug #237572. Also removed mpi flag in favor of checking hdf5 against mpi.
+
+*scilab-5.2.0-r1 (04 Feb 2010)
+
+  04 Feb 2010; Sébastien Fabbro <bicatali@gentoo.org> -scilab-5.2.0.ebuild,
+  +scilab-5.2.0-r1.ebuild, +files/scilab-5.2.0-no-redef-exp10.patch:
+  MPI goodness for the hdf5 option, and added a patch to avoid libc
+  redefinitions. A bit of cleanup.
+
+*scilab-5.2.0 (22 Jan 2010)
+
+  22 Jan 2010; Sébastien Fabbro <bicatali@gentoo.org> +scilab-5.2.0.ebuild:
+  Import of new scilab-5.2. Thanks Guillaume Horel for his work, bug
+  #237572. Thanks also Sylvestre Ledru for his patches and upstream support.

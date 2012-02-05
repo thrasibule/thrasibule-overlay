@@ -1,0 +1,12 @@
+diff -urN python-keyczar-0.6b-orig//tests/keyczar/keyczart_test.py python-keyczar-0.6b/tests/keyczar/keyczart_test.py
+--- python-keyczar-0.6b-orig//tests/keyczar/keyczart_test.py	2010-11-13 12:50:41.444781254 -0500
++++ python-keyczar-0.6b/tests/keyczar/keyczart_test.py	2010-11-13 12:49:20.747781254 -0500
+@@ -57,7 +57,7 @@
+   def testPubKey(self):
+     pubmock = readers.MockReader('PUBTEST', keyinfo.DECRYPT_AND_ENCRYPT, 
+                                  keyinfo.RSA_PRIV)
+-    pubmock.AddKey(33, keyinfo.PRIMARY, 512)  # small key size for fast tests
++    pubmock.AddKey(33, keyinfo.PRIMARY, 1024)  # small key size for fast tests
+     keyczart.mock = pubmock  # use pubmock instead
+     self.assertEquals(None, pubmock.pubkmd)
+     keyczart.main(['pubkey'])

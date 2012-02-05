@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<herd>no-herd</herd>
+	<maintainer>
+		<email>chutzpah@gentoo.org</email>
+		<name>Patrick McLean</name>
+	</maintainer>
+	<maintainer>
+		<email>volkmar@gentoo.org</email>
+		<name>Mounir Lamouri</name>
+	</maintainer>
+	<longdescription lang="en">
+A commercial quality OCR engine originally developed at HP between 1985 and 1995. In 1995, this engine was among the top 3 evaluated by UNLV. It was open-sourced by HP and UNLV in 2005.
+	</longdescription>
+	<use>
+		<flag name="bg">Enable analysis of Bulgarian text</flag>
+		<flag name="ca">Enable analysis of Catalan text</flag>
+		<flag name="cs">Enable analysis of Czech text</flag>
+		<flag name="da">Enable analysis of danish text (Roman script)</flag>
+		<flag name="da_frak">Enable analysis of Danish text (Fraktur script)</flag>
+		<flag name="de">Enable analysis of german text (Roman script)</flag>
+		<flag name="de_frak">Enable analysis of German text (Fraktur script)</flag>
+		<flag name="el">Enable analysis of Greek text</flag>
+		<flag name="en">Enable analysis of English text</flag>
+		<flag name="fi">Enable analysis of Finnish text</flag>
+		<flag name="fr">Enable analysis of French text</flag>
+		<flag name="hu">Enable analysis of Hungarian text</flag>
+		<flag name="in">Enable analysis of Indonesian text</flag>
+		<flag name="it">Enable analysis of Italian text</flag>
+		<flag name="ja">Enable analysis of Japanese text</flag>
+		<flag name="ko">Enable analysis of Korean text</flag>
+		<flag name="lt">Enable analysis of Lithuanian text</flag>
+		<flag name="lv">Enable analysis of Latvian text</flag>
+		<flag name="nl">Enable analysis of text</flag>
+		<flag name="no">Enable analysis of Norwegian text</flag>
+		<flag name="pl">Enable analysis of Polish text</flag>
+		<flag name="pt">Enable analysis of Portuguese text</flag>
+		<flag name="ro">Enable analysis of Romanian text</flag>
+		<flag name="ru">Enable analysis of Russian text</flag>
+		<flag name="sk">Enable analysis of Slovakian text</flag>
+		<flag name="sl">Enable analysis of Slovenian text</flag>
+		<flag name="sr">Enable analysis of Serbian text (Latin script)</flag>
+		<flag name="sv">Enable analysis of Swedish text</flag>
+		<flag name="tl">Enable analysis of Tagalog text</flag>
+		<flag name="tr">Enable analysis of Turkish text</flag>
+		<flag name="uk">Enable analysis of Ukrainian text</flag>
+		<flag name="vi">Enable analysis of Vietnamese text</flag>
+		<flag name="zh_trad">Enable analysis of Chinese (Traditional) text</flag>
+		<flag name="zh_simp">Enable analysis of Chinese (Simplified) text</flag>
+</use>
+</pkgmetadata>
+

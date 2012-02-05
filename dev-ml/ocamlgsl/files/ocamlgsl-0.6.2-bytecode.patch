@@ -1,0 +1,44 @@
+--- Makefile.orig	2011-11-14 14:50:40.483070287 -0500
++++ Makefile	2011-11-14 15:21:09.196016721 -0500
+@@ -119,13 +119,20 @@
+            $(wildcard test/*.ml) $(wildcard ocamlgsl.info*)
+ VERSION := 0.6.0
+ 
+-all : stubs gsl.cma gsl.cmxa $(CMI)
+-
++all-byte: stubs-byte gsl.cma $(CMI)
++ 
++all-opt: all-byte stubs-opt gsl.cmxa $(CMI)
++
++all: all-opt
++ 
++stubs-opt: libmlgsl.$(A) 
++stubs-byte:
+ STUBS = libmlgsl.$(A)
++
+ ifdef DYNAMIC_LINKING
+ STUBS += dllmlgsl.$(D)
++stubs-byte: dllmlgsl.$(D)
+ endif
+-stubs : $(STUBS)
+ 
+ libmlgsl.$(A) : $(SOBJ)
+ 	$(call MKLIB,mlgsl,$^)
+@@ -147,10 +154,16 @@
+ top : libmlgsl.$(A) gsl.cma
+ 	ocamlmktop -I . -o ocamlgsl$(EXE) bigarray.cma gsl.cma
+ 
+-install : all
++install-opt : all
+ 	$(OCAMLFIND) install gsl META \
+           libmlgsl.$(A) dllmlgsl.$(D) gsl.cma gsl.cmxa gsl.$(A) $(CMI) $(MLOPTOBJ) 
+ 
++install-byte : all-byte
++	$(OCAMLFIND) install gsl META \
++	  libmlgsl.$(A) dllmlgsl.$(D) gsl.cma $(CMI)
++
++install: install-opt
++
+ ocamlgsl.odoc : $(MLOBJ) $(CMI)
+ 	$(OCAMLDOC) -v -dump $@ $(filter-out gsl_misc.%, $(filter %.mli, $(SRC)))
+ 

@@ -1,0 +1,41 @@
+#diff -ur pypy-1.5-src_orig/pypy/translator/goal/translate.py pypy-1.5-src/pypy/translator/goal/translate.py
+#--- pypy-pypy-release-1.6_orig/pypy/translator/goal/translate.py	2011-04-30 17:18:50.000000000 +0300
+#+++ pypy-pypy-release-1.6/pypy/translator/goal/translate.py	2011-05-06 23:32:58.855999980 +0300
+--- orig/pypy/translator/goal/translate.py	2011-04-30 17:18:50.000000000 +0300
++++ pypy/translator/goal/translate.py	2011-05-06 23:32:58.855999980 +0300
+@@ -253,7 +253,6 @@
+             log.event("batch mode, not calling interactive helpers")
+             return
+         
+-        log.event("start debugger...")
+ 
+         if translateconfig.view:
+             try:
+@@ -264,7 +263,6 @@
+             page = graphpage.TranslatorPage(t1, translateconfig.huge)
+             page.display_background()
+ 
+-        pdb_plus_show.start(tb)
+ 
+     try:
+         drv = driver.TranslationDriver.from_targetspec(targetspec_dic, config, args,
+--- orig/pypy/rpython/module/ll_os.py	2011-08-19 11:10:06.184000005 +0300
++++ pypy/rpython/module/ll_os.py	2011-08-19 11:11:59.506000016 +0300
+@@ -1559,7 +1559,7 @@
+             'openpty',
+             [rffi.INTP, rffi.INTP, rffi.VOIDP, rffi.VOIDP, rffi.VOIDP],
+             rffi.INT,
+-            compilation_info=ExternalCompilationInfo(libraries=['util']))
++            compilation_info=ExternalCompilationInfo(libraries=['util'], includes=['pty.h']))
+         def openpty_llimpl():
+             master_p = lltype.malloc(rffi.INTP.TO, 1, flavor='raw')
+             slave_p = lltype.malloc(rffi.INTP.TO, 1, flavor='raw')
+@@ -1582,7 +1582,7 @@
+             'forkpty',
+             [rffi.INTP, rffi.VOIDP, rffi.VOIDP, rffi.VOIDP],
+             rffi.PID_T,
+-            compilation_info=ExternalCompilationInfo(libraries=['util']))
++            compilation_info=ExternalCompilationInfo(libraries=['util'], includes=['pty.h']))
+         def forkpty_llimpl():
+             master_p = lltype.malloc(rffi.INTP.TO, 1, flavor='raw')
+             childpid = os_forkpty(master_p, None, None, None)
