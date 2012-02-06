@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~x86"
 IUSE="doc"
 
-DEPEND="dev-ml/ocaml[ocamlopt]
+DEPEND="dev-lang/ocaml[ocamlopt]
 dev-ml/camomile
 dev-ml/react"
 RDEPEND="${DEPEND}"
