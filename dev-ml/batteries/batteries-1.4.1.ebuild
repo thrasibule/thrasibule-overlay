@@ -1,4 +1,4 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -42,7 +42,7 @@ src_install() {
 	findlib_src_preinst
 	make install
 	if use doc;then
-		make DOCROOT=${D}/usr/share/doc/${PF} install-doc || "make install-doc failed"
+		make DOCROOT="${D}"/usr/share/doc/"${PF}" install-doc || "make install-doc failed"
 		dodoc README.md ChangeLog
 	fi
 }

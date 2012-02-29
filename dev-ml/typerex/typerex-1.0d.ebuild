@@ -16,7 +16,7 @@ KEYWORDS="~x86"
 IUSE="auto-complete"
 
 DEPEND="auto-complete? ( app-emacs/auto-complete )
-	>=dev-ml/ocaml-3.11.2"
+	>=dev-lang/ocaml-3.11.2"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
