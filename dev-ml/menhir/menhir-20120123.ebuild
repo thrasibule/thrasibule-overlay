@@ -13,20 +13,18 @@ SRC_URI="http://gallium.inria.fr/~fpottier/menhir/${P}.tar.gz"
 LICENSE="QPL-1.0 LGPL-2"
 SLOT="0"
 KEYWORDS="~x86"
-IUSE="ocamlopt"
+IUSE="+ocamlopt"
 
 DEPEND=">=dev-lang/ocaml-3.09[ocamlopt?]"
 RDEPEND="${DEPEND}"
 
-src_compile() {
-	if use ocamlopt; then
-		emake PREFIX="/usr"
-	else
-		emake TARGET=byte all PREFIX="/usr"
+src_prepare() {
+	export PREFIX="${D}/usr"
+	if ! use ocamlopt ; then
+		export TARGET=byte
 	fi
 }
 
 src_install() {
-	export PREFIX="${D}/usr"
 	findlib_src_install
 }
