@@ -8,7 +8,7 @@ inherit eutils findlib
 
 DESCRIPTION="BLAS/LAPACK interface for OCaml"
 HOMEPAGE="http://forge.ocamlcore.org/projects/lacaml"
-SRC_URI="http://forge.ocamlcore.org/frs/download.php/775/${P}.tar.gz"
+SRC_URI="http://forge.ocamlcore.org/frs/download.php/801/${P}.tar.gz"
 
 LICENSE="LGPL-2.1-linking-exception"
 SLOT="0"
@@ -20,9 +20,21 @@ DEPEND="dev-lang/ocaml[ocamlopt]
 	virtual/lapack"
 RDEPEND="${DEPEND}"
 
-src_prepare() {
-	sed -i "s/cclib = \[\]/cclib = [\"$(pkg-config --libs blas)\"\; \
- \"$(pkg-config --libs lapack)\"]/" setup.conf ||die
+src_configure() {
+	ocaml setup.ml -configure \
+		--override conf_cclib "$(pkg-config --libs blas) \
+$(pkg-config --libs lapack)" \
+		--destdir "${ED}" \
+		--prefix "/usr" \
+		--docdir "/usr/share/${PF}/doc" || die "configuration failed"
+}
+
+src_compile() {
+	emake
+	if use doc; then
+		echo "Lacaml">API.odocl
+		emake doc
+	fi
 }
 
 src_install() {
