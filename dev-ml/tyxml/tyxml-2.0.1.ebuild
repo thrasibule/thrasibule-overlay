@@ -16,7 +16,7 @@ KEYWORDS="~x86"
 IUSE="doc ocamlduce +ocamlopt"
 
 DEPEND="dev-ml/findlib
-dev-ml/ocaml[ocamlopt]
+dev-lang/ocaml[ocamlopt?]
 dev-ml/ocamlnet
 ocamlduce? ( dev-ml/ocamlduce )"
 RDEPEND="${DEPEND}"
