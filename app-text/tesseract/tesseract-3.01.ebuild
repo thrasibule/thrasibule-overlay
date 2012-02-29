@@ -1,4 +1,4 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-text/tesseract/tesseract-2.04-r1.ebuild,v 1.6 2010/04/16 18:53:16 hwoarang Exp $
 
@@ -47,7 +47,7 @@ SRC_URI="${URI_PREFIX}/${P}.tar.gz
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~mips ~ppc ~ppc64 ~sparc ~x86"
+KEYWORDS="~amd64 ~mips ~x86"
 IUSE="examples tiff linguas_bg linguas_ca linguas_cs linguas_da linguas_de
 linguas_el linguas_es linguas_fi linguas_fr linguas_id linguas_it linguas_hu
 linguas_ja linguas_ko linguas_lt linguas_lv linguas_nl linguas_nb linguas_pl
@@ -76,14 +76,14 @@ src_prepare() {
 	# remove obsolete makefile, install target only in uppercase Makefile
 	rm "${S}/java/makefile" || die "remove obsolete java makefile failed"
 
-	# Need to run automake to generate Makefile.in for tesseract-3.01
-	mkdir m4 ||die
+	mkdir -p "m4" || die "can't create m4 directory"
 	eautoreconf
-	#eautomake || die "eautomake failed"
 }
 
 src_configure() {
 	econf $(use_with tiff libtiff) \
+		--enable-gettext \
+		--enable-graphics \
 		--disable-dependency-tracking
 }
 
