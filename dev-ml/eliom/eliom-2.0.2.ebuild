@@ -6,7 +6,7 @@ EAPI=4
 
 inherit eutils findlib
 
-DESCRIPTION="A libary to build xml trees typechecked by OCaml"
+DESCRIPTION="A web framework to program client/server applications"
 HOMEPAGE="http://ocsigen.org/eliom/"
 SRC_URI="http://www.ocsigen.org/download/${P}.tar.gz"
 

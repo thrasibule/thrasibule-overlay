@@ -4,11 +4,11 @@
 
 EAPI=4
 
-inherit eutils findlib multilib
+inherit eutils findlib
 
 DESCRIPTION="Ocaml-powered webserver and framework for dynamic web programming"
 HOMEPAGE="http://www.ocsigen.org"
-SRC_URI="http://www.ocsigen.org/download/${P}a.tar.gz"
+SRC_URI="http://www.ocsigen.org/download/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -21,6 +21,7 @@ DEPEND=">=dev-ml/lwt-2.3.0[react,ssl]
 		dev-ml/cryptokit
 		>=dev-ml/ocamlnet-2.2.9
 		>=dev-ml/pcre-ocaml-6.0.1
+		>=dev-ml/tyxml-2.0.1
 		>=dev-lang/ocaml-3.12[ocamlopt?]
 		!sqlite? ( !dbm? ( >=dev-lang/ocaml-3.10.2[gdbm] ) )
 		!dbm? ( dev-ml/ocaml-sqlite3 )
