@@ -19,7 +19,7 @@ RDEPEND=">=dev-lang/ocaml-3.12.1[ocamlopt?]
 !mpir? ( dev-libs/gmp )
 mpir? ( sci-libs/mpir )"
 
-DEPEND="${DEPEND}
+DEPEND="${RDEPEND}
 dev-lang/perl"
 
 src_prepare() {
