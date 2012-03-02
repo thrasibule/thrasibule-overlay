@@ -125,7 +125,7 @@ src_compile() {
 }
 
 src_install() {
-	emake DESTDIR="${ED}" install || die "emake install failed"
+	emake DESTDIR="${D}" install || die "emake install failed"
 	find "${ED}" -name '*.la' -delete || die
 	# install docs
 	dodoc ACKNOWLEDGEMENTS README_Unix Readme_Visual.txt \
