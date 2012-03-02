@@ -21,7 +21,8 @@ dev-ml/react"
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	sed -i "s/<code>/\\\<code\\\>/" src/zed_edit.mli
+	#bug 1105 upstream
+	sed -i "s/<code>/(code)/" src/zed_edit.mli
 }
 
 src_configure() {
