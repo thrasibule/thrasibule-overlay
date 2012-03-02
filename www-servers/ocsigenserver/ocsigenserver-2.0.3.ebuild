@@ -1,14 +1,14 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-servers/ocsigen/ocsigen-1.3.4.ebuild,v 1.2 2011/02/15 21:20:59 tomka Exp $
+# $Header: $
 
-EAPI=2
+EAPI=4
 
 inherit eutils findlib multilib
 
 DESCRIPTION="Ocaml-powered webserver and framework for dynamic web programming"
 HOMEPAGE="http://www.ocsigen.org"
-SRC_URI="http://www.ocsigen.org/download/${PN}server-${PV}.tar.gz"
+SRC_URI="http://www.ocsigen.org/download/${P}a.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -29,11 +29,9 @@ DEPEND="dev-ml/findlib
 		sqlite? ( dev-ml/ocaml-sqlite3 )"
 RDEPEND="${DEPEND}"
 
-S="${WORKDIR}/${PN}server-2.0.3"
-
 pkg_setup() {
-	enewgroup ocsigen
-	enewuser ocsigen -1 -1 /var/www ocsigen
+	enewgroup ocsigenserver
+	enewuser ocsigenserver -1 -1 /var/www ocsigenserver
 
 	use !dbm && use !sqlite \
 		&& ewarn "Neither dbm nor sqlite are in useflags, will enable sqlite as default"
@@ -54,8 +52,11 @@ use_with_default() {
 	fi
 }
 
+src_prepare() {
+	epatch "${FILESDIR}/${PN}-makefile.patch"
+}
+
 src_configure() {
-	echo "$(use_with_default sqlite dbm)"
 	chmod +x configure
 	./configure \
 		--prefix /usr \
@@ -67,8 +68,8 @@ src_configure() {
 		$(use_enable debug) \
 		$(use_with zlib camlzip) \
 		$(use_with_default sqlite dbm) \
-		--ocsigen-group ocsigen \
-		--ocsigen-user ocsigen  \
+		--ocsigen-group ocsigenserver \
+		--ocsigen-user ocsigenserver  \
 		--name ocsigenserver \
 		|| die "Error : configure failed!"
 }
@@ -94,8 +95,8 @@ src_install() {
 	fi
 	emake logrotate
 
-	newinitd "${FILESDIR}"/ocsigen.initd ocsigen || die
-	newconfd "${FILESDIR}"/ocsigen.confd ocsigen || die
+	newinitd "${FILESDIR}"/ocsigenserver.initd ocsigenserver || die
+	newconfd "${FILESDIR}"/ocsigenserver.confd ocsigenserver || die
 
 	dodoc README
 }

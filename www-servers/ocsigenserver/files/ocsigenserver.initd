@@ -2,11 +2,12 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-opts="depend checkconfig start stop reload"
+extra_commands="depend checkconfig reload"
 
 depend() {
 	need net
 	use logger
+	after bootmist
 }
 
 
@@ -20,7 +21,7 @@ checkconfig() {
 		return 1
 	fi
 }
-			
+
 start() {
 	checkconfig || return 1
 

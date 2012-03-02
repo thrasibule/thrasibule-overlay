@@ -1,16 +1,16 @@
-# /etc/conf.d/ocsigen : config file for /etc/init.d/ocsigen
+# /etc/conf.d/ocsigenserver : config file for /etc/init.d/ocsigenserver
 
 # Path for the ocsigen binary
 
-DAEMON=/usr/bin/ocsigen
+DAEMON=/usr/bin/ocsigenserver
 
 # Name for ocsigen daemon
 
-NAME=ocsigen
+NAME=ocsigenserver
 
 # Locstion of Ocsigen config file
 
-CONF=/etc/$NAME/ocsigen.conf
+CONF=/etc/$NAME/ocsigenserver.conf
 
 # PID file location
 

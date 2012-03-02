@@ -1,0 +1,58 @@
+diff -urN ocsigenserver-2.0.3-orig/Makefile ocsigenserver-2.0.3/Makefile
+--- ocsigenserver-2.0.3-orig/Makefile	2012-03-01 22:57:29.944048606 -0500
++++ ocsigenserver-2.0.3/Makefile	2012-03-01 23:16:41.229163168 -0500
+@@ -93,7 +93,8 @@
+ 	$(INSTALL) -d -m 755 -o ${OCSIGENUSER} -g ${OCSIGENGROUP} \
+ 	  $(TEMPROOT)$(STATICPAGESDIR)/ocsigenstuff
+ 	$(INSTALL) -m 644 -o ${OCSIGENUSER} -g ${OCSIGENGROUP} \
+-	  local/var/www/ocsigenstuff/* $(TEMPROOT)$(STATICPAGESDIR)/ocsigenstuff
++	local/var/www/ocsigenstuff/*.png local/var/www/ocsigenstuff/*.css \
++	$(TEMPROOT)$(STATICPAGESDIR)/ocsigenstuff
+ 	$(INSTALL) -d -m 755 $(TEMPROOT)$(MANDIR)
+ 	$(INSTALL) -m 644 src/files/${PROJECTNAME}.1 $(TEMPROOT)$(MANDIR)
+ 
+@@ -137,7 +138,7 @@
+ 	     | sed s%USER%$(OCSIGENUSER)%g \
+ 	     | sed s%GROUP%$(OCSIGENGROUP)%g \
+ 	     | sed s%_COMMANDPIPE_%$(COMMANDPIPE)%g \
+-	     > $(TEMPROOT)/etc/logrotate.d/$(PROJECTNAME); }
++	     > $(TEMPROOT)/etc/logrotate.d/$(PROJECTNAME)
+ 
+ ###
+ 
+@@ -151,4 +152,4 @@
+ 
+ .PHONY: depend
+ depend:
+-	${MAKE} -C src depend
+\ No newline at end of file
++	${MAKE} -C src depend
+diff -urN ocsigenserver-2.0.3-orig/src/Makefile.filelist ocsigenserver-2.0.3/src/Makefile.filelist
+--- ocsigenserver-2.0.3-orig/src/Makefile.filelist	2012-03-01 22:57:29.948048609 -0500
++++ ocsigenserver-2.0.3/src/Makefile.filelist	2012-03-01 23:17:07.303165761 -0500
+@@ -1,5 +1,5 @@
+ BIN := server/${PROJECTNAME}
+-NATBIN := server/${PROJECTNAME}.opt
++NATBIN := server/${PROJECTNAME}
+ 
+ INTF := baselib/ocsigen_cache.cmi	   \
+ 	baselib/ocsigen_pervasives.cmi	   \
+@@ -93,4 +93,4 @@
+ endif
+ 
+ DOC := ${INTF:.cmi=.mli}
+-PLUGINS_DOC := ${PLUGINS_INTF:.cmi=.mli}
+\ No newline at end of file
++PLUGINS_DOC := ${PLUGINS_INTF:.cmi=.mli}
+diff -urN ocsigenserver-2.0.3-orig/src/server/Makefile ocsigenserver-2.0.3/src/server/Makefile
+--- ocsigenserver-2.0.3-orig/src/server/Makefile	2012-03-01 22:57:29.945048612 -0500
++++ ocsigenserver-2.0.3/src/server/Makefile	2012-03-01 23:16:49.058163947 -0500
+@@ -51,7 +51,7 @@
+ ${PROJECTNAME}: ${SERVERLIBS} ${SERVEROBJS}
+ 	${OCAMLC} -o $@ -linkpkg -linkall ${THREAD} ${LIBS} $^
+ ${PROJECTNAME}.opt: ${SERVERLIBS:.cma=.cmxa} ${SERVEROBJS:.cmo=.cmx}
+-	${OCAMLOPT} -o $@ -linkpkg -linkall ${THREAD} ${LIBS} $^
++	${OCAMLOPT} -o ${@:.opt=} -linkpkg -linkall ${THREAD} ${LIBS} $^
+ 
+ ### Toplevel ####
+ 
