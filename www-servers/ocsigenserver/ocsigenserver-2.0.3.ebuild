@@ -21,7 +21,6 @@ DEPEND="dev-ml/findlib
 		zlib? ( >=dev-ml/camlzip-1.03-r1 )
 		dev-ml/cryptokit
 		>=dev-ml/ocamlnet-2.2.9
-		dev-ml/ocaml-text
 		>=dev-ml/pcre-ocaml-6.0.1
 		>=dev-lang/ocaml-3.12[ocamlopt?]
 		!sqlite? ( !dbm? ( >=dev-lang/ocaml-3.10.2[gdbm] ) )
