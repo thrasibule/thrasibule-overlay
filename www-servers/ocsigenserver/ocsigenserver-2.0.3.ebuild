@@ -16,8 +16,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="debug doc dbm +ocamlopt sqlite zlib"
 RESTRICT="strip installsources"
 
-DEPEND="dev-ml/findlib
-		>=dev-ml/lwt-2.3.0[react,ssl]
+DEPEND=">=dev-ml/lwt-2.3.0[react,ssl]
 		zlib? ( >=dev-ml/camlzip-1.03-r1 )
 		dev-ml/cryptokit
 		>=dev-ml/ocamlnet-2.2.9
@@ -56,14 +55,13 @@ src_prepare() {
 }
 
 src_configure() {
-	chmod +x configure
-	./configure \
+	sh configure \
 		--prefix /usr \
 		--temproot "${D}" \
 		--bindir /usr/bin \
-		--docdir /usr/share/doc \
+		--docdir /usr/share/doc/${PF} \
 		--mandir /usr/share/man/man1 \
-		--libdir /usr/$(get_libdir) \
+		--libdir /usr/$(get_libdir)/ocaml \
 		$(use_enable debug) \
 		$(use_with zlib camlzip) \
 		$(use_with_default sqlite dbm) \
@@ -75,7 +73,7 @@ src_configure() {
 
 src_compile() {
 	if use ocamlopt; then
-		emake opt
+		emake
 	else
 		emake byte
 	fi
@@ -85,7 +83,7 @@ src_compile() {
 src_install() {
 	findlib_src_preinst
 	if use ocamlopt; then
-		emake install.opt
+		emake install
 	else
 		emake install.byte
 	fi
