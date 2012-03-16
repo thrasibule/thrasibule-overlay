@@ -11,7 +11,7 @@ HOMEPAGE="http://www.typerex.org
 https://github.com/OCamlPro/typerex"
 SRC_URI="http://www.typerex.org/pub/${P}.tar.gz"
 
-LICENSE="LGPL-2.1-linking-exception GPL-3 LGPL-3"
+LICENSE="LGPL-2.1-linking-exception GPL-3 LGPL-3 QPL"
 SLOT="0"
 KEYWORDS="~x86"
 
@@ -34,8 +34,7 @@ src_install() {
 	emake BINDIR="${D}/usr/bin" install-binaries
 	use doc && dodoc -r docs/user-manual
 	dodoc README Changelog.txt emacs.append
-	cd tools/ocp-typerex-ide/emacs/
-	elisp-install ${PN} typerex.{el,elc} || die
+	elisp-install ${PN} tools/ocp-typerex-ide/emacs/typerex.{el,elc} || die
 	elisp-site-file-install "${FILESDIR}/${SITEFILE}" || die
 }
 
