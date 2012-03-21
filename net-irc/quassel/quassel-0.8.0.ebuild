@@ -1,29 +1,32 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-irc/quassel/quassel-0.7.1.ebuild,v 1.6 2010/11/04 14:44:52 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-irc/quassel/quassel-0.8.0.ebuild,v 1.1 2012/03/21 03:04:07 patrick Exp $
 
-EAPI=3
+EAPI=4
 
 EGIT_REPO_URI="git://git.quassel-irc.org/quassel.git"
 EGIT_BRANCH="master"
-[[ "${PV}" == "9999" ]] && GIT_ECLASS="git"
+[[ "${PV}" == "9999" ]] && GIT_ECLASS="git-2"
 
 QT_MINIMAL="4.6.0"
 KDE_MINIMAL="4.4"
 
-inherit cmake-utils eutils ${GIT_ECLASS}
+inherit cmake-utils eutils pax-utils versionator ${GIT_ECLASS}
 
 DESCRIPTION="Qt4/KDE4 IRC client suppporting a remote daemon for 24/7 connectivity."
 HOMEPAGE="http://quassel-irc.org/"
 [[ "${PV}" == "9999" ]] || SRC_URI="http://quassel-irc.org/pub/${P/_/-}.tar.bz2"
 
 LICENSE="GPL-3"
-KEYWORDS="amd64 x86 ~amd64-linux"
+KEYWORDS="~amd64 ~x86 ~amd64-linux ~sparc-solaris"
 SLOT="0"
 IUSE="ayatana crypt dbus debug kde monolithic phonon postgres +server +ssl webkit X"
 
 SERVER_RDEPEND="
-	crypt? ( app-crypt/qca:2 )
+	crypt? (
+		app-crypt/qca:2
+		app-crypt/qca-ossl
+	)
 	!postgres? ( >=x11-libs/qt-sql-${QT_MINIMAL}:4[sqlite] dev-db/sqlite[threadsafe] )
 	postgres? ( >=x11-libs/qt-sql-${QT_MINIMAL}:4[postgres] )
 	>=x11-libs/qt-script-${QT_MINIMAL}:4
@@ -41,7 +44,7 @@ GUI_RDEPEND="
 		>=kde-base/oxygen-icons-${KDE_MINIMAL}
 		ayatana? ( kde-misc/plasma-widget-message-indicator )
 	)
-	phonon? ( || ( media-sound/phonon >=x11-libs/qt-phonon-${QT_MINIMAL} ) )
+	phonon? ( || ( media-libs/phonon >=x11-libs/qt-phonon-${QT_MINIMAL} ) )
 	webkit? ( >=x11-libs/qt-webkit-${QT_MINIMAL}:4 )
 "
 
@@ -55,14 +58,6 @@ RDEPEND="
 		server? ( ${SERVER_RDEPEND} )
 		X? ( ${GUI_RDEPEND} )
 	)
-	!monolithic? (
-		!server? (
-			!X? (
-				${SERVER_RDEPEND}
-				${GUI_RDEPEND}
-			)
-		)
-	)
 	"
 DEPEND="${RDEPEND}"
 
@@ -70,15 +65,18 @@ DOCS="AUTHORS ChangeLog README"
 
 S="${WORKDIR}/${P/_/-}"
 
-pkg_setup() {
-	if ! use monolithic && ! use server && ! use X ; then
-		ewarn "You have to build at least one of the monolithic client (USE=monolithic),"
-		ewarn "the quasselclient (USE=X) or the quasselcore (USE=server)."
-		echo
-		ewarn "Enabling monolithic by default."
-		FORCED_MONO="yes"
-	fi
+REQUIRED_USE="
+	|| ( X server monolithic )
+	crypt? ( || ( server monolithic ) )
+	postgres? ( || ( server monolithic ) )
+	kde? ( || ( X monolithic ) )
+	phonon? ( || ( X monolithic ) )
+	dbus? ( || ( X monolithic ) )
+	ayatana? ( || ( X monolithic ) )
+	webkit? ( || ( X monolithic ) )
+"
 
+pkg_setup() {
 	if use server; then
 		QUASSEL_DIR=/var/lib/${PN}
 		QUASSEL_USER=${PN}
@@ -104,8 +102,6 @@ src_configure() {
 		"-DEMBED_DATA=OFF"
 	)
 
-	[[ ${FORCED_MONO} == "yes" ]] && mycmakeargs+=( '-DWANT_MONO=ON' )
-
 	cmake-utils_src_configure
 }
 
@@ -113,6 +109,9 @@ src_install() {
 	cmake-utils_src_install
 
 	if use server ; then
+		# bug 346255
+		pax-mark m "${ED}/usr/bin/quasselcore" || die
+
 		# prepare folders in /var/
 		keepdir "${QUASSEL_DIR}"
 		fowners "${QUASSEL_USER}":"${QUASSEL_USER}" "${QUASSEL_DIR}"
@@ -128,7 +127,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	if ( use monolithic || [[ "${FORCED_MONO}" == "yes" ]] ) && use ssl ; then
+	if use monolithic && use ssl ; then
 		elog "Information on how to enable SSL support for client/core connections"
 		elog "is available at http://bugs.quassel-irc.org/wiki/quassel-irc."
 	fi
@@ -139,7 +138,7 @@ pkg_postinst() {
 	fi
 
 	# temporary info mesage
-	if use server; then
+	if use server && [[ $(get_version_component_range 2 ${REPLACING_VERSIONS}) -lt 7 ]]; then
 		echo
 		ewarn "Please note that all configuration moved from"
 		ewarn "/home/\${QUASSEL_USER}/.config/quassel-irc.org/"
@@ -167,4 +166,5 @@ pkg_config() {
 			einfo "Remove it if you want to create new one."
 		fi
 	fi
+
 }
