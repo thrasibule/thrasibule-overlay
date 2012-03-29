@@ -4,7 +4,8 @@
 
 EAPI=4
 
-inherit findlib
+OASIS_BUILD_DOCS=1
+inherit oasis
 
 DESCRIPTION="Zed is an abstract engine for text edition"
 HOMEPAGE="http://forge.ocamlcore.org/projects/zed/"
@@ -15,27 +16,12 @@ SLOT="0"
 KEYWORDS="~x86"
 IUSE="doc"
 
-DEPEND="dev-lang/ocaml[ocamlopt]
-dev-ml/camomile
-dev-ml/react"
+DEPEND="dev-ml/camomile
+	dev-ml/react"
 RDEPEND="${DEPEND}"
+DOCS=( "CHANGES" )
 
 src_prepare() {
 	#bug 1105 upstream
-	sed -i "s/<code>/(code)/" src/zed_edit.mli
-}
-
-src_configure() {
-	./configure --docdir "/usr/share/doc/${PF}/html" \
-		--destdir "${ED}"
-}
-
-src_compile() {
-	emake
-	use doc && emake doc
-}
-
-src_install() {
-	findlib_src_install
-	dodoc CHANGES
+	sed -i "s/<code>/< code >/" src/zed_edit.mli
 }
