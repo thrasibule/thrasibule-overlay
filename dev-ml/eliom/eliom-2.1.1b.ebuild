@@ -16,7 +16,7 @@ KEYWORDS="~x86"
 IUSE="doc +ocamlopt ocamlduce"
 
 DEPEND=">=dev-lang/ocaml-3.12[ocamlopt?]
-	>=dev-ml/js_of_ocaml-1.0.8
+	>=dev-ml/js_of_ocaml-1.1
 	>=www-servers/ocsigenserver-2.0.3
 	>=dev-ml/tyxml-2.0.1[ocamlduce?]
 	>=dev-ml/deriving-ocsigen-0.3
@@ -28,7 +28,8 @@ RDEPEND="${DEPEND}"
 src_configure() {
 	sh configure \
 		--prefix "/usr" \
-		--docdir "/usr/share/doc/${PF}" \
+		--docdir "/usr/share/doc/${PF}/html" \
+		--mandir "/usr/share/man/" \
 		--temproot "${ED}" \
 		--libdir "/usr/$(get_libdir)/ocaml" \
 		$(use_with ocamlduce) || die "configure failed"
