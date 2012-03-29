@@ -8,7 +8,7 @@ inherit eutils findlib
 
 DESCRIPTION="Ocaml-powered webserver and framework for dynamic web programming"
 HOMEPAGE="http://www.ocsigen.org"
-SRC_URI="http://www.ocsigen.org/download/${P}.tar.gz"
+SRC_URI="http://ocsigen.org/download/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
