@@ -13,7 +13,7 @@ SRC_URI="http://ocsigen.org/download/${P}.tar.gz"
 LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug doc dbm +ocamlopt sqlite zlib"
+IUSE="debug doc dbm +ocamlopt +sqlite zlib"
 RESTRICT="strip installsources"
 
 DEPEND=">=dev-ml/lwt-2.3.0[react,ssl]
@@ -23,32 +23,13 @@ DEPEND=">=dev-ml/lwt-2.3.0[react,ssl]
 		>=dev-ml/pcre-ocaml-6.0.1
 		>=dev-ml/tyxml-2.0.1
 		>=dev-lang/ocaml-3.12[ocamlopt?]
-		!sqlite? ( !dbm? ( >=dev-lang/ocaml-3.10.2[gdbm] ) )
-		!dbm? ( dev-ml/ocaml-sqlite3 )
+		dbm? ( >=dev-lang/ocaml-3.12[gdbm] )
 		sqlite? ( dev-ml/ocaml-sqlite3 )"
 RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	enewgroup ocsigenserver
 	enewuser ocsigenserver -1 -1 /var/www ocsigenserver
-
-	use !dbm && use !sqlite \
-		&& ewarn "Neither dbm nor sqlite are in useflags, will enable sqlite as default"
-
-	use sqlite && use dbm \
-		&& ewarn "sqlite and dbm are both in useflags, will use only sqlite"
-}
-
-use_with_default() {
-	if use $2; then
-		if use $1; then
-			echo "--with-$2  --with-$1"
-		else
-			echo "--with-$2  --without-$1"
-		fi
-	else
-		echo "--without-$2  --with-$1"
-	fi
 }
 
 src_prepare() {
@@ -65,7 +46,8 @@ src_configure() {
 		--libdir /usr/$(get_libdir)/ocaml \
 		$(use_enable debug) \
 		$(use_with zlib camlzip) \
-		$(use_with_default sqlite dbm) \
+		$(use_with sqlite) \
+		$(use_with dbm) \
 		--ocsigen-group ocsigenserver \
 		--ocsigen-user ocsigenserver  \
 		--name ocsigenserver \
