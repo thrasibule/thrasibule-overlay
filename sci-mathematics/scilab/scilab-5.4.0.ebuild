@@ -1,4 +1,4 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -14,11 +14,6 @@ SLOT="0"
 IUSE="doc fftw +gui hdf5 +matio nls tk +umfpack xcos"
 KEYWORDS="~amd64 ~x86"
 
-# hdf5 is required to compile (and use) xcos
-# doc generation and xcos is disabled if gui is disabled
-# see http://wiki.scilab.org/Description_of_configure_options
-
-# http://wiki.scilab.org/Dependencies_of_Scilab_5.X
 RDEPEND="virtual/lapack
 	tk? ( dev-lang/tk )
 	xcos? ( dev-lang/ocaml
@@ -49,6 +44,7 @@ DEPEND="${RDEPEND}
 		app-text/docbook-xsl-stylesheets )"
 
 S="${WORKDIR}/scilab-5.4.0-alpha-1"
+DOCS=( "ACKNOWLEDGEMENTS" "READE_UNIX" "Readme_Visual.txt" )
 
 pkg_setup() {
 	if use doc; then
@@ -58,10 +54,11 @@ pkg_setup() {
 	java-pkg-2_pkg_setup
 
 	# temp Bug 6593 upstream, fixed
-	#append-ldflags $(no-as-needed)
+	append-ldflags $(no-as-needed)
 }
 
 src_prepare() {
+	epatch "${FILESDIR}/${PN}-fastconfigure.patch"
 	# Increases java heap to 512M when available, when building docs
 	use doc && epatch "${FILESDIR}/java-heap-5.3.3.patch"
 	# fix scilib path
@@ -125,11 +122,8 @@ src_compile() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die "emake install failed"
+	base_src_install
 	find "${ED}" -name '*.la' -delete || die
-	# install docs
-	dodoc ACKNOWLEDGEMENTS README_Unix Readme_Visual.txt \
-	|| die "failed to install docs"
 	insinto /usr/share/mime/packages
 	doins "${FILESDIR}/${PN}.xml"
 }

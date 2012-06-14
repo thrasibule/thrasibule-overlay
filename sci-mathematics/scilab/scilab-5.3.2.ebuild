@@ -47,6 +47,7 @@ DEPEND="${RDEPEND}
 		>=dev-java/jlatexmath-fop-0.9.4
 		~dev-java/saxon-6.5.5
 		app-text/docbook-xsl-stylesheets )"
+DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
 
 pkg_setup() {
 	if use doc; then
@@ -120,11 +121,8 @@ src_compile() {
 }
 
 src_install() {
-	emake DESTDIR="${ED}" install || die "emake install failed"
+	base_src_install
 	find "${ED}" -name '*.la' -delete || die
-	# install docs
-	dodoc ACKNOWLEDGEMENTS README_Unix Readme_Visual.txt \
-	|| die "failed to install docs"
 	insinto /usr/share/mime/packages
 	doins "${FILESDIR}/${PN}.xml"
 }
