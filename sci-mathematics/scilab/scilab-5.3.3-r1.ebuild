@@ -136,8 +136,8 @@ src_prepare() {
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
 	use doc && epatch "${FILESDIR}"/${P}-java-heap.patch
 	mkdir jar; cd jar
-	java-pkg_jar-from jgraphx,jlatexmath,hdf-java,jogl,gluegen,skinlf,\
-	jgoodies-looks-2.0,jrosetta
+	java-pkg_jar-from jgraphx,jlatexmath,hdf-java,jogl,gluegen,skinlf
+	java-pkg_jar-from jgoodies-looks-2.0,jrosetta
 	cd ..
 	
 	#sed -i \
