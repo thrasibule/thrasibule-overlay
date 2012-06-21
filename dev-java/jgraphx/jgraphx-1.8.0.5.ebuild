@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-JAVA_PKG_IUSE="doc source"
 EAPI=4
+JAVA_PKG_IUSE="doc source"
 inherit java-pkg-2 java-ant-2 versionator
 
 MY_PV=$(replace_all_version_separators '_')
@@ -17,7 +17,7 @@ DEPEND=">=virtual/jdk-1.5
 	app-arch/unzip"
 RDEPEND=">=virtual/jre-1.5"
 LICENSE="as-is"
-SLOT="0"
+SLOT="1.8"
 KEYWORDS="~amd64 ~x86"
 
 S="${WORKDIR}/${PN}"
