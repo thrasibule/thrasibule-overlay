@@ -55,12 +55,12 @@ CDEPEND="dev-libs/libpcre
 		dev-java/commons-logging:0
 		dev-java/flexdock:0
 		dev-java/fop:0
-		dev-java/gluegen:2
+		dev-java/gluegen:0
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
 		>=dev-java/jlatexmath-0.9.4:0
-		dev-java/jogl:2
+		dev-java/jogl:0
 		dev-java/jrosetta:0
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.3
@@ -124,7 +124,9 @@ src_prepare() {
 		"${FILESDIR}"/${P}-no-xcos-deps.patch \
 		"${FILESDIR}"/${P}-javadoc-utf8.patch \
 		"${FILESDIR}"/${P}-fix-random-runtime-failures.patch \
-		"${FILESDIR}"/${P}-gui-no-xcos.patch
+		"${FILESDIR}"/${P}-gui-no-xcos.patch \
+		"${FILESDIR}"/${P}-jrosetta.patch \
+		"${FILESDIR}"/${P}-followlinks.patch
 
 	# need serious as-needed work (inter-dependencies among modules)
 	#	"${FILESDIR}"/${P}-as-needed.patch \
@@ -156,12 +158,12 @@ src_prepare() {
 	# add specific gentoo java directories
 	if use gui; then
 		sed -i -e "s|-L\$SCI_SRCDIR/bin/|-L\$SCI_SRCDIR/bin/ \
-		-L$(java-config -i gluegen-2) \
-		-L$(java-config -i jogl-2)|" \
+		-L$(java-config -i gluegen) \
+		-L$(java-config -i jogl)|" \
 			configure.ac || die
 		sed -i \
-			-e "/<\/librarypaths>/i\<path value=\"$(java-config -i gluegen-2)\"\/>" \
-			-e "/<\/librarypaths>/i\<path value=\"$(java-config -i jogl-2)\"\/>" \
+			-e "/<\/librarypaths>/i\<path value=\"$(java-config -i gluegen)\"\/>" \
+			-e "/<\/librarypaths>/i\<path value=\"$(java-config -i jogl)\"\/>" \
 			etc/librarypath.xml || die
 		if use xcos; then
 			sed -i \
@@ -172,6 +174,10 @@ src_prepare() {
 			etc/librarypath.xml || die
 		fi
 	fi
+	mkdir jar; cd jar
+	java-pkg_jar-from jogl,gluegen
+	cd ..
+	
 	java-pkg-opt-2_src_prepare
 	eautoreconf
 }

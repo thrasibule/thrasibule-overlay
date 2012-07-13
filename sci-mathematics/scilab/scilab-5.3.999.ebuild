@@ -10,10 +10,23 @@ VIRTUALX_REQUIRED="manual"
 inherit eutils autotools check-reqs eutils fdo-mime flag-o-matic \
 	java-pkg-opt-2 fortran-2 flag-o-matic toolchain-funcs virtualx
 
+# Comments:
+# - we don't rely on the configure script to find the right version of java
+# packages. This should fix bug #41821
+# Things that don't work:
+# - tests
+# - libxml2 needs -icu otherwise fails during compilation of xml module
+# (upstream is aware of it)
+# - can't build without help
+# - has to call eautoconf, and not eautoreconf, libtool fails otherwise
+# - --as-needed still doesn't work
+# - needs to remove scilab-5.3.x before installing otherwise gets a DOCBOOK_ROOT
+# error
+
 DESCRIPTION="Scientific software package for numerical computations"
 LICENSE="CeCILL-2"
 HOMEPAGE="http://www.scilab.org/"
-SRC_URI="http://www.scilab.org/download/${PV}-alpha-1/${P}.tar.gz"
+SRC_URI="http://guillaume.horel.free.fr/${P}.tar.gz"
 
 SLOT="0"
 IUSE="bash-completion debug doc fftw +gui +matio nls openmp
@@ -33,7 +46,7 @@ done
 KEYWORDS="~amd64 ~x86"
 
 CDEPEND="dev-libs/libpcre
-	dev-libs/libxml2:2
+	dev-libs/libxml2:2[-icu]
 	sys-devel/gettext
 	sys-libs/ncurses
 	sys-libs/readline
@@ -63,6 +76,9 @@ CDEPEND="dev-libs/libpcre
 	tk? ( dev-lang/tk )
 	umfpack? ( sci-libs/umfpack )"
 
+RDEPEND="${CDEPEND}
+	gui? ( >=virtual/jre-1.5 )"
+
 DEPEND="${CDEPEND}
 	virtual/fortran
 	virtual/pkgconfig
@@ -73,10 +89,12 @@ DEPEND="${CDEPEND}
 			   >=dev-java/jlatexmath-fop-0.9.4
 			   dev-java/xml-commons-external )
 		xcos? ( dev-lang/ocaml ) )
-	test? ( gui? ( ${VIRTUALX_DEPEND} ) )"
+	test? (
+		dev-java/junit
+		gui? ( ${VIRTUALX_DEPEND} ) )"
 
 S="${WORKDIR}/${PN}"
-DOCS=( "ACKNOWLEDGEMENTS" "READE_UNIX" "Readme_Visual.txt" )
+DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
 
 pkg_pretend() {
 	use doc && CHECKREQS_MEMORY="512M" check-reqs_pkg_pretend
@@ -106,48 +124,54 @@ pkg_setup() {
 src_prepare() {
 	epatch \
 		"${FILESDIR}"/${P}-fortran-link.patch \
-		# "${FILESDIR}"/${P}-no-lhpi.patch
-	#epatch "${FILESDIR}/${PN}-fastconfigure.patch"
-	# Increases java heap to 512M when available, when building docs
-	use doc && epatch "${FILESDIR}/java-heap-5.3.3.patch"
-	# fix scilib path
-	#epatch "${FILESDIR}/scilab-5.3.3-scilib-fix.patch"
-	# bug 9268 reported upstream http://bugzilla.scilab.org/show_bug.cgi?id=9268
-	#epatch "${FILESDIR}"/bug_9268.diff
-	#bug 9883 upstream
-	#epatch "${FILESDIR}/disablebuildhelp.patch"
-	#bug 10244 upstream
-	#mv  modules/call_scilab/examples/call_scilab/NET/VB.NET/My\ Project/ \
-	#modules/call_scilab/examples/call_scilab/NET/VB.NET/My_Project||die
-	#bug 9824 upstream
-	sed -i "/BLAS_LIBS=$/d" m4/libsmath.m4
-	sed -i "s|/jhdf5|/hdf-java|g" m4/hdf5.m4
-	sed -i -e "s|/usr/lib/jogl|/usr/lib/jogl-2|" \
-		   -e "s|/usr/lib64/jogl|/usr/lib64/jogl-2|" configure.ac
-	sed -i -e "s|/usr/lib/gluegen|/usr/lib/gluegen-2|" \
-		   -e "s|/usr/lib64/gluegen|/usr/lib64/gluegen-2|" \
-		   -e "s|AC_CHECK_LIB(\[gluegen2-rt|AC_CHECK_LIB([gluegen-rt|" \
-	configure.ac
+		"${FILESDIR}"/${P}-blas-libs.patch \
+		"${FILESDIR}"/${P}-followlinks.patch \
+		"${FILESDIR}"/${P}-gluegen.patch
 
-	#epatch "${FILESDIR}/scilab-5.3.3-allow-hdf-1.8.7.patch"
+	# need serious as-needed work (inter-dependencies among modules)
+	#	"${FILESDIR}"/${P}-as-needed.patch \
+	append-ldflags $(no-as-needed)
 
+	# increases java heap to 512M when building docs (sync with cheqreqs above)
+	use doc && epatch "${FILESDIR}"/${P}-java-heap.patch
 
-	#sed -i "s|-L\$SCI_SRCDIR/bin/|-L\$SCI_SRCDIR/bin/ \
-	#	-L$(java-config -i gluegen-2) \
-	#	-L$(java-config -i jogl-2)|" \
-	#	configure.ac || die
+	# make sure library path are preloaded in binaries
+	sed -i \
+		-e "s|^LD_LIBRARY_PATH=|LD_LIBRARY_PATH=${EPREFIX}/usr/$(get_libdir)/scilab:|g" \
+		bin/scilab* || die
 
-	sed -i -e "s/jogl/jogl-2/" -e "s/gluegen/gluegen-2/" -e "s/jhdf5/hdf-java/" \
-		etc/librarypath.xml || die
+	#add specific gentoo java directories
+	if use gui; then
+		sed -i -e "s|/usr/lib/jogl|/usr/lib/jogl-2|" \
+			-e "s|/usr/lib64/jogl|/usr/lib64/jogl-2|" configure.ac || die
+		sed -i -e "s|/usr/lib/gluegen|/usr/lib/gluegen-2|" \
+			-e "s|/usr/lib64/gluegen|/usr/lib64/gluegen-2|" \
+			-e "s|AC_CHECK_LIB(\[gluegen2-rt|AC_CHECK_LIB([gluegen-rt|" \
+			configure.ac || die
+
+		sed -i -e "s/jogl/jogl-2/" -e "s/gluegen/gluegen-2/" \
+			-e "s/jhdf5/hdf-java/" etc/librarypath.xml || die
+		sed -i -e "s|/jhdf5|/hdf-java|g" m4/hdf5.m4
+	fi
 	mkdir jar; cd jar
 	java-pkg_jar-from jgraphx-1.8,jlatexmath,hdf-java,flexdock,skinlf
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer
+	java-pkg_jar-from avalon-framework-4.2,saxon-6.5,jeuclid-core
+	java-pkg_jar-from xmlgraphics-commons-1.3,commons-io-1,jlatexmath-fop
 	java-pkg_jar-from jogl-2 jogl.all.jar jogl2.jar
 	java-pkg_jar-from gluegen-2 gluegen-rt.jar gluegen2-rt.jar
+	java-pkg_jar-from batik-1.7 batik-all.jar
+	java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
+	java-pkg_jar-from commons-logging commons-logging.jar
+	java-pkg_jar-from fop fop.jar
+	java-pkg_jar-from javahelp jhall.jar
+	if use test; then
+		java-pkg_jar-from junit-4 junit.jar junit4.jar
+	fi
 	cd ..
 
 	java-pkg-opt-2_src_prepare
-	eautoreconf
+	eautoconf
 }
 
 src_configure() {
@@ -192,20 +216,29 @@ src_configure() {
 }
 
 src_compile() {
-	emake || die "emake failed"
-	if use doc; then
-		emake doc || die "emake failed"
+	emake
+	use doc && emake doc
+}
+
+src_test() {
+	if use gui; then
+		Xemake check
+	else
+		emake check
 	fi
 }
 
 src_install() {
-	base_src_install
-	#find "${ED}" -name '*.la' -delete || die
+	default
 	prune_libtool_files --all
-	insinto /usr/share/mime/packages
-	doins "${FILESDIR}/${PN}.xml"
+	rm -rf "${D}"/usr/share/scilab/modules/*/tests
+	use bash-completion && dobashcomp "${FILESDIR}"/${PN}.bash_completion
 }
 
 pkg_postinst() {
+	fdo-mime_mime_database_update
+}
+
+pkg_postrm() {
 	fdo-mime_mime_database_update
 }

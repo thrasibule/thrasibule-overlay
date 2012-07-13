@@ -1,0 +1,20 @@
+diff -urN scilab-5.3.3-orig/configure.ac scilab-5.3.3/configure.ac
+--- scilab-5.3.3-orig/configure.ac	2012-07-07 15:55:00.823950317 -0400
++++ scilab-5.3.3/configure.ac	2012-07-07 15:58:29.629944202 -0400
+@@ -908,9 +908,13 @@
+                 AC_SUBST(JHALL)
+ 
+                 # Console API
+-                AC_JAVA_CHECK_PACKAGE([jrosetta-API],[com.artenum.rosetta.interfaces.core.ConsoleConfiguration],[JRosetta : Console API Artenum / Scilab])
+-                JROSETTA_API=$PACKAGE_JAR_FILE
+-                AC_SUBST(JROSETTA_API)
++                AC_JAVA_CHECK_PACKAGE([jrosetta-API],[com.artenum.rosetta.interfaces.core.ConsoleConfiguration],[JRosetta : Console API Artenum / Scilab],"yes")
++		JROSETTA_API=$PACKAGE_JAR_FILE
++		if test -z "$JROSETTA_API"; then
++		    AC_JAVA_CHECK_PACKAGE([jrosetta-api],[com.artenum.rosetta.interfaces.core.ConsoleConfiguration],[JRosetta : Console API Artenum / Scilab])
++		    JROSETTA_API=$PACKAGE_JAR_FILE
++		fi
++		AC_SUBST(JROSETTA_API)
+ 
+                 # Console Core
+                 AC_JAVA_CHECK_PACKAGE([jrosetta-engine],[com.artenum.rosetta.core.action.AbstractConsoleAction],[JRosetta : Console Core Artenum / Scilab])
