@@ -24,7 +24,7 @@ DEPEND="${DEPEND}
 DOCS=( "README.txt" "Changelog" )
 
 src_prepare() {
-	use doc && cp ${FILESDIR}/API.odocl .|| die
+	use doc && $((cp ${FILESDIR}/API.odocl .|| die))
 	cclib="$(pkg-config --libs blas lapack)"
 	cclib="[$(echo $cclib|sed -e 's/\(-[a-z0-9]*\) /\"\1\"\;/g' -e \
 	's/\(-[a-z0-9]*\)$/\"\1\"/')]"
