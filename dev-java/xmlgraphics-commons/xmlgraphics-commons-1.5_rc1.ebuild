@@ -13,7 +13,7 @@ HOMEPAGE="http://xmlgraphics.apache.org/commons/index.html"
 SRC_URI="mirror://apache/xmlgraphics/commons/source/${MY_P}-src.tar.gz"
 
 LICENSE="Apache-2.0"
-SLOT="1.4"
+SLOT="1.5"
 KEYWORDS="amd64 ppc ppc64 x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE="jpeg"
 
