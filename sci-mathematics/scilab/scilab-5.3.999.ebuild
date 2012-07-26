@@ -126,7 +126,6 @@ pkg_setup() {
 src_prepare() {
 	epatch \
 		"${FILESDIR}"/${P}-fortran-link.patch \
-		"${FILESDIR}"/${P}-blas-libs.patch \
 		"${FILESDIR}"/${P}-followlinks.patch \
 		"${FILESDIR}"/${P}-gluegen.patch
 
