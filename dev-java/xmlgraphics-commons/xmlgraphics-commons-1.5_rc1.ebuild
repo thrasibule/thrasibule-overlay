@@ -4,8 +4,10 @@
 
 EAPI=4
 JAVA_PKG_IUSE="doc examples source test"
+VIRTUALX_REQUIRED="manual"
+VIRTUALX_COMMAND="eant"
 
-inherit java-pkg-2 java-ant-2
+inherit java-pkg-2 java-ant-2 virtualx
 
 MY_P=${P/_/}
 DESCRIPTION="A library of several reusable components used by Apache Batik and Apache FOP."
@@ -17,22 +19,22 @@ SLOT="1.5"
 KEYWORDS="amd64 ppc ppc64 x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE="jpeg"
 
-# fails connect to X even tho it sets java.awt.headless
 RESTRICT="test"
 CDEPEND="dev-java/commons-io:1
 	 >=dev-java/commons-logging-1:0"
 DEPEND=">=virtual/jdk-1.5
 		test? (
-			dev-java/ant-junit
-		)
+			dev-java/ant-junit4
+			)
 		${CDEPEND}"
+# test also depends on dev-java/mockito, need to package it
 RDEPEND=">=virtual/jre-1.5
 		${CDEPEND}"
 
 S="${WORKDIR}/${MY_P}"
 
 # TODO investigate producing .net libraries
-# stratigies for non sun jdk's/jre's
+# strategies for non sun jdk's/jre's
 
 JAVA_ANT_IGNORE_SYSTEM_CLASSES="true"
 JAVA_ANT_REWRITE_CLASSPATH="true"
@@ -54,13 +56,12 @@ EANT_BUILD_TARGET="jar-main"
 EANT_DOC_TARGET="javadocs"
 
 src_compile() {
-	java-pkg-2_src_compile $(use jpeg && echo -Dsun.jpeg.present=true)
+	java-pkg-2_src_compile $( !(use jpeg) && echo -Dinternal-codecs.disabled=true)
 }
 
 src_test() {
-	java-pkg_jarfrom --into lib junit
-	# probably needs ${af} from src_compile, doesn't work anyway
-	ANT_TASKS="ant-junit" eant -Djunit.present=true junit
+	java-pkg_jarfrom --into lib junit-4,commons-io-1
+	ANT_TASKS="ant-junit4" virtualmake -Djdk15.present=true junit
 }
 
 src_install(){
