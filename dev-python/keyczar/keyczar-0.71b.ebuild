@@ -11,7 +11,7 @@ inherit distutils eutils
 
 DESCRIPTION="Toolkit for safe and simple cryptography"
 HOMEPAGE="http://www.keyczar.org"
-SRC_URI="http://keyczar.googlecode.com/files/python-${P}.061709.tar.gz
+SRC_URI="http://keyczar.googlecode.com/files/python-${P}.tar.gz
 -> ${P}.tar.gz"
 
 LICENSE="Apache-2.0"
@@ -31,16 +31,11 @@ DOCS="README"
 PYTHON_MODNAME="keyczar"
 S="${WORKDIR}/python-${P}"
 
-src_prepare() {
-	#patch for the test suite. It is reported upstream at
-	#http://code.google.com/p/keyczar/issues/detail?id=61
-	epatch "${FILESDIR}/keyczar_rsakeysize.patch"
-}
 src_test() {
 	testing() {
 		PYTHONPATH="../../build-${PYTHON_ABI}/lib" "$(PYTHON)" alltests.py
 	}
-	cd "${S}/tests/keyczar"
+	cd "${S}/tests/keyczar_tests"
 	python_execute_function testing
 }
 
