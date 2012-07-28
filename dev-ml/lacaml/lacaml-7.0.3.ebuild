@@ -21,7 +21,7 @@ RDEPEND="virtual/blas
 DEPEND="${DEPEND}
 	dev-util/pkgconfig"
 
-DOCS=( "README.txt" "Changelog" )
+DOCS=( "README.md" "CHANGES.txt" "TODO.md" )
 
 src_prepare() {
 	use doc && $((cp ${FILESDIR}/API.odocl .|| die))
