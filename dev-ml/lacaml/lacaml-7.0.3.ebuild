@@ -11,7 +11,7 @@ DESCRIPTION="BLAS/LAPACK interface for OCaml"
 HOMEPAGE="http://forge.ocamlcore.org/projects/lacaml"
 SRC_URI="https://bitbucket.org/mmottl/lacaml/downloads/${P}.tar.gz"
 
-LICENSE="LGPL-2.1-linking-exception"
+LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0"
 KEYWORDS="~x86"
 IUSE=""
@@ -19,12 +19,12 @@ IUSE=""
 RDEPEND="virtual/blas
 	virtual/lapack"
 DEPEND="${DEPEND}
-	dev-util/pkgconfig"
+	virtual/pkgconfig"
 
 DOCS=( "README.md" "CHANGES.txt" "TODO.md" )
 
 src_prepare() {
-	use doc && $((cp ${FILESDIR}/API.odocl .|| die))
+	use doc && $((cp "${FILESDIR}/API.odocl" .|| die))
 	cclib="$(pkg-config --libs blas lapack)"
 	cclib="[$(echo $cclib|sed -e 's/\(-[a-z0-9]*\) /\"\1\"\;/g' -e \
 	's/\(-[a-z0-9]*\)$/\"\1\"/')]"
