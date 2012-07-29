@@ -18,7 +18,7 @@ SLOT="0"
 KEYWORDS="~x86"
 IUSE="doc"
 
-RDEPEND="dev-python/pydns"
+RDEPEND="dev-python/dnspython"
 DEPEND="${RDEPEND}"
 
 DOCS="README.rst"
