@@ -24,7 +24,9 @@ DEPEND="${DEPEND}
 DOCS=( "README.md" "CHANGES.txt" "TODO.md" )
 
 src_prepare() {
-	use doc && $((cp "${FILESDIR}/API.odocl" .|| die))
+	if use doc; then
+		cp "${FILESDIR}/API.odocl" . || die
+	fi
 	cclib="$(pkg-config --libs blas lapack)"
 	cclib="[$(echo $cclib|sed -e 's/\(-[a-z0-9]*\) /\"\1\"\;/g' -e \
 	's/\(-[a-z0-9]*\)$/\"\1\"/')]"
