@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils findlib
+inherit eutils findlib multilib
 
 DESCRIPTION="A web framework to program client/server applications"
 HOMEPAGE="http://ocsigen.org/eliom/"

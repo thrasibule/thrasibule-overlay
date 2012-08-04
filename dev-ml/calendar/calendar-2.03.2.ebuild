@@ -8,9 +8,9 @@ inherit findlib eutils
 
 DESCRIPTION="An Ocaml library to handle dates and time"
 HOMEPAGE="https://forge.ocamlcore.org/projects/calendar/"
-SRC_URI="http://forge.ocamlcore.org/frs/download.php/605/${P}.tgz"
+SRC_URI="http://forge.ocamlcore.org/frs/download.php/915/${P}.tgz"
 
-LICENSE="LGPL-2.1-linking-exception"
+LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="debug doc +ocamlopt"

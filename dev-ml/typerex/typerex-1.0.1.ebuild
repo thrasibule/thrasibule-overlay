@@ -11,7 +11,7 @@ HOMEPAGE="http://www.typerex.org
 https://github.com/OCamlPro/typerex"
 SRC_URI="http://www.typerex.org/pub/${P}.tar.gz"
 
-LICENSE="LGPL-2.1-linking-exception GPL-3 LGPL-3 QPL"
+LICENSE="LGPL-2.1-with-linking-exception GPL-3 LGPL-3 QPL"
 SLOT="0"
 KEYWORDS="~x86"
 
