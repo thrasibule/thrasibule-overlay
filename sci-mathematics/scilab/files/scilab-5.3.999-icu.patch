@@ -1,0 +1,122 @@
+diff -urN scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlRead.cpp scilab/modules/xml/sci_gateway/cpp/sci_xmlRead.cpp
+--- scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlRead.cpp	2012-08-06 20:47:17.441007031 -0400
++++ scilab/modules/xml/sci_gateway/cpp/sci_xmlRead.cpp	2012-08-06 20:52:56.138028676 -0400
+@@ -12,10 +12,10 @@
+ 
+ #include "XMLObject.hxx"
+ #include "XMLDocument.hxx"
++#include "xml.h"
+ 
+ extern "C"
+ {
+-#include "xml.h"
+ #include "gw_xml.h"
+ #include "Scierror.h"
+ #include "api_scilab.h"
+diff -urN scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlRemove.cpp scilab/modules/xml/sci_gateway/cpp/sci_xmlRemove.cpp
+--- scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlRemove.cpp	2012-08-06 20:47:17.441007031 -0400
++++ scilab/modules/xml/sci_gateway/cpp/sci_xmlRemove.cpp	2012-08-06 20:53:14.035029825 -0400
+@@ -12,10 +12,10 @@
+ 
+ #include "XMLObject.hxx"
+ #include "XMLRemovable.hxx"
++#include "xml.h"
+ 
+ extern "C"
+ {
+-#include "xml.h"
+ #include "gw_xml.h"
+ #include "Scierror.h"
+ #include "api_scilab.h"
+diff -urN scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlSetAttributes.cpp scilab/modules/xml/sci_gateway/cpp/sci_xmlSetAttributes.cpp
+--- scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlSetAttributes.cpp	2012-08-06 20:47:17.440007031 -0400
++++ scilab/modules/xml/sci_gateway/cpp/sci_xmlSetAttributes.cpp	2012-08-06 20:50:20.853018712 -0400
+@@ -10,9 +10,10 @@
+  *
+  */
+ 
++#include "xml.h"
++
+ extern "C"
+ {
+-#include "xml.h"
+ #include "gw_xml.h"
+ #include "Scierror.h"
+ #include "api_scilab.h"
+diff -urN scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlValidate.cpp scilab/modules/xml/sci_gateway/cpp/sci_xmlValidate.cpp
+--- scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlValidate.cpp	2012-08-06 20:47:17.440007031 -0400
++++ scilab/modules/xml/sci_gateway/cpp/sci_xmlValidate.cpp	2012-08-06 20:50:47.962020474 -0400
+@@ -10,9 +10,10 @@
+  *
+  */
+ 
++#include "xml.h"
++
+ extern "C"
+ {
+-#include "xml.h"
+ #include "gw_xml.h"
+ #include "Scierror.h"
+ #include "api_scilab.h"
+diff -urN scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlValidationFile.cpp scilab/modules/xml/sci_gateway/cpp/sci_xmlValidationFile.cpp
+--- scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlValidationFile.cpp	2012-08-06 20:47:17.440007031 -0400
++++ scilab/modules/xml/sci_gateway/cpp/sci_xmlValidationFile.cpp	2012-08-06 20:52:28.829026904 -0400
+@@ -12,10 +12,10 @@
+ 
+ #include "XMLObject.hxx"
+ #include "XMLDocument.hxx"
++#include "xml.h"
+ 
+ extern "C"
+ {
+-#include "xml.h"
+ #include "gw_xml.h"
+ #include "Scierror.h"
+ #include "api_scilab.h"
+diff -urN scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlXPath.cpp scilab/modules/xml/sci_gateway/cpp/sci_xmlXPath.cpp
+--- scilab-orig/modules/xml/sci_gateway/cpp/sci_xmlXPath.cpp	2012-08-06 20:47:17.440007031 -0400
++++ scilab/modules/xml/sci_gateway/cpp/sci_xmlXPath.cpp	2012-08-06 20:49:47.898016641 -0400
+@@ -10,9 +10,10 @@
+  *
+  */
+ 
++#include "xml.h"
++
+ extern "C"
+ {
+-#include "xml.h"
+ #include "gw_xml.h"
+ #include "Scierror.h"
+ #include "api_scilab.h"
+diff -urN scilab-orig/modules/xml/src/cpp/VariableScope.hxx scilab/modules/xml/src/cpp/VariableScope.hxx
+--- scilab-orig/modules/xml/src/cpp/VariableScope.hxx	2012-08-06 20:47:17.438007031 -0400
++++ scilab/modules/xml/src/cpp/VariableScope.hxx	2012-08-06 20:48:12.939010591 -0400
+@@ -16,11 +16,7 @@
+ #include <map>
+ #include <stack>
+ #include <vector>
+-
+-extern "C"
+-{
+ #include <libxml/xmlmemory.h>
+-}
+ 
+ namespace org_modules_xml
+ {
+diff -urN scilab-orig/modules/xml/includes/xml.h scilab/modules/xml/includes/xml.h
+--- scilab-orig/modules/xml/includes/xml.h	2012-08-06 21:23:40.574146496 -0400
++++ scilab/modules/xml/includes/xml.h	2012-08-06 21:27:27.643161045 -0400
+@@ -10,8 +10,6 @@
+  *
+  */
+ 
+-extern "C"
+-{
+ #include <libxml/tree.h>
+ #include <libxml/parser.h>
+ #include <libxml/xpath.h>
+@@ -21,4 +19,3 @@
+ #include <libxml/xmlschemas.h>
+ #include <libxml/relaxng.h>
+ #include <libxml/xmlreader.h>
+-}
