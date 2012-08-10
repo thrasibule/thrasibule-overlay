@@ -125,8 +125,9 @@ src_prepare() {
 		"${FILESDIR}/${P}-fortran-link.patch" \
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
-		"${FILESDIR}/${P}-icu.patch" \
 		"${FILESDIR}/${P}-fix-random-runtime-failure.patch"
+
+	append-ldflags $(no-as-needed)
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
 	use doc && epatch "${FILESDIR}"/${P}-java-heap.patch
