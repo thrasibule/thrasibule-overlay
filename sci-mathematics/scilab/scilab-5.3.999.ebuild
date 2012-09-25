@@ -60,7 +60,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
-		>=dev-java/jlatexmath-0.9.4:0
+		>=dev-java/jlatexmath-1.0.0:0
 		dev-java/jogl:2
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/scirenderer:0
@@ -153,7 +153,7 @@ src_prepare() {
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer
 	java-pkg_jar-from avalon-framework-4.2,saxon-6.5,jeuclid-core
 	java-pkg_jar-from xmlgraphics-commons-1.3,commons-io-1,jlatexmath-fop
-	java-pkg_jar-from jogl-2 jogl.all.jar jogl2.jar
+	java-pkg_jar-from jogl-2 jogl-all.jar jogl2.jar
 	java-pkg_jar-from gluegen-2 gluegen-rt.jar gluegen2-rt.jar
 	java-pkg_jar-from batik-1.7 batik-all.jar
 	java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
