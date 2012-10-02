@@ -8,7 +8,7 @@ JAVA_PKG_OPT_USE="gui"
 VIRTUALX_REQUIRED="manual"
 
 inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
-	fortran-2 git-2 java-pkg-opt-2 toolchain-funcs virtualx
+	fortran-2 java-pkg-opt-2 toolchain-funcs virtualx
 
 # Comments:
 # - we don't rely on the configure script to find the right version of java
@@ -23,10 +23,10 @@ inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 DESCRIPTION="Scientific software package for numerical computations"
 LICENSE="CeCILL-2"
 HOMEPAGE="http://www.scilab.org/"
-EGIT_REPO_URI="git://git.scilab.org/scilab"
+SRC_URI="http://www.scilab.org/download/${PV}/${P}-src.tar.gz"
 
 SLOT="0"
-IUSE="bash-completion debug doc fftw +gui +matio nls openmp
+IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
 	static-libs test tk +umfpack xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
@@ -82,15 +82,13 @@ DEPEND="${CDEPEND}
 	gui? (
 		>=virtual/jdk-1.5
 		doc? ( app-text/docbook-xsl-stylesheets
-			   >=dev-java/jlatexmath-fop-0.9.4
+			   >=dev-java/jlatexmath-fop-1.0.0:1
 			   dev-java/xml-commons-external )
 		xcos? ( dev-lang/ocaml ) )
 	test? (
 		dev-java/junit
 		gui? ( ${VIRTUALX_DEPEND} ) )"
 
-EGIT_SOURCEDIR="${WORKDIR}/${PN}"
-S="${WORKDIR}/${PN}/${PN}"
 DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
 
 pkg_pretend() {
@@ -125,10 +123,10 @@ src_prepare() {
 		"${FILESDIR}/${P}-gluegen.patch" \
 		"${FILESDIR}/${P}-fix-random-runtime-failure.patch"
 
-	append-ldflags $(no-as-needed)
+	#append-ldflags $(no-as-needed)
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
-	use doc && epatch "${FILESDIR}"/${P}-java-heap.patch
+	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
 	# make sure library path are preloaded in binaries
 	sed -i \
