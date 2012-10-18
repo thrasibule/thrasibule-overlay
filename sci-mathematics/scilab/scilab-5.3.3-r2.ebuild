@@ -77,7 +77,6 @@ RDEPEND="${CDEPEND}
 	gui? ( >=virtual/jre-1.5 )"
 
 DEPEND="${CDEPEND}
-	virtual/fortran
 	virtual/pkgconfig
 	debug? ( dev-util/lcov )
 	gui? (
