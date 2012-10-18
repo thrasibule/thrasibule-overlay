@@ -18,7 +18,7 @@ DEPEND=">=virtual/jdk-1.5
 RDEPEND=">=virtual/jre-1.5"
 
 LICENSE="GPL-2"
-SLOT="0"
+SLOT="1"
 KEYWORDS="~amd64 ~x86"
 
 EANT_BUILD_TARGET="buildJar"
