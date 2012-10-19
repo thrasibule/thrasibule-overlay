@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit java-pkg-2 java-ant-2 eutils multilib
+inherit java-pkg-2 java-ant-2 eutils multilib prefix
 
 DESCRIPTION="An audio/video SIP VoIP phone and instant messenger written in Java"
 HOMEPAGE="http://www.jitsi.org/"
@@ -36,7 +36,7 @@ src_install() {
 
 	insinto ${EPREFIX}/usr/$(get_libdir)/jitsi/lib/native
 	# WARNING: foreign binaries
-	if [ "${ARCH}" = amd64 ]; then
+	if [[ "${ARCH}" = amd64 ]]; then
 		doins lib/native/linux-64/*
 	else
 		doins lib/native/linux/*
@@ -53,7 +53,7 @@ src_install() {
 	doman jitsi.1
 
 	libjawt_path="\\\$(java-config -o)/jre/lib"
-	if [ "${ARCH}" = amd64 ]; then
+	if [[ "${ARCH}" = amd64 ]]; then
 		libjawt_path="${libjawt_path}/amd64"
 	else
 		libjawt_path="${libjawt_path}/i386"
@@ -63,4 +63,7 @@ src_install() {
 		-e "s|LD_LIBRARY_PATH=|LD_LIBRARY_PATH=${libjawt_path}:|" \
 		resources/install/debian/sip-communicator.sh.tmpl > jitsi || die
 	dobin jitsi
+	echo "SEARCH_DIRS_MASK=${EPREFIX}/usr/$(get_libdir)/jitsi/lib/native" \
+		> 50-"${PN}"
+	insinto /etc/revdep-rebuild && doins "50-${PN}"
 }
