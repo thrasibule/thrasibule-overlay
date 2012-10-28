@@ -9,17 +9,15 @@ VIRTUALX_COMMAND="eant"
 
 inherit java-pkg-2 java-ant-2 virtualx
 
-MY_P=${P/_/}
 DESCRIPTION="A library of several reusable components used by Apache Batik and Apache FOP."
 HOMEPAGE="http://xmlgraphics.apache.org/commons/index.html"
-SRC_URI="mirror://apache/xmlgraphics/commons/source/${MY_P}-src.tar.gz"
+SRC_URI="mirror://apache/xmlgraphics/commons/source/${P}-src.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="1.5"
 KEYWORDS="amd64 ppc ppc64 x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
 IUSE="jpeg"
 
-RESTRICT="test"
 CDEPEND="dev-java/commons-io:1
 	 >=dev-java/commons-logging-1:0"
 DEPEND=">=virtual/jdk-1.5
@@ -30,8 +28,6 @@ DEPEND=">=virtual/jdk-1.5
 # test also depends on dev-java/mockito, need to package it
 RDEPEND=">=virtual/jre-1.5
 		${CDEPEND}"
-
-S="${WORKDIR}/${MY_P}"
 
 # TODO investigate producing .net libraries
 # strategies for non sun jdk's/jre's
@@ -47,7 +43,8 @@ src_unpack() {
 }
 
 src_prepare() {
-	mkdir lib/build || die
+	#see https://issues.apache.org/bugzilla/show_bug.cgi?id=53328
+	epatch "${FILESDIR}"/disable-iccprofile-test.patch
 }
 
 EANT_GENTOO_CLASSPATH="commons-io-1,commons-logging"
@@ -65,7 +62,7 @@ src_test() {
 }
 
 src_install(){
-	java-pkg_newjar build/${MY_P}.jar
+	java-pkg_newjar build/"${P}".jar
 	use source && java-pkg_dosrc src/java/org
 	use doc && java-pkg_dojavadoc build/javadocs
 }
