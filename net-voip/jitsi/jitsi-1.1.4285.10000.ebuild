@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit java-pkg-2 java-ant-2 eutils multilib prefix
+inherit java-pkg-2 java-ant-2 eutils multilib
 
 DESCRIPTION="An audio/video SIP VoIP phone and instant messenger written in Java"
 HOMEPAGE="http://www.jitsi.org/"
@@ -27,14 +27,14 @@ S="${WORKDIR}/${PN}"
 EANT_BUILD_TARGET="rebuild"
 
 src_install() {
-	insinto ${EPREFIX}/usr/$(get_libdir)/jitsi/sc-bundles
+	insinto "/usr/$(get_libdir)/jitsi/sc-bundles"
 	doins sc-bundles/*.jar sc-bundles/os-specific/linux/*.jar
 
-	insinto ${EPREFIX}/usr/$(get_libdir)/jitsi/lib
+	insinto "/usr/$(get_libdir)/jitsi/lib"
 	doins lib/* lib/os-specific/linux/*
 	doins -r lib/bundle
 
-	insinto ${EPREFIX}/usr/$(get_libdir)/jitsi/lib/native
+	insinto "/usr/$(get_libdir)/jitsi/lib/native"
 	# WARNING: foreign binaries
 	if [[ "${ARCH}" = amd64 ]]; then
 		doins lib/native/linux-64/*
