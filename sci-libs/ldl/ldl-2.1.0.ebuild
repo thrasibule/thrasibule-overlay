@@ -17,7 +17,7 @@ LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="doc static-libs"
-DEPEND="sci-libs/ufconfig"
+DEPEND="sci-libs/suitesparse_config"
 RDEPEND=""
 
 PATCHES=( "${FILESDIR}"/${P}-autotools.patch )

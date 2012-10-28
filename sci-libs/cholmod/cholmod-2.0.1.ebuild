@@ -9,7 +9,6 @@ AUTOTOOLS_AUTORECONF=yes
 inherit autotools-utils eutils
 
 MY_PN=CHOLMOD
-PPV=1.7.0
 
 DESCRIPTION="Sparse Cholesky factorization and update/downdate library"
 HOMEPAGE="http://www.cise.ufl.edu/research/sparse/cholmod/"

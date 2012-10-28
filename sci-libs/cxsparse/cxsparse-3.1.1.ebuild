@@ -18,7 +18,7 @@ SLOT="0"
 KEYWORDS="~alpha ~amd64 ~hppa ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~x86-macos"
 IUSE="static-libs"
 
-DEPEND="sci-libs/ufconfig"
+DEPEND="sci-libs/suitesparse_config"
 RDEPEND=""
 
 DOCS=( README.txt Doc/ChangeLog )

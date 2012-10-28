@@ -3,7 +3,7 @@
 @@ -0,0 +1,10 @@
 +# -*- Autoconf -*-
 +AC_PREREQ(2.59)
-+AC_INIT(ldl, 2.0.3, davis@cise.ufl.edu)
++AC_INIT(ldl, 2.1.0, davis@cise.ufl.edu)
 +AM_INIT_AUTOMAKE([foreign])
 +AC_PROG_INSTALL
 +AC_PROG_LIBTOOL
