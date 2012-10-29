@@ -10,7 +10,7 @@ inherit distutils eutils
 
 DESCRIPTION="Python bindings for GMP library"
 HOMEPAGE="http://www.aleax.it/gmpy.html http://code.google.com/p/gmpy/ http://pypi.python.org/pypi/gmpy"
-SRC_URI="http://gmpy.googlecode.com/files/gmpy2-2.0.0b1.zip"
+SRC_URI="http://gmpy.googlecode.com/files/gmpy2-2.0.0b2.zip"
 
 LICENSE="LGPL-2.1"
 SLOT="2"
@@ -24,7 +24,7 @@ DEPEND="${RDEPEND}
 PYTHON_CFLAGS=("2.* + -fno-strict-aliasing")
 
 DOCS="doc/gmpydoc.txt"
-S="${WORKDIR}/gmpy2-2.0.0b1"
+S="${WORKDIR}/gmpy2-2.0.0b2"
 
 src_prepare() {
 	epatch "${FILESDIR}"/gmpy2-findlib.patch
