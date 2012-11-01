@@ -6,7 +6,7 @@ EAPI=4
 
 EGIT_REPO_URI="git://github.com/JuliaLang/julia.git"
 
-inherit git-2 eutils multilib
+inherit git-2 elisp-common eutils multilib
 
 DESCRIPTION="The Julia Language: a fresh approach to technical computing"
 HOMEPAGE="http://julialang.org/"
@@ -19,6 +19,7 @@ IUSE="atlas doc emacs notebook"
 
 RDEPEND=">=sys-devel/llvm-3.0
 	sys-libs/readline
+	emacs? ( !app-emacs/ess )
 	atlas? ( sci-libs/atlas )
 	!atlas? (
 		sci-libs/openblas
@@ -67,9 +68,8 @@ src_prepare() {
 
 src_compile() {
 	emake -j1
-	if use doc; then
-		emake -C doc html
-	fi
+	use doc && emake -C doc html
+	use emacs && elisp-compile contrib/julia-mode.el
 }
 
 src_install() {
@@ -93,9 +93,21 @@ src_install() {
 		LDPATH=/usr/$(get_libdir)/julia/lib
 	EOF
 	doenvd 99julia
-	dodoc -r doc/_build/html/
+	use doc && dodoc -r doc/_build/html/
+	dodoc README.md
+	if use emacs; then
+		elisp-install "${PN}" contrib/julia-mode.el
+		elisp-site-file-install "${FILESDIR}"/63julia-gentoo.el
+	fi
 }
 
+pkg_postinst() {
+	use emacs && elisp-site-regen
+}
+
+pkg_postrm() {
+	use emacs && elisp-site-regen
+}
 src_test() {
 	emake -C test LD_LIBRARY_PATH=usr/lib || die "Running tests failed"
 }
