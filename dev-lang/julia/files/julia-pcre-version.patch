@@ -1,0 +1,26 @@
+load the versioned pcre so that it loads /lib/libprecre.so.1 directly
+https://github.com/JuliaLang/julia/issues/450
+
+diff -urN julia-9999-orig/base/pcre.jl julia-9999/base/pcre.jl
+--- julia-9999-orig/base/pcre.jl	2012-11-01 15:29:24.796863501 -0400
++++ julia-9999/base/pcre.jl	2012-11-01 15:30:33.519886860 -0400
+@@ -1,6 +1,6 @@
+ ## low-level pcre interface ##
+ 
+-libpcre = dlopen("libpcre")
++libpcre = dlopen("libpcre.so.1")
+ 
+ module PCRE
+ import Base.*
+diff -urN julia-9999-orig/base/start_image.jl julia-9999/base/start_image.jl
+--- julia-9999-orig/base/start_image.jl	2012-11-01 15:29:24.795863497 -0400
++++ julia-9999/base/start_image.jl	2012-11-01 15:29:54.479873517 -0400
+@@ -6,7 +6,7 @@
+ @windows_only _jl_repl = ccall(:GetModuleHandleA,stdcall,Ptr{Void},(Ptr{Void},),C_NULL)
+ 
+ # Essential libraries
+-libpcre = dlopen("libpcre")
++libpcre = dlopen("libpcre.so.1")
+ libgrisu = dlopen("libgrisu")
+ librandom = dlopen("librandom")
+ libopenlibm = dlopen("libopenlibm")
