@@ -88,6 +88,7 @@ src_install() {
 	insinto "/usr/$(get_libdir)/julia/lib"
 	# we copy the native libraries inside this directory because julia ships
 	# its own version of Rmath.so which would collide with dev-lang/R
+	insopts -m 0755
 	doins usr/lib/*.so
 	cat > 99julia <<-EOF
 		LDPATH=/usr/$(get_libdir)/julia/lib
