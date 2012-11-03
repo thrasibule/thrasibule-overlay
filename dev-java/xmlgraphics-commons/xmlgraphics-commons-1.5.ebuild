@@ -16,16 +16,14 @@ SRC_URI="mirror://apache/xmlgraphics/commons/source/${P}-src.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="1.5"
 KEYWORDS="amd64 ppc ppc64 x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x86-solaris"
-IUSE="jpeg"
+IUSE=""
 
 CDEPEND="dev-java/commons-io:1
-	 >=dev-java/commons-logging-1:0"
+	>=dev-java/commons-logging-1:0"
 DEPEND=">=virtual/jdk-1.5
-		test? (
-			dev-java/ant-junit4
-			)
+		test? ( dev-java/ant-junit4 )
 		${CDEPEND}"
-# test also depends on dev-java/mockito, need to package it
+
 RDEPEND=">=virtual/jre-1.5
 		${CDEPEND}"
 
@@ -35,26 +33,18 @@ RDEPEND=">=virtual/jre-1.5
 JAVA_ANT_IGNORE_SYSTEM_CLASSES="true"
 JAVA_ANT_REWRITE_CLASSPATH="true"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
-	rm -v "${S}"/lib/*.jar || die
-}
-
-src_prepare() {
+java_prepare() {
 	#see https://issues.apache.org/bugzilla/show_bug.cgi?id=53328
 	epatch "${FILESDIR}"/disable-iccprofile-test.patch
+	find "${S}" -name '*.jar' -print -delete || die
+	rm -v test/java/org/apache/xmlgraphics/java2d/ps/PSGraphics2DTestCase.java \
+	|| die
 }
 
 EANT_GENTOO_CLASSPATH="commons-io-1,commons-logging"
 EANT_EXTRA_ARGS="-Djdk15.present=true"
 EANT_BUILD_TARGET="jar-main"
 EANT_DOC_TARGET="javadocs"
-
-src_compile() {
-	java-pkg-2_src_compile $( !(use jpeg) && echo -Dinternal-codecs.disabled=true)
-}
 
 src_test() {
 	java-pkg_jarfrom --into lib junit-4,commons-io-1
