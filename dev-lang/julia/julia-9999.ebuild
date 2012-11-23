@@ -43,7 +43,8 @@ DEPEND="sys-devel/make
 
 src_prepare() {
 	epatch "${FILESDIR}/julia-ld.patch" \
-		"${FILESDIR}/julia-pcre-version.patch"
+		"${FILESDIR}/julia-pcre-version.patch" \
+		"${FILESDIR}/julia-libdir.patch"
 
 	# Folder /usr/include/suitesparse does not exists, everything should be in /usr/include
 	sed -e "s|SUITESPARSE_INC = -I /usr/include/suitesparse|SUITESPARSE_INC = |g" \
@@ -51,10 +52,10 @@ src_prepare() {
 
 	export USE_DEBIAN=1
 	# do not set the RPATH	
-	sed -e "/RPATH = /d" -e "/RPATH_ORIGIN = /d" -i Make.inc
+	sed -e "/^RPATH = /d" -e "/^RPATH_ORIGIN = /d" -i Make.inc
 	# do not overwrite the BLAS and LAPACK variables
-	sed -e "/LIBBLAS =/d" -e "/LIBLAPACK =/d" \
-		-e "/LIBBLASNAME =/d" -e "/LIBLAPACKNAME =/d" -i Make.inc
+	sed -e "/^LIBBLAS =/d" -e "/^LIBLAPACK =/d" \
+		-e "/^LIBBLASNAME =/d" -e "/^LIBLAPACKNAME =/d" -i Make.inc
 	export LIBBLAS=$(pkg-config --libs blas)
 	export LIBLAPACK=$(pkg-config --libs lapack)
 	if use atlas; then
@@ -67,39 +68,33 @@ src_prepare() {
 }
 
 src_compile() {
-	emake -j1
+	emake
 	use doc && emake -C doc html
+	if use notebook; then
+		emake -C ui/webserver
+		sed -e "s|etc|/share/julia/etc|" \
+		-i usr/bin/launch-julia-webserver ||die
+	fi
 	use emacs && elisp-compile contrib/julia-mode.el
 }
 
 src_install() {
-	emake test/unicode
-	dobin usr/bin/julia-release-{basic,readline}
-	dosym "${D}"/usr/bin/julia-release-readline /usr/bin/julia
-	mkdir -p "${D}/usr/$(get_libdir)/" || die
-	cp -R -L usr/lib/julia "${D}/usr/$(get_libdir)/"
-	if use notebook; then
-		dobin usr/bin/julia-release-webserver
-		sed -e "s|etc|lib/julia/etc|" -i usr/bin/launch-julia-webserver
-		dobin usr/bin/launch-julia-webserver
-		insinto "/usr/$(get_libdir)/julia/etc"
-		doins usr/etc/lighttpd.conf
-	fi
-	insinto "/usr/$(get_libdir)/julia/lib"
-	# we copy the native libraries inside this directory because julia ships
-	# its own version of Rmath.so which would collide with dev-lang/R
-	insopts -m 0755
-	doins usr/lib/*.so
+	emake -j1 install PREFIX="${D}/usr"
 	cat > 99julia <<-EOF
-		LDPATH=/usr/$(get_libdir)/julia/lib
+		LDPATH=/usr/$(get_libdir)/julia
 	EOF
 	doenvd 99julia
-	use doc && dodoc -r doc/_build/html/
-	dodoc README.md
+	if use notebook; then
+		cp -R ui/website "${D}/usr/share/julia"
+		insinto /usr/share/julia/etc
+		doins deps/lighttpd.conf
+	fi
 	if use emacs; then
 		elisp-install "${PN}" contrib/julia-mode.el
-		elisp-site-file-install "${FILESDIR}"/63julia-gentoo.el
+		elisp-site-file-install "${FILESDIR}"/63-julia-gentoo.el
 	fi
+	use doc && dodoc -r doc/_build/html
+	dodoc README.md
 }
 
 pkg_postinst() {
@@ -109,6 +104,7 @@ pkg_postinst() {
 pkg_postrm() {
 	use emacs && elisp-site-regen
 }
+
 src_test() {
-	emake -C test LD_LIBRARY_PATH=usr/lib || die "Running tests failed"
+	emake -C test LD_LIBRARY_PATH=usr/lib:usr/lib/julia || die "Running tests failed"
 }
