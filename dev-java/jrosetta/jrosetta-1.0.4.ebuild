@@ -18,11 +18,9 @@ KEYWORDS="~x86 ~amd64"
 IUSE="source"
 
 DEPEND=">=virtual/jdk-1.5
-	app-arch/unzip
-	${COMMON_DEPEND}"
+	app-arch/unzip"
 
-RDEPEND=">=virtual/jre-1.5
-	${COMMON_DEPEND}"
+RDEPEND=">=virtual/jre-1.5"
 
 EANT_BUILD_TARGET="compile package"
 JAVA_ANT_BSFIX_EXTRA_ARGS="--maven-cleaning"
