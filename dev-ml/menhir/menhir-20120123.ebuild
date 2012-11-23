@@ -12,7 +12,7 @@ SRC_URI="http://gallium.inria.fr/~fpottier/menhir/${P}.tar.gz"
 
 LICENSE="QPL-1.0 LGPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE="+ocamlopt"
 
 DEPEND=">=dev-lang/ocaml-3.09[ocamlopt?]"
@@ -20,9 +20,14 @@ RDEPEND="${DEPEND}"
 
 src_prepare() {
 	export PREFIX="${D}/usr"
+	sed -i 's,echo "let libdir = \\"${libdir}\\"" > src/installation.ml,echo "let libdir = \\"/usr/share/menhir\\"" > src/installation.ml,' Makefile
 	if ! use ocamlopt ; then
 		export TARGET=byte
 	fi
+}
+
+src_compile() {
+	emake -j1
 }
 
 src_install() {
