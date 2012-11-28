@@ -43,9 +43,7 @@ DEPEND="sys-devel/make
 
 src_prepare() {
 	epatch "${FILESDIR}/julia-ld.patch" \
-		"${FILESDIR}/julia-pcre-version.patch" \
 		"${FILESDIR}/julia-libdir.patch"
-
 	# Folder /usr/include/suitesparse does not exists, everything should be in /usr/include
 	sed -e "s|SUITESPARSE_INC = -I /usr/include/suitesparse|SUITESPARSE_INC = |g" \
 	-i deps/Makefile
@@ -68,7 +66,7 @@ src_prepare() {
 }
 
 src_compile() {
-	emake
+	emake -j1
 	use doc && emake -C doc html
 	if use notebook; then
 		emake -C ui/webserver
