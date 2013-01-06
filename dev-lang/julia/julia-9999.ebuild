@@ -15,54 +15,45 @@ SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="atlas doc emacs notebook"
+IUSE="doc emacs notebook"
 
 RDEPEND=">=sys-devel/llvm-3.0
 	sys-libs/readline
 	emacs? ( !app-emacs/ess )
-	atlas? ( sci-libs/atlas )
-	!atlas? (
-		sci-libs/openblas
-		sci-libs/lapack-reference
-		)
 	>=sci-libs/suitesparse-4.0
 	sci-libs/arpack
 	sci-libs/fftw
 	dev-libs/gmp
-	sys-libs/libunwind
+	>=sys-libs/libunwind-0.11
 	dev-libs/libpcre
 	sci-mathematics/glpk
 	sys-libs/zlib
+	virtual/blas
+	virtual/lapack
 	notebook? ( www-servers/lighttpd )"
 
-DEPEND="sys-devel/make
-	dev-vcs/git
-	dev-lang/perl
-	sys-devel/m4
-	${RDEPEND}"
+DEPEND="${RDEPEND}
+	virtual/pkgconfig"
 
 src_prepare() {
-	epatch "${FILESDIR}/julia-ld.patch" \
-		"${FILESDIR}/julia-libdir.patch"
 	# Folder /usr/include/suitesparse does not exists, everything should be in /usr/include
 	sed -e "s|SUITESPARSE_INC = -I /usr/include/suitesparse|SUITESPARSE_INC = |g" \
 	-i deps/Makefile
 
-	export USE_DEBIAN=1
+	blasname=$($(tc-getPKG_CONFIG) --libs blas | \
+		sed -e "s/-l\([a-z0-9]*\).*/lib\1/")
+	lapackname=$($(tc-getPKG_CONFIG) --libs lapack | \
+		sed -e "s/-l\([a-z0-9]*\).*/lib\1/")
+
+	sed -i \
+			-e 's|\(USE_SYSTEM_.*\)=.*|\1=1|g' \
+			-e "s|-lblas|$($(tc-getPKG_CONFIG) --libs blas)|" \
+			-e "s|-llapack|$($(tc-getPKG_CONFIG) --libs lapack)|" \
+			-e "s|liblapack|${lapackname}|" \
+			-e "s|libblas|${blasname}|" Make.inc || die
+
 	# do not set the RPATH	
-	sed -e "/^RPATH = /d" -e "/^RPATH_ORIGIN = /d" -i Make.inc
-	# do not overwrite the BLAS and LAPACK variables
-	sed -e "/^LIBBLAS =/d" -e "/^LIBLAPACK =/d" \
-		-e "/^LIBBLASNAME =/d" -e "/^LIBLAPACKNAME =/d" -i Make.inc
-	export LIBBLAS=$(pkg-config --libs blas)
-	export LIBLAPACK=$(pkg-config --libs lapack)
-	if use atlas; then
-		export LIBBLASNAME=libf77blas
-		export LIBLAPACKNAME=libatllapack
-	else
-		export LIBBLASNAME=libopenblas
-		export LIBLAPACKNAME=libreflapack
-	fi
+	sed -e "/RPATH = /d" -e "/RPATH_ORIGIN = /d" -i Make.inc
 }
 
 src_compile() {
@@ -104,5 +95,5 @@ pkg_postrm() {
 }
 
 src_test() {
-	emake -C test LD_LIBRARY_PATH=usr/lib:usr/lib/julia || die "Running tests failed"
+	emake -C test || die "Running tests failed"
 }
