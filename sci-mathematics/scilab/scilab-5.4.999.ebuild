@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -8,7 +8,7 @@ JAVA_PKG_OPT_USE="gui"
 VIRTUALX_REQUIRED="manual"
 
 inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
-	fortran-2 git-2 java-pkg-opt-2 toolchain-funcs virtualx
+	fortran-2 java-pkg-opt-2 toolchain-funcs virtualx
 
 # Comments:
 # - we don't rely on the configure script to find the right version of java
@@ -24,9 +24,10 @@ DESCRIPTION="Scientific software package for numerical computations"
 LICENSE="CeCILL-2"
 HOMEPAGE="http://www.scilab.org/"
 EGIT_REPO_URI="git://git.scilab.org/scilab"
+EGIT_BRANCH="5.4"
 
 SLOT="0"
-IUSE="bash-completion debug doc fftw +gui +matio nls openmp
+IUSE="bash-completion debug +doc fftw +gui +matio
 	static-libs test tk +umfpack xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
@@ -82,10 +83,10 @@ DEPEND="${CDEPEND}
 		>=virtual/jdk-1.5
 		doc? ( app-text/docbook-xsl-stylesheets
 			   dev-java/jlatexmath-fop:1
-			   dev-java/xml-commons-external )
+			   dev-java/xml-commons-external:1.4 )
 		xcos? ( dev-lang/ocaml ) )
 	test? (
-		dev-java/junit
+		dev-java/junit:4
 		gui? ( ${VIRTUALX_DEPEND} ) )"
 
 EGIT_SOURCEDIR="${WORKDIR}/${PN}"
@@ -107,7 +108,8 @@ pkg_setup() {
 	FORTRAN_STANDARD="77 90"
 	fortran-2_pkg_setup
 	java-pkg-opt-2_pkg_setup
-	ALL_LINGUAS=
+	ALL_LINGUAS="en_US"
+
 	for l in ${LINGUAS}; do
 		use linguas_${l} && ALL_LINGUAS="${ALL_LINGUAS} ${l}"
 	done
@@ -122,13 +124,15 @@ src_prepare() {
 		"${FILESDIR}/${P}-fortran-link.patch" \
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
-		"${FILESDIR}/${P}-fix-random-runtime-failure.patch"
+		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
+		"${FILESDIR}/eigs-C.patch"
 
 	append-ldflags $(no-as-needed)
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
 	use doc && epatch "${FILESDIR}"/${P}-java-heap.patch
 
+	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac
 	# make sure library path are preloaded in binaries
 	sed -i \
 		-e "s|^LD_LIBRARY_PATH=|LD_LIBRARY_PATH=${EPREFIX}/usr/$(get_libdir)/scilab:|g" \
@@ -136,17 +140,18 @@ src_prepare() {
 
 	#add specific gentoo java directories
 	if use gui; then
-		sed -i -e "s|/usr/lib/jogl|/usr/lib/jogl-2|" \
-			-e "s|/usr/lib64/jogl|/usr/lib64/jogl-2|" configure.ac || die
-		sed -i -e "s|/usr/lib/gluegen|/usr/lib/gluegen-2|" \
-			-e "s|/usr/lib64/gluegen|/usr/lib64/gluegen-2|" \
+		sed -i -e "s|/usr/lib/jogl2|/usr/lib/jogl-2|" \
+			-e "s|/usr/lib64/jogl2|/usr/lib64/jogl-2|" configure.ac || die
+		sed -i -e "s|/usr/lib/gluegen2|/usr/lib/gluegen-2|" \
+			-e "s|/usr/lib64/gluegen2|/usr/lib64/gluegen-2|" \
 			-e "s|AC_CHECK_LIB(\[gluegen2-rt|AC_CHECK_LIB([gluegen-rt|" \
 			configure.ac || die
 
-		sed -i -e "s/jogl/jogl-2/" -e "s/gluegen/gluegen-2/" \
+		sed -i -e "s/jogl2/jogl-2/" -e "s/gluegen2/gluegen-2/" \
 			etc/librarypath.xml || die
 	fi
-	mkdir jar; cd jar
+	mkdir jar || die
+	pushd jar
 	java-pkg_jar-from jgraphx-1.8,jlatexmath-1,flexdock,skinlf
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer-1
 	java-pkg_jar-from avalon-framework-4.2,saxon-6.5,jeuclid-core
@@ -161,7 +166,7 @@ src_prepare() {
 	if use test; then
 		java-pkg_jar-from junit-4 junit.jar junit4.jar
 	fi
-	cd ..
+	popd
 
 	java-pkg-opt-2_src_prepare
 	eautoconf
@@ -179,7 +184,7 @@ src_configure() {
 	export F77_LDFLAGS="${LDFLAGS}"
 	# gentoo bug #302621
 	has_version sci-libs/hdf5[mpi] && \
-		export CXX=mpicxx CC=mpicc FC=mpif77 F77=mpif77
+		export CXX=mpicxx CC=mpicc
 
 	econf \
 		--enable-relocatable \
@@ -224,7 +229,7 @@ src_test() {
 src_install() {
 	default
 	prune_libtool_files --all
-	rm -rf "${D}"/usr/share/scilab/modules/*/tests
+	#rm -rf "${D}"/usr/share/scilab/modules/*/tests
 	use bash-completion && dobashcomp "${FILESDIR}"/${PN}.bash_completion
 }
 

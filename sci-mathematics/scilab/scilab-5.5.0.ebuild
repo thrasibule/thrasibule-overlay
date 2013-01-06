@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -23,7 +23,7 @@ inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 DESCRIPTION="Scientific software package for numerical computations"
 LICENSE="CeCILL-2"
 HOMEPAGE="http://www.scilab.org/"
-SRC_URI="http://www.scilab.org/download/${PV}/${P}-src.tar.gz"
+SRC_URI="http://www.scilab.org/download/${PV}/${P}.tar.xz"
 
 SLOT="0"
 IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
@@ -44,7 +44,6 @@ KEYWORDS="~amd64 ~x86"
 
 CDEPEND="dev-libs/libpcre
 	dev-libs/libxml2:2
-	sci-libs/hdf5
 	sys-devel/gettext
 	sys-libs/ncurses
 	sys-libs/readline
@@ -60,7 +59,6 @@ CDEPEND="dev-libs/libpcre
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
-		dev-java/jgraphx:1.8
 		dev-java/jlatexmath:1
 		dev-java/jogl:2
 		>=dev-java/jrosetta-1.0.4:0
@@ -69,7 +67,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/xmlgraphics-commons:1.3
 		virtual/opengl
 		doc? ( dev-java/saxon:6.5 )
-		xcos? ( dev-java/commons-logging:0 ) )
+		xcos? ( dev-java/jgraphx:1.8 ) )
 	matio? ( <sci-libs/matio-1.5 )
 	tk? ( dev-lang/tk )
 	umfpack? ( sci-libs/umfpack )"
@@ -91,6 +89,7 @@ DEPEND="${CDEPEND}
 		gui? ( ${VIRTUALX_DEPEND} ) )"
 
 DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
+S="${WORKDIR}/${PN}"
 
 pkg_pretend() {
 	use doc && CHECKREQS_MEMORY="512M" check-reqs_pkg_pretend
@@ -107,7 +106,6 @@ pkg_setup() {
 	FORTRAN_STANDARD="77 90"
 	fortran-2_pkg_setup
 	java-pkg-opt-2_pkg_setup
-	
 	ALL_LINGUAS="en_US"
 	ALL_LINGUAS_DOC="en_US"
 	for l in ${LINGUAS}; do
@@ -122,16 +120,15 @@ pkg_setup() {
 
 src_prepare() {
 	epatch \
-		"${FILESDIR}/${P}-fortran-link.patch" \
-		"${FILESDIR}/${P}-followlinks.patch" \
-		"${FILESDIR}/${P}-gluegen.patch" \
-		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
-		"${FILESDIR}/eigs-C.patch"
+		"${FILESDIR}/${PN}-5.4.0-fortran-link.patch" \
+		"${FILESDIR}/${PN}-5.4.0-followlinks.patch" \
+		"${FILESDIR}/${PN}-5.4.0-gluegen.patch" \
+		"${FILESDIR}/${PN}-5.4.0-fix-random-runtime-failure.patch"
 
 	append-ldflags $(no-as-needed)
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
-	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
+	use doc && epatch "${FILESDIR}/${PN}-5.4.0-java-heap.patch"
 
 	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac
 	# make sure library path are preloaded in binaries
@@ -154,22 +151,17 @@ src_prepare() {
 	fi
 	mkdir jar || die
 	pushd jar
-	java-pkg_jar-from jlatexmath-1,flexdock,skinlf,jgraphx-1.8
+	java-pkg_jar-from jgraphx-1.8,jlatexmath-1,flexdock,skinlf
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer-1
-	java-pkg_jar-from avalon-framework-4.2,jeuclid-core
-	java-pkg_jar-from xmlgraphics-commons-1.3,commons-io-1
+	java-pkg_jar-from avalon-framework-4.2,saxon-6.5,jeuclid-core
+	java-pkg_jar-from xmlgraphics-commons-1.3,commons-io-1,jlatexmath-fop-1
 	java-pkg_jar-from jogl-2 jogl.all.jar jogl2.jar
 	java-pkg_jar-from gluegen-2 gluegen-rt.jar gluegen2-rt.jar
 	java-pkg_jar-from batik-1.7 batik-all.jar
+	java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
+	java-pkg_jar-from commons-logging commons-logging.jar
 	java-pkg_jar-from fop fop.jar
 	java-pkg_jar-from javahelp jhall.jar
-	if use xcos; then
-		java-pkg_jar-from commons-logging
-	fi
-	if use doc; then
-		java-pkg_jar-from jlatexmath-fop-1,saxon-6.5
-		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
-	fi
 	if use test; then
 		java-pkg_jar-from junit-4 junit.jar junit4.jar
 	fi
@@ -186,8 +178,8 @@ src_configure() {
 		unset JAVAC
 	fi
 
-	export BLAS_LIBS="$($(tc-getPKG_CONFIG) --libs blas)"
-	export LAPACK_LIBS="$($(tc-getPKG_CONFIG) --libs lapack)"
+	export BLAS_LIBS="$(pkg-config --libs blas)"
+	export LAPACK_LIBS="$(pkg-config --libs lapack)"
 	export F77_LDFLAGS="${LDFLAGS}"
 	# gentoo bug #302621
 	has_version sci-libs/hdf5[mpi] && \
