@@ -9,7 +9,7 @@ inherit oasis
 OASIS_BUILD_DOCS=1
 DESCRIPTION="A simple OCaml client for Google Services"
 HOMEPAGE="http://gapi-ocaml.forge.ocamlcore.org/"
-SRC_URI="http://forge.ocamlcore.org/frs/download.php/999/${P}.tar.gz"
+SRC_URI="http://forge.ocamlcore.org/frs/download.php/1067/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -20,7 +20,7 @@ RDEPEND=">=dev-ml/ocurl-0.5.3
 	>=dev-ml/ocamlnet-3.3.5
 	>=dev-ml/cryptokit-1.3.14
 	>=dev-ml/extlib-1.5.1
-	>=dev-ml/json-wheel-1.0.6
+	>=dev-ml/yojson-1.0.2
 	>=dev-ml/xmlm-1.0.2"
 DEPEND="${RDEPEND}
 	test? ( >=dev-ml/ounit-1.1.0
