@@ -24,7 +24,7 @@ RDEPEND=">=sys-devel/llvm-3.0
 	sci-libs/arpack
 	sci-libs/fftw
 	dev-libs/gmp
-	>=sys-libs/libunwind-0.11
+	>=sys-libs/libunwind-1.1
 	dev-libs/libpcre
 	sci-mathematics/glpk
 	sys-libs/zlib
@@ -80,7 +80,7 @@ src_install() {
 	fi
 	if use emacs; then
 		elisp-install "${PN}" contrib/julia-mode.el
-		elisp-site-file-install "${FILESDIR}"/63-julia-gentoo.el
+		elisp-site-file-install "${FILESDIR}"/63julia-gentoo.el
 	fi
 	use doc && dodoc -r doc/_build/html
 	dodoc README.md
