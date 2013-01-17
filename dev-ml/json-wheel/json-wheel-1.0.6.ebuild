@@ -20,7 +20,7 @@ DEPEND="dev-lang/ocaml
 RDEPEND="${DEPEND}"
 
 src_compile() {
-	emake bcl ncl
+	emake -j1 bcl ncl
 	use doc && make html
 }
 
