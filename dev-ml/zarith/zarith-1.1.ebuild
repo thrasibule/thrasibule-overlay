@@ -30,7 +30,7 @@ src_configure() {
 }
 
 src_compile() {
-	emake all
+	emake -j1 all
 	use doc && emake doc
 }
 
