@@ -25,7 +25,7 @@ RDEPEND=">=virtual/jre-1.5
 	${CDEPEND}"
 
 LICENSE="GPL-2"
-SLOT="0"
+SLOT="1"
 KEYWORDS="~amd64 ~x86"
 
 EANT_BUILD_TARGET="buildJar"
