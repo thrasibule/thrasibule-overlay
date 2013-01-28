@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -24,13 +24,12 @@ src_configure() {
 	fi
 }
 
-
 src_compile() {
-	emake PREFIX=${EPREFIX}/usr -j1
+	emake PREFIX="${EPREFIX}"/usr -j1
 }
 
 src_install() {
 	findlib_src_preinst
-	emake PREFIX=${ED}/usr docdir=${ED}/usr/share/doc/${PF} install
+	emake PREFIX="${ED}"/usr docdir="${ED}"/usr/share/doc/"${PF}" install
 	dodoc AUTHORS CHANGES
 }
