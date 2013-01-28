@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -8,7 +8,7 @@ JAVA_PKG_OPT_USE="gui"
 VIRTUALX_REQUIRED="manual"
 
 inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
-	fortran-2 java-pkg-opt-2 toolchain-funcs virtualx
+	fortran-2 git-2 java-pkg-opt-2 toolchain-funcs virtualx
 
 # Comments:
 # - we don't rely on the configure script to find the right version of java
@@ -16,9 +16,6 @@ inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 # Things that don't work:
 # - tests
 # - can't build without docs (-doc) 
-# - has to call eautoconf, and not eautoreconf, libtool fails otherwise
-# - needs to remove scilab-5.3.x before installing otherwise gets a DOCBOOK_ROOT
-# error
 
 DESCRIPTION="Scientific software package for numerical computations"
 LICENSE="CeCILL-2"
@@ -27,7 +24,7 @@ EGIT_REPO_URI="git://git.scilab.org/scilab"
 EGIT_BRANCH="5.4"
 
 SLOT="0"
-IUSE="bash-completion debug +doc fftw +gui +matio
+IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
 	static-libs test tk +umfpack xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
@@ -45,6 +42,8 @@ KEYWORDS="~amd64 ~x86"
 
 CDEPEND="dev-libs/libpcre
 	dev-libs/libxml2:2
+	sci-libs/hdf5
+	>=sci-libs/arpack-3
 	sys-devel/gettext
 	sys-libs/ncurses
 	sys-libs/readline
@@ -54,12 +53,13 @@ CDEPEND="dev-libs/libpcre
 		dev-java/avalon-framework:4.2
 		dev-java/batik:1.7
 		dev-java/commons-io:1
-		dev-java/flexdock:0
+		>=dev-java/flexdock-1.2.2:0
 		dev-java/fop:0
 		dev-java/gluegen:2
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
+		dev-java/jgraphx:1.8
 		dev-java/jlatexmath:1
 		dev-java/jogl:2
 		>=dev-java/jrosetta-1.0.4:0
@@ -68,7 +68,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/xmlgraphics-commons:1.3
 		virtual/opengl
 		doc? ( dev-java/saxon:6.5 )
-		xcos? ( dev-java/jgraphx:1.8 ) )
+		xcos? ( dev-java/commons-logging:0 ) )
 	matio? ( <sci-libs/matio-1.5 )
 	tk? ( dev-lang/tk )
 	umfpack? ( sci-libs/umfpack )"
@@ -108,15 +108,15 @@ pkg_setup() {
 	FORTRAN_STANDARD="77 90"
 	fortran-2_pkg_setup
 	java-pkg-opt-2_pkg_setup
+	
 	ALL_LINGUAS="en_US"
-
 	for l in ${LINGUAS}; do
 		use linguas_${l} && ALL_LINGUAS="${ALL_LINGUAS} ${l}"
 	done
 	for l in ${LINGUASLONG}; do
 		use linguas_${l%_*} && ALL_LINGUAS="${ALL_LINGUAS} ${l}"
 	done
-	export ALL_LINGUAS ALL_LINGUAS_DOCS=$ALL_LINGUAS
+	export ALL_LINGUAS ALL_LINGUAS_DOC=$ALL_LINGUAS
 }
 
 src_prepare() {
@@ -124,19 +124,18 @@ src_prepare() {
 		"${FILESDIR}/${P}-fortran-link.patch" \
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
-		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
-		"${FILESDIR}/eigs-C.patch"
+		"${FILESDIR}/${P}-fix-random-runtime-failure.patch"
 
 	append-ldflags $(no-as-needed)
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
-	use doc && epatch "${FILESDIR}"/${P}-java-heap.patch
+	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
+	# use the LINGUAS variable that we set
 	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac
-	# make sure library path are preloaded in binaries
-	sed -i \
-		-e "s|^LD_LIBRARY_PATH=|LD_LIBRARY_PATH=${EPREFIX}/usr/$(get_libdir)/scilab:|g" \
-		bin/scilab* || die
+
+	# make sure the DOCBOOK_ROOT variable is set
+	sed -i -e "s/xsl-stylesheets-\*/xsl-stylesheets/g" bin/scilab* || die
 
 	#add specific gentoo java directories
 	if use gui; then
@@ -150,19 +149,25 @@ src_prepare() {
 		sed -i -e "s/jogl2/jogl-2/" -e "s/gluegen2/gluegen-2/" \
 			etc/librarypath.xml || die
 	fi
+
 	mkdir jar || die
 	pushd jar
-	java-pkg_jar-from jgraphx-1.8,jlatexmath-1,flexdock,skinlf
+	java-pkg_jar-from jlatexmath-1,flexdock,skinlf,jgraphx-1.8
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer-1
-	java-pkg_jar-from avalon-framework-4.2,saxon-6.5,jeuclid-core
-	java-pkg_jar-from xmlgraphics-commons-1.3,commons-io-1,jlatexmath-fop-1
+	java-pkg_jar-from avalon-framework-4.2,jeuclid-core
+	java-pkg_jar-from xmlgraphics-commons-1.3,commons-io-1
 	java-pkg_jar-from jogl-2 jogl.all.jar jogl2.jar
 	java-pkg_jar-from gluegen-2 gluegen-rt.jar gluegen2-rt.jar
 	java-pkg_jar-from batik-1.7 batik-all.jar
-	java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
-	java-pkg_jar-from commons-logging commons-logging.jar
 	java-pkg_jar-from fop fop.jar
 	java-pkg_jar-from javahelp jhall.jar
+	if use xcos; then
+		java-pkg_jar-from commons-logging
+	fi
+	if use doc; then
+		java-pkg_jar-from jlatexmath-fop-1,saxon-6.5
+		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
+	fi
 	if use test; then
 		java-pkg_jar-from junit-4 junit.jar junit4.jar
 	fi
@@ -179,8 +184,8 @@ src_configure() {
 		unset JAVAC
 	fi
 
-	export BLAS_LIBS="$(pkg-config --libs blas)"
-	export LAPACK_LIBS="$(pkg-config --libs lapack)"
+	export BLAS_LIBS="$($(tc-getPKG_CONFIG) --libs blas)"
+	export LAPACK_LIBS="$($(tc-getPKG_CONFIG) --libs lapack)"
 	export F77_LDFLAGS="${LDFLAGS}"
 	# gentoo bug #302621
 	has_version sci-libs/hdf5[mpi] && \
