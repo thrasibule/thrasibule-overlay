@@ -9,7 +9,7 @@ JAVA_PKG_IUSE="doc source"
 inherit java-pkg-2 java-ant-2
 
 DESCRIPTION="A Java API to render LaTeX"
-SRC_URI="http://forge.scilab.org/index.php/p/${PN}/downloads/get/${PN}-src-${PV}.zip"
+SRC_URI="http://forge.scilab.org/index.php/p/${PN}/downloads/get/${PN}-src-all-${PV}.zip"
 HOMEPAGE="http://forge.scilab.org/index.php/p/jlatexmath"
 
 IUSE="doc examples source"
