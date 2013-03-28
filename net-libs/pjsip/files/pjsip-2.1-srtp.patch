@@ -1,0 +1,33 @@
+diff -urN pjproject-2.1.0-orig/pjmedia/src/pjmedia/transport_srtp.c pjproject-2.1.0/pjmedia/src/pjmedia/transport_srtp.c
+--- pjproject-2.1.0-orig/pjmedia/src/pjmedia/transport_srtp.c	2013-03-25 00:19:38.262217465 -0400
++++ pjproject-2.1.0/pjmedia/src/pjmedia/transport_srtp.c	2013-03-25 00:19:10.492214701 -0400
+@@ -30,7 +30,7 @@
+ 
+ #if defined(PJMEDIA_HAS_SRTP) && (PJMEDIA_HAS_SRTP != 0)
+ 
+-#include <srtp.h>
++#include <srtp/srtp.h>
+ 
+ #define THIS_FILE   "transport_srtp.c"
+ 
+@@ -315,7 +315,7 @@
+ 
+     PJ_UNUSED_ARG(endpt);
+ 
+-    err = srtp_deinit();
++    err = srtp_shutdown();
+     if (err != err_status_ok) {
+ 	PJ_LOG(4, (THIS_FILE, "Failed to deinitialize libsrtp: %s", 
+ 		   get_libsrtp_errstr(err)));
+diff -urN pjproject-2.1.0-orig/build.mak.in pjproject-2.1.0/build.mak.in
+--- pjproject-2.1.0-orig/build.mak.in	2013-03-25 21:07:31.344683221 -0400
++++ pjproject-2.1.0/build.mak.in	2013-03-25 21:08:50.737691122 -0400
+@@ -19,7 +19,7 @@
+ # Determine which party libraries to use
+ export APP_THIRD_PARTY_LIBS := -lmilenage-$(TARGET_NAME) -lsrtp-$(TARGET_NAME)
+ export APP_THIRD_PARTY_EXT :=
+-export APP_THIRD_PARTY_LIB_FILES := $(PJ_DIR)/third_party/lib/libmilenage-$(LIB_SUFFIX) $(PJ_DIR)/third_party/lib/libsrtp-$(LIB_SUFFIX)
++export APP_THIRD_PARTY_LIB_FILES := $(PJ_DIR)/third_party/lib/libmilenage-$(LIB_SUFFIX)
+ 
+ ifeq (@ac_resample_dll@,1)
+ export PJ_RESAMPLE_DLL := 1

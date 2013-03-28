@@ -1,0 +1,12 @@
+diff -urN pjproject-2.1.0-orig/pjsip-apps/build/Makefile pjproject-2.1.0/pjsip-apps/build/Makefile
+--- pjproject-2.1.0-orig/pjsip-apps/build/Makefile	2013-03-25 21:04:11.686663354 -0400
++++ pjproject-2.1.0/pjsip-apps/build/Makefile	2013-03-25 21:04:42.269666397 -0400
+@@ -55,7 +55,7 @@
+ # Main entry
+ #
+ #
+-TARGETS := pjsua pjsystest samples
++TARGETS := pjsua pjsystest
+ 
+ .PHONY: $(TARGETS)
+ 
