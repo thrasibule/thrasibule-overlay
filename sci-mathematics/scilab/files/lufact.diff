@@ -1,0 +1,428 @@
+diff --git a/scilab/modules/sparse/includes/lu.h b/scilab/modules/sparse/includes/lu.h
+new file mode 100644
+index 0000000..e7aecd3
+--- /dev/null
++++ b/scilab/modules/sparse/includes/lu.h
+@@ -0,0 +1,47 @@
++/*
++ * Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
++ * Copyright (C) 2007 - INRIA - Bruno JOFRET
++ *
++ * This file must be used under the terms of the CeCILL.
++ * This source file is licensed as described in the file COPYING, which
++ * you should have received as part of this distribution.  The terms
++ * are also available at
++ * http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
++ *
++ */
++
++#ifndef __LU_H__
++#define __LU_H__
++
++#define spINSIDE_SPARSE
++#include "spConfig.h"
++#include "spmatrix.h"
++#include "spDefs.h"
++
++#include "cerro.h"
++#include "machine.h"
++#include "localization.h"
++#include "MALLOC.h"
++#include "dynlib_sparse.h"
++
++SPARSE_IMPEXP int scisparselufact(int m, int n, int nel, int* mnel, int* col,
++                                  double* real, double* imag, char* B,
++                                  double eps, double releps, int* nrank);
++SPARSE_IMPEXP int addluptr (char *ptr); /* */
++SPARSE_IMPEXP int getluptr (int sel, char **ptr);
++SPARSE_IMPEXP int removeluptr (int sel);
++SPARSE_IMPEXP void resetluptr (void); /* to be used to free the lu pointer table */
++
++SPARSE_IMPEXP void C2F(lufact1)(double *val, int *lln, int *col, int *n, int *nel,
++		  int *fmatindex, double *eps, double *releps, int *nrank, int *ierr);
++
++SPARSE_IMPEXP void C2F(lusolve1)(int *fmatindex, double *b, double *x, int *ierr);
++
++SPARSE_IMPEXP void C2F(ludel1)(int *fmatindex, int *ierr);
++
++SPARSE_IMPEXP void C2F(lusiz1)(int *fmatindex, int* lsize, int* usize, int *ierr);
++
++SPARSE_IMPEXP void C2F(luget1)(int *fmatindex, int *indP, double *P,
++		 int *indl, double *l, int *indu, double *u,
++		 int *indQ, double *Q, int *ierr);
++#endif /* !__LU_H__ */
+diff --git a/scilab/modules/sparse/sci_gateway/c/sci_lufact.c b/scilab/modules/sparse/sci_gateway/c/sci_lufact.c
+index e88ae33..61b2a4b 100644
+--- a/scilab/modules/sparse/sci_gateway/c/sci_lufact.c
++++ b/scilab/modules/sparse/sci_gateway/c/sci_lufact.c
+@@ -1,23 +1,108 @@
+ /*
+  * Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
+  * Copyright (C) 2006 - INRIA - Allan CORNET
+- * 
++ *
+  * This file must be used under the terms of the CeCILL.
+  * This source file is licensed as described in the file COPYING, which
+  * you should have received as part of this distribution.  The terms
+- * are also available at    
++ * are also available at
+  * http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
+  *
+  */
+ #include "machine.h"
+ #include "gw_sparse.h"
+-/*--------------------------------------------------------------------------*/
+-extern int C2F(intlufact)(int *id);
+-/*--------------------------------------------------------------------------*/
+-int sci_lufact(char *fname,unsigned long fname_len)
++#include <api_scilab.h>
++#include "lu.h"
++
++extern double C2F(dlamch)  (char *CMACH, unsigned long int);
++
++int sci_lufact (char *fname, unsigned long fname_len)
+ {
+-	static int id[6];
+-	C2F(intlufact)(id);
+-	return 0;
++    SciErr sciErr;
++    int ierror;
++
++    int* piAddr         = NULL;
++
++    int iRows           = 0;
++    int iCols           = 0;
++    int iNbItem         = 0;
++    int* piNbItemRow    = NULL;
++    int* piColPos       = NULL;
++
++    double* pdblReal    = NULL;
++    double* pdblImg     = NULL;
++    double* tol         = NULL;
++    char* B             = NULL;
++    int* nrank          = NULL;
++    double eps, releps;
++    int iRet;
++
++    CheckInputArgument(pvApiCtx,1,2);
++    CheckOutputArgument(pvApiCtx,1,2);
++
++    sciErr = getVarAddressFromPosition(pvApiCtx, 1, &piAddr);
++    if(sciErr.iErr)
++    {
++        printError(&sciErr, 0);
++        return 0;
++    }
++
++    if(isVarComplex(pvApiCtx, piAddr))
++    {
++        sciErr = getComplexSparseMatrix(pvApiCtx, piAddr, &iRows, &iCols, &iNbItem, &piNbItemRow, &piColPos, &pdblReal, &pdblImg);
++    }
++    else
++    {
++        sciErr = getSparseMatrix(pvApiCtx, piAddr, &iRows, &iCols, &iNbItem, &piNbItemRow, &piColPos, &pdblReal);
++    }
++
++    if(sciErr.iErr)
++    {
++        printError(&sciErr, 0);
++        return 0;
++    }
++    if(nbInputArgument(pvApiCtx) == 2){
++        sciErr = getVarAddressFromPosition(pvApiCtx, 2, &piAddr);
++        if(sciErr.iErr)
++        {
++            printError(&sciErr, 0);
++            return 0;
++        }
++        sciErr = getMatrixOfDouble(pvApiCtx, piAddr, &iRows, &iCols, &tol);
++        if(sciErr.iErr)
++        {
++            printError(&sciErr, 0);
++            return 0;
++        }
++        if(iRows * iCols !=2){
++            Scierror(999, _("%s: Wrong size for input argument %s: An array of size %d expected.\n"), fname, "prec", 2);
++            return 0;
++        }
++        eps = tol[0];
++        releps = tol[1];
++    }
++    else
++    {
++        eps = C2F(dlamch)("e", 1L);
++        releps = 0.001;
++    }
++    scisparselufact(iRows, iCols, iNbItem, piNbItemRow, piColPos, pdblReal, pdblImg, B, eps, releps, nrank);
++    sciErr = createPointer(pvApiCtx, nbInputArgument(pvApiCtx) + 1, (void*)B);
++    if(sciErr.iErr)
++    {
++        printError(&sciErr, 0);
++        return 0;
++    }
++    AssignOutputVariable(pvApiCtx, 1) = nbInputArgument(pvApiCtx) + 1;
++
++    if(nbOutputArgument(pvApiCtx) == 2){
++        iRet = createScalarInteger32(pvApiCtx, nbInputArgument(pvApiCtx) + 2, *nrank);
++        if(iRet)
++        {
++            return iRet;
++        }
++        AssignOutputVariable(pvApiCtx, 2) = nbInputArgument(pvApiCtx) + 1;
++    }
++    ReturnArguments(pvApiCtx);
++    return 0;
+ }
+-/*--------------------------------------------------------------------------*/
+diff --git a/scilab/modules/sparse/sci_gateway/c/sci_lusolve.c b/scilab/modules/sparse/sci_gateway/c/sci_lusolve.c
+index 041ebdb..00daab2 100644
+--- a/scilab/modules/sparse/sci_gateway/c/sci_lusolve.c
++++ b/scilab/modules/sparse/sci_gateway/c/sci_lusolve.c
+@@ -1,23 +1,50 @@
+ /*
+  * Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
+  * Copyright (C) 2006 - INRIA - Allan CORNET
+- * 
++ *
+  * This file must be used under the terms of the CeCILL.
+  * This source file is licensed as described in the file COPYING, which
+  * you should have received as part of this distribution.  The terms
+- * are also available at    
++ * are also available at
+  * http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
+  *
+  */
+ 
+ #include "gw_sparse.h"
+-/*--------------------------------------------------------------------------*/
+-extern int C2F(intlusolve)(int *id);
+-/*--------------------------------------------------------------------------*/
+-int sci_lusolve(char *fname,unsigned long fname_len)
++#include <api_scilab.h>
++
++int sci_lusolve(char *fname, unsigned long fname_len)
+ {
+-	static int id[6];
+-	C2F(intlusolve)(id);
++    SciErr sciErr;
++
++    int* piAddr			= NULL;
++    void* pvPtr			= NULL;
++    double* pdblReal	= NULL;
++    int iRows, iCols;
++    double* Solution    = NULL;
++
++    CheckInputArgument(pvApiCtx, 2, 2);
++    sciErr = getVarAddressFromPosition(pvApiCtx, 1, &piAddr);
++    if(sciErr.iErr)
++    {
++        printError(&sciErr, 0);
++        return 0;
++    }
++    sciErr = getPointer(pvApiCtx, piAddr, &pvPtr);
++
++    sciErr = getVarAddressFromPosition(pvApiCtx, 2, &piAddr);
++    if(sciErr.iErr)
++    {
++        printError(&sciErr, 0);
++        return 0;
++    };
++
++    sciErr = getMatrixOfDouble(pvApiCtx, piAddr, &iRows, &iCols, &pdblReal);
++
++    spSolve(pvPtr, pdblReal, Solution);
++    sciErr = allocMatrixOfDouble(pvApiCtx, nbInputArgument(pvApiCtx) + 1, iRows, iCols, &Solution);
++    AssignOutputVariable(pvApiCtx, 1) = nbInputArgument(pvApiCtx) +1;
++    ReturnArguments(pvApiCtx);
+ 	return 0;
+ }
+ /*--------------------------------------------------------------------------*/
+diff --git a/scilab/modules/sparse/src/c/lu.c b/scilab/modules/sparse/src/c/lu.c
+index 88d0ed7..c96057d 100644
+--- a/scilab/modules/sparse/src/c/lu.c
++++ b/scilab/modules/sparse/src/c/lu.c
+@@ -55,7 +55,7 @@
+  */
+ 
+ 
+-static void spFixThresold(char *eMatrix, double eps, double releps)
++static void spFixThreshold(char *eMatrix, double eps, double releps)
+ {
+   MatrixPtr  Matrix = (MatrixPtr)eMatrix;
+   Matrix->AbsThreshold = eps;
+@@ -69,8 +69,54 @@ static void spGetNumRank(char* eMatrix, int *n)
+   *n = Matrix->NumRank;
+ }
+ 
++void scisparselufact(int m, int n, int nel, int* mnel, int* col,
++                    double* pdblReal, double* pdblImg, char* B,
++                    double eps, double releps, int* nrank)
++{
++  int error,i,j,k;
++  spREAL *pelement;
++
++  B = spCreate(m, pdblImg!=NULL, &error);
++
++  if (error != spOKAY) {
++    return 1;
++  }
++
++  k = 0;
++  for(i = 0; i < m; i++){
++    for(j = 0; j< mnel[i]; j++){
++      pelement = spGetElement(B, i+1, col[k]);
++      if (pelement == 0) {
++          return 2;
++      }
++      if(pdblImg){
++          spADD_COMPLEX_ELEMENT(pelement, (spREAL)(pdblReal[k]),
++                                (spREAL)(pdblImg[k]));
++      }else {
++          spADD_REAL_ELEMENT(pelement, (spREAL)(pdblReal[k]));
++      }
++      k++;
++    }
++  }
++  spFixThreshold(B, eps, releps);
++  error = spFactor(B);
++  spGetNumRank(B, nrank);
++
++  switch (error) {
++  case spZERO_DIAG:
++      Scierror(999,_("%s: A zero was encountered on the diagonal the matrix.\n"), "zero_diag");
++  case spNO_MEMORY:
++      Scierror(999, "pomme");
++  case spSINGULAR:
++      Scierror(999, "poire");
++  case spSMALL_PIVOT:
++      Scierror(999, "abricot");
++  }
++}
++
+ void C2F(lufact1)(double *val, int *lln, int *col, int *n, int *nel,
+-		  int *fmatindex, double *eps, double *releps, int *nrank, int *ierr)
++                  int *fmatindex, double *eps, double *releps, int *nrank,
++                  int *ierr)
+ {
+   int error,i,i0,i1,k,j;
+   char *fmat;
+@@ -98,9 +144,9 @@ void C2F(lufact1)(double *val, int *lln, int *col, int *n, int *nel,
+       i0=i0+1;
+     }
+     j=col[k];
+-   
++
+     pelement = spGetElement(fmat,i,j);
+- 
++
+     if (pelement == 0) {
+       *ierr=2;
+       return;
+@@ -109,7 +155,7 @@ void C2F(lufact1)(double *val, int *lln, int *col, int *n, int *nel,
+ 
+   }
+   /* Fix the AbsThresold with scilex %eps */
+-  spFixThresold(fmat,*eps,*releps);
++  spFixThreshold(fmat,*eps,*releps);
+ 
+   /* spPrint((char *) *fmat,1,1,1); */
+   error = spFactor(fmat);
+@@ -165,7 +211,7 @@ void C2F(ludel1)(int *fmatindex, int *ierr)
+   *ierr = 0;
+   removeluptr ((int)*fmatindex);
+   spDestroy(fmat);
+- 
++
+ }
+ 
+ /*
+@@ -370,7 +416,7 @@ void C2F(lusiz1)(int* fmatindex, int* lsize, int* usize, int *ierr)
+   if (getluptr((int)*fmatindex, &fmat)==-1){
+     *ierr = 1;
+     return;
+-  }  
++  }
+   *ierr = 0;
+   spLusiz(fmat,lsize,usize);
+ }
+@@ -414,8 +460,8 @@ int addluptr (char *ptr)
+   sci_luptr_table[sel] = ptr;
+   return sel+1;
+ }
+-/**getluptr 
+- * this function returns a pointer on a sparse lu factorization 
++/**getluptr
++ * this function returns a pointer on a sparse lu factorization
+  * given its index (one based) in the table
+  */
+ int getluptr(int sel, char **ptr)
+@@ -426,8 +472,8 @@ int getluptr(int sel, char **ptr)
+   return 0;
+ }
+ 
+-/**removeluptr 
+- * This function removes a pointer on a sparse lu factorization 
++/**removeluptr
++ * This function removes a pointer on a sparse lu factorization
+  * out of  Scilab internal table given its index in the table
+  */
+ int removeluptr (int sel)
+@@ -438,7 +484,7 @@ int removeluptr (int sel)
+   return 0;
+ }
+ 
+-/**resetluptr 
++/**resetluptr
+  * This function reinitialize the Scilab sparse lu pointer table
+  */
+ void resetluptr()
+diff --git a/scilab/modules/sparse/src/c/lu.h b/scilab/modules/sparse/src/c/lu.h
+deleted file mode 100644
+index c07c7d4..0000000
+--- a/scilab/modules/sparse/src/c/lu.h
++++ /dev/null
+@@ -1,44 +0,0 @@
+-/*
+- * Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
+- * Copyright (C) 2007 - INRIA - Bruno JOFRET
+- * 
+- * This file must be used under the terms of the CeCILL.
+- * This source file is licensed as described in the file COPYING, which
+- * you should have received as part of this distribution.  The terms
+- * are also available at    
+- * http://www.cecill.info/licences/Licence_CeCILL_V2-en.txt
+- *
+- */
+-
+-#ifndef __LU_H__
+-#define __LU_H__
+-
+-#define spINSIDE_SPARSE
+-#include "spConfig.h"
+-#include "spmatrix.h"
+-#include "spDefs.h"
+-
+-#include "cerro.h"
+-#include "machine.h"
+-#include "localization.h"
+-#include "MALLOC.h"
+-#include "dynlib_sparse.h"
+-
+-SPARSE_IMPEXP int addluptr (char *ptr); /* */
+-SPARSE_IMPEXP int getluptr (int sel, char **ptr);
+-SPARSE_IMPEXP int removeluptr (int sel);
+-SPARSE_IMPEXP void resetluptr (void); /* to be used to free the lu pointer table */
+-
+-SPARSE_IMPEXP void C2F(lufact1)(double *val, int *lln, int *col, int *n, int *nel,
+-		  int *fmatindex, double *eps, double *releps, int *nrank, int *ierr);
+-
+-SPARSE_IMPEXP void C2F(lusolve1)(int *fmatindex, double *b, double *x, int *ierr);
+-
+-SPARSE_IMPEXP void C2F(ludel1)(int *fmatindex, int *ierr);
+-
+-SPARSE_IMPEXP void C2F(lusiz1)(int *fmatindex, int* lsize, int* usize, int *ierr);
+-
+-SPARSE_IMPEXP void C2F(luget1)(int *fmatindex, int *indP, double *P,
+-		 int *indl, double *l, int *indu, double *u,
+-		 int *indQ, double *Q, int *ierr);
+-#endif /* !__LU_H__ */
