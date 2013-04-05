@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
 
 JAVA_PKG_OPT_USE="gui"
 VIRTUALX_REQUIRED="manual"
@@ -21,7 +21,7 @@ DESCRIPTION="Scientific software package for numerical computations"
 LICENSE="CeCILL-2"
 HOMEPAGE="http://www.scilab.org/"
 EGIT_REPO_URI="git://git.scilab.org/scilab"
-EGIT_BRANCH="5.4"
+EGIT_BRANCH="master"
 
 SLOT="0"
 IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
@@ -122,8 +122,7 @@ src_prepare() {
 	epatch \
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
-		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
-		"${FILESDIR}/lufact.diff"
+		"${FILESDIR}/${P}-fix-random-runtime-failure.patch"
 
 	append-ldflags $(no-as-needed)
 
