@@ -193,6 +193,7 @@ src_configure() {
 		--enable-relocatable \
 		--disable-rpath \
 		--with-docbook="${EPREFIX}/usr/share/sgml/docbook/xsl-stylesheets" \
+		--without-embedded-scirenderer \
 		$(use_enable debug) \
 		$(use_enable debug code-coverage) \
 		$(use_enable debug debug-C) \

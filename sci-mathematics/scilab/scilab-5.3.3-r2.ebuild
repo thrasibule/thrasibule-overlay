@@ -118,6 +118,7 @@ src_prepare() {
 		"${FILESDIR}"/${P}-jvm-detection.patch \
 		"${FILESDIR}"/${P}-disable-build-help.patch \
 		"${FILESDIR}"/${P}-hdf18.patch \
+		"${FILESDIR}"/${P}-hdf5.patch \
 		"${FILESDIR}"/${P}-no-lhpi.patch \
 		"${FILESDIR}"/${P}-blas-libs.patch \
 		"${FILESDIR}"/${P}-no-xcos-deps.patch \
