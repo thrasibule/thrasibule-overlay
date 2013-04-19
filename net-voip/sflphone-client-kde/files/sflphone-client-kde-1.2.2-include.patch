@@ -1,0 +1,9 @@
+diff -urN sflphone-client-kde-1.2.2-orig/src/klib/kcfg_settings.kcfgc sflphone-client-kde-1.2.2/src/klib/kcfg_settings.kcfgc
+--- sflphone-client-kde-1.2.2-orig/src/klib/kcfg_settings.kcfgc	2013-04-18 22:12:13.524116791 -0400
++++ sflphone-client-kde-1.2.2/src/klib/kcfg_settings.kcfgc	2013-04-18 22:13:35.199114400 -0400
+@@ -4,4 +4,4 @@
+ Singleton=true
+ Mutators=true
+ Visibility=LIB_EXPORT
+-IncludeFiles=\"../lib/typedefs.h\"
++IncludeFiles=\"../../../sflphone-client-kde-1.2.2/src/lib/typedefs.h\"
