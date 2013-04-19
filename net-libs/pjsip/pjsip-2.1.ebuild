@@ -31,9 +31,14 @@ S="${WORKDIR}/pjproject-${PV}.0"
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-libav.patch" \
-		   "${FILESDIR}/libsamplerate.patch" \
 		   "${FILESDIR}/${P}-srtp.patch" \
 		   "${FILESDIR}/disable-samples.patch"
+	if use libsamplerate; then
+		epatch "${FILESDIR}/${P}-libsamplerate.patch"
+		echo  "#define PJMEDIA_RESAMPLE_IMP PJMEDIA_RESAMPLE_LIBSAMPLERATE" \
+			>> pjlib/include/pj/config_site.h
+	fi
+
 	# Remove target name from lib names
 	sed -i -e 's/-$(TARGET_NAME)//g' \
 		-e 's/= $(TARGET_NAME).a/= .a/g' \
@@ -51,15 +56,13 @@ src_prepare() {
 
 	sed -i -e "s|@PREFIX@|${EPREFIX}/usr|" libpjproject.pc.in
 
-	if use libsamplerate; then
-		echo  "#define PJMEDIA_RESAMPLE_IMP PJMEDIA_RESAMPLE_LIBSAMPLERATE" \
-			>> pjlib/include/pj/config_site.h
-	fi
-	
-	sed -i -e "s/DIRS = .*$/DIRS = milenage/" third_party/build/Makefile
+	tocompile="milenage resample"
+	use libsamplerate && tocompile="milenage"
+	sed -i -e "s/DIRS = .*$/DIRS = ${tocompile}/" third_party/build/Makefile
 
 	pushd third_party
-	rm -rf portaudio gsm ilbc resample speex srtp
+	rm -rf portaudio gsm ilbc speex srtp
+	use libsamplerate && rm -rf resample
 	popd
 }
 
@@ -74,7 +77,6 @@ src_configure() {
 		$(use_enable l16 l16-codec) \
 		$(use_enable g722 g722-codec) \
 		$(use_enable g7221 g7221-codec) \
-		$(use_enable ilbc ilbc-codec) \
 		$(use_enable ipp) \
 		$(use_enable video) \
 		$(use_enable libsamplerate) \
