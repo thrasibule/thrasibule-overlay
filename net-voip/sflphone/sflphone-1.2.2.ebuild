@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit autotools eutils gnome2 cmake-utils
+inherit autotools eutils gnome2 kde4-base
 
 DESCRIPTION="A robust standards-compliant enterprise softphone"
 HOMEPAGE="http://www.sflphone.org/"
@@ -13,7 +13,7 @@ SRC_URI="http://projects.savoirfairelinux.com/attachments/download/5064/${P}.tar
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug doxygen gnome gsm iax kde networkmanager speex static-libs"
+IUSE="debug doxygen gnome gsm iax networkmanager speex static-libs"
 
 CDEPEND="dev-cpp/commoncpp2
 	dev-libs/dbus-c++
@@ -48,9 +48,7 @@ CDEPEND="dev-cpp/commoncpp2
 		x11-libs/cairo
 		x11-libs/libICE
 		x11-libs/libnotify
-		x11-libs/libSM )
-	kde? ( x11-libs/qt4 
-		   app-office/akonadi-server[sqlite] )"
+		x11-libs/libSM )"
 
 DEPEND="${CDEPEND}
 		>=dev-util/astyle-1.24
@@ -58,21 +56,10 @@ DEPEND="${CDEPEND}
 		gnome? ( app-text/gnome-doc-utils )"
 
 RDEPEND="${CDEPEND}"
-CMAKE_USE_DIR="${S}/kde"
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-makefile.patch" \
-		   "${FILESDIR}/${P}-ilbc.patch" \
-		   "${FILESDIR}/${P}-noqttest.patch"
-
-	if ! use gnome || ! use kde; then
-		ewarn
-		ewarn "No clients selected. Use USE=gnome to get the gnome client."
-		ewarn "See"
-		ewarn "https://projects.savoirfairelinux.com/repositories/browse/sflphone/tools/pysflphone"
-		ewarn "for a python command line client."
-		ewarn
-	fi
+		   "${FILESDIR}/${P}-ilbc.patch"
 
 	cd daemon
 	#remove "target" from lib-names, remove dep to shipped pjsip
@@ -110,9 +97,6 @@ src_configure() {
 		cd ../gnome
 		econf $(use_enable static-libs static)
 	fi
-	if use kde; then
-		cmake-utils_src_configure		
-	fi
 	export APP_LDFLAGS=$(pkg-config --libs libpjproject)
 }
 
@@ -124,9 +108,6 @@ src_compile() {
 		cd ../gnome
 		emake
 	fi
-	if use kde; then
-		cmake-utils_src_make
-	fi
 }
 
 src_install() {
@@ -137,9 +118,6 @@ src_install() {
 	if use gnome; then
 		cd ../gnome
 		gnome2_src_install
-	fi
-	if use kde; then
-		cmake-utils_src_install	
 	fi
 }
 
