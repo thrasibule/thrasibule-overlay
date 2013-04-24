@@ -10,21 +10,19 @@ VIRTUALX_REQUIRED="manual"
 inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 	fortran-2 java-pkg-opt-2 toolchain-funcs virtualx
 
-# Comments:
-# - we don't rely on the configure script to find the right version of java
-# packages. This should fix bug #41821
 # Things that don't work:
 # - tests
 # - can't build without docs (-doc) 
 
 DESCRIPTION="Scientific software package for numerical computations"
-LICENSE="CeCILL-2"
 HOMEPAGE="http://www.scilab.org/"
 SRC_URI="http://www.scilab.org/download/${PV}/${P}-src.tar.gz"
 
+LICENSE="CeCILL-2"
 SLOT="0"
+KEYWORDS="~amd64 ~x86"
 IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
-	static-libs test tk +umfpack xcos"
+	static-libs test tk +umfpack +xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
 # ALL_LINGUAS variable defined in configure.ac
@@ -36,8 +34,6 @@ LINGUASLONG="de_DE ja_JP it_IT uk_UA pl_PL ru_RU"
 for l in ${LINGUASLONG}; do
 	IUSE="${IUSE} linguas_${l%_*}"
 done
-
-KEYWORDS="~amd64 ~x86"
 
 CDEPEND="dev-libs/libpcre
 	dev-libs/libxml2:2
@@ -59,14 +55,15 @@ CDEPEND="dev-libs/libpcre
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
 		dev-java/jgraphx:1.8
-		dev-java/jlatexmath:1[fop]
+		dev-java/jlatexmath:1
 		dev-java/jogl:2
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/scirenderer:1
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.5
 		virtual/opengl
-		doc? ( dev-java/saxon:6.5 )
+		doc? ( dev-java/saxon:6.5
+		       dev-java/jlatexmath-fop:1 )
 		xcos? ( dev-java/commons-logging:0 ) )
 	matio? ( <sci-libs/matio-1.5 )
 	tk? ( dev-lang/tk )
@@ -104,7 +101,7 @@ pkg_setup() {
 	FORTRAN_STANDARD="77 90"
 	fortran-2_pkg_setup
 	java-pkg-opt-2_pkg_setup
-	
+
 	ALL_LINGUAS="en_US"
 	for l in ${LINGUAS}; do
 		use linguas_${l} && ALL_LINGUAS="${ALL_LINGUAS} ${l}"
@@ -147,7 +144,7 @@ src_prepare() {
 
 	mkdir jar || die
 	pushd jar
-	java-pkg_jar-from jlatexmath-1,flexdock,skinlf,jgraphx-1.8
+	java-pkg_jar-from jgraphx-1.8,jlatexmath-1,flexdock,skinlf
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer-1
 	java-pkg_jar-from avalon-framework-4.2,jeuclid-core
 	java-pkg_jar-from xmlgraphics-commons-1.5,commons-io-1
@@ -160,7 +157,7 @@ src_prepare() {
 		java-pkg_jar-from commons-logging
 	fi
 	if use doc; then
-		java-pkg_jar-from saxon-6.5
+		java-pkg_jar-from jlatexmath-fop-1,saxon-6.5
 		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
 	fi
 	if use test; then
@@ -229,8 +226,11 @@ src_test() {
 src_install() {
 	default
 	prune_libtool_files --all
-	rm -rf "${D}"/usr/share/scilab/modules/*/tests
+	rm -rf "${D}"/usr/share/scilab/modules/*/tests ||die
 	use bash-completion && dobashcomp "${FILESDIR}"/${PN}.bash_completion
+	echo "SEARCH_DIRS_MASK=${EPREFIX}/usr/$(get_libdir)/scilab" \
+		> 50-"${PN}"
+	insinto /etc/revdep-rebuild && doins "50-${PN}"
 }
 
 pkg_postinst() {
