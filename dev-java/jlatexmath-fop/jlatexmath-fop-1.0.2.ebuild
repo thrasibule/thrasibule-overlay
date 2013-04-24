@@ -9,21 +9,21 @@ JAVA_PKG_IUSE="examples source"
 inherit java-pkg-2 java-ant-2
 
 DESCRIPTION="jlatexmath plugin for dev-java/fop"
-SRC_URI="http://forge.scilab.org/upload/jlatexmath/files/${PN}-src-${PV}.zip"
 HOMEPAGE="http://forge.scilab.org/index.php/p/jlatexmath"
-
-IUSE=""
-CDEPEND="dev-java/jlatexmath:1
-	dev-java/xmlgraphics-commons:1.5
-	>=dev-java/fop-0.9.5"
-DEPEND=">=virtual/jdk-1.5
-	${CDEPEND}"
-RDEPEND=">=virtual/jre-1.5
-	${CDEPEND}"
+SRC_URI="http://forge.scilab.org/upload/jlatexmath/files/${PN}-src-${PV}.zip"
 
 LICENSE="GPL-2"
 SLOT="1"
 KEYWORDS="~amd64 ~x86"
+IUSE=""
+
+CDEPEND="dev-java/jlatexmath:1
+	dev-java/xmlgraphics-commons:1.5
+	>=dev-java/fop-0.9.5:0"
+DEPEND=">=virtual/jdk-1.5
+	${CDEPEND}"
+RDEPEND=">=virtual/jre-1.5
+	${CDEPEND}"
 
 EANT_BUILD_TARGET="buildJar"
 
