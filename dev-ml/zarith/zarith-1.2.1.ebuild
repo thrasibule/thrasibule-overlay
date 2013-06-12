@@ -8,7 +8,7 @@ inherit eutils findlib multilib
 
 DESCRIPTION="Arithmetic and logic operations over arbitrary-precision integers"
 HOMEPAGE="https://forge.ocamlcore.org/projects/zarith/"
-SRC_URI="http://forge.ocamlcore.org/frs/download.php/1187/${P}.tgz"
+SRC_URI="http://forge.ocamlcore.org/frs/download.php/1199/${P}.tgz"
 
 LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0"
@@ -21,10 +21,6 @@ RDEPEND=">=dev-lang/ocaml-3.12.1[ocamlopt?]
 
 DEPEND="${RDEPEND}
 		dev-lang/perl"
-
-src_prepare() {
-	epatch "${FILESDIR}/test.patch"
-}
 
 src_configure() {
 	MY_OPTS="-ocamllibdir /usr/$(get_libdir) -installdir \
