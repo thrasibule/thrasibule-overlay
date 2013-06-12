@@ -1,14 +1,14 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="4"
+EAPI=5
 
 inherit eutils findlib multilib
 
 DESCRIPTION="Arithmetic and logic operations over arbitrary-precision integers"
 HOMEPAGE="https://forge.ocamlcore.org/projects/zarith/"
-SRC_URI="http://forge.ocamlcore.org/frs/download.php/835/${P}.tgz"
+SRC_URI="http://forge.ocamlcore.org/frs/download.php/1187/${P}.tgz"
 
 LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0"
@@ -16,15 +16,19 @@ KEYWORDS="~amd64 ~x86"
 IUSE="debug doc mpir +ocamlopt"
 
 RDEPEND=">=dev-lang/ocaml-3.12.1[ocamlopt?]
-!mpir? ( dev-libs/gmp )
-mpir? ( sci-libs/mpir )"
+		 !mpir? ( dev-libs/gmp )
+		 mpir? ( sci-libs/mpir )"
 
 DEPEND="${RDEPEND}
-dev-lang/perl"
+		dev-lang/perl"
+
+src_prepare() {
+	epatch "${FILESDIR}/test.patch"
+}
 
 src_configure() {
 	MY_OPTS="-ocamllibdir /usr/$(get_libdir) -installdir \
-	${D}/usr/$(get_libdir)/ocaml"
+		${D}/usr/$(get_libdir)/ocaml"
 	use mpir && MY_OPTS="${MY_OPTS} -mpir"
 	./configure ${MY_OPTS}|| die
 }
