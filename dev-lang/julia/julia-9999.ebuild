@@ -14,7 +14,7 @@ SRC_URI=""
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 IUSE="doc emacs"
 
 RDEPEND=">=sys-devel/llvm-3.0
@@ -24,9 +24,11 @@ RDEPEND=">=sys-devel/llvm-3.0
 	sci-libs/arpack
 	sci-libs/fftw
 	dev-libs/gmp
+	dev-libs/libuv
 	>=dev-libs/double-conversion-1.1.1
 	>=sys-libs/libunwind-1.1
 	dev-libs/libpcre
+	sci-libs/openlibm
 	sci-mathematics/glpk
 	sys-libs/zlib
 	virtual/blas
@@ -36,7 +38,6 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
 src_prepare() {
-	epatch "${FILESDIR}/julia-nopatchelf.patch"
 	# Folder /usr/include/suitesparse does not exists, everything should be in /usr/include
 	sed -e "s|SUITESPARSE_INC = -I /usr/include/suitesparse|SUITESPARSE_INC = |g" \
 	-i deps/Makefile
@@ -47,7 +48,9 @@ src_prepare() {
 		sed -e "s/-l\([a-z0-9]*\).*/lib\1/")
 
 	sed -i \
+			-e 's|libuv-julia|libuv|g' \
 			-e 's|\(USE_SYSTEM_.*\)=.*|\1=1|g' \
+			-e 's|\(USE_SYSTEM_LIBM\)=.*|\1=0|g' \
 			-e "s|-lblas|$($(tc-getPKG_CONFIG) --libs blas)|" \
 			-e "s|-llapack|$($(tc-getPKG_CONFIG) --libs lapack)|" \
 			-e "s|liblapack|${lapackname}|" \
