@@ -37,7 +37,6 @@ src_prepare() {
 	else
 		jarch=i386
 		cd lib/native/linux || die
-		rm *mozembed* || die
 	fi
 	local x jarch jdir
 	jdir=$(java-config -o || die)
@@ -57,7 +56,7 @@ src_install() {
 
 	# Other libraries
 	insinto /usr/$(get_libdir)/${PN}/lib
-	doins lib/* lib/os-specific/linux/*
+	doins lib/*
 	doins -r lib/bundle # Unnecessary?
 
 	# Native libraries
@@ -69,7 +68,7 @@ src_install() {
 		doexe lib/native/linux/*
 	fi
 
-	# Make sure revdep-rebuild doesn’t complain about them.
+	# Make sure revdep-rebuild doesn't complain about them.
 	echo "SEARCH_DIRS_MASK=\"${EPREFIX}/usr/$(get_libdir)/${PN}/lib/native\"" > 50-"${PN}"
 	insinto /etc/revdep-rebuild && doins "50-${PN}"
 
