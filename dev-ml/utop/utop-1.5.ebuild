@@ -1,15 +1,15 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
 
 OASIS_BUILD_DOCS=1
 inherit oasis elisp-common
 
 DESCRIPTION="A new toplevel for OCaml with completion and colorization"
 HOMEPAGE="http://forge.ocamlcore.org/projects/utop/"
-SRC_URI="http://forge.ocamlcore.org/frs/download.php/951/${P}.tar.gz"
+SRC_URI="http://github.com/diml/utop/archive/${PV}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
@@ -22,7 +22,7 @@ DEPEND="dev-ml/lwt[react]
 	emacs? ( virtual/emacs )"
 RDEPEND="${DEPEND}"
 
-DOCS=( "CHANGES" "README" )
+DOCS=( "CHANGES.md" "README.md" )
 SITEFILE="50${PN}-gentoo.el"
 
 src_prepare() {
@@ -31,17 +31,16 @@ src_prepare() {
 
 src_compile() {
 	oasis_src_compile
-	if use emacs; then
-		elisp-compile src/top/*.el
-	fi
 }
 
 src_install() {
 	oasis_src_install
+	doman man/*
 	if use emacs; then
-		elisp-install "${PN}" src/top/*.{el,elc} || die
+		elisp-install "${PN}" src/top/*.el || die
 		elisp-site-file-install "${FILESDIR}/${SITEFILE}" || die
 	fi
+	use doc && dohtml -r _build/utop-api.docdir
 }
 
 pkg_postinst() {
