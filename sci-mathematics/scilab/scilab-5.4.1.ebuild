@@ -118,13 +118,13 @@ src_prepare() {
 		"${FILESDIR}/${P}-gluegen.patch" \
 		"${FILESDIR}/${P}-fix-random-runtime-failure.patch"
 
-	append-ldflags $(no-as-needed)
+	#append-ldflags $(no-as-needed)
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
 	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
 	# use the LINGUAS variable that we set
-	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac
+	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac ||die
 
 	# make sure the DOCBOOK_ROOT variable is set
 	sed -i -e "s/xsl-stylesheets-\*/xsl-stylesheets/g" bin/scilab* || die
@@ -141,6 +141,9 @@ src_prepare() {
 		sed -i -e "s/jogl2/jogl-2/" -e "s/gluegen2/gluegen-2/" \
 			etc/librarypath.xml || die
 	fi
+	# use CXX as a linker for scilab-bin
+	sed -e '/^CCLD/ s/CC)/CXX)/' \
+		-i Makefile.in || die "failed to sed Makefile.in"
 
 	mkdir jar || die
 	pushd jar

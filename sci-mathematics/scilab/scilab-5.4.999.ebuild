@@ -60,7 +60,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
 		dev-java/jgraphx:1.8
-		dev-java/jlatexmath:1[fop]
+		dev-java/jlatexmath:1
 		dev-java/jogl:2
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/scirenderer:1
@@ -69,7 +69,7 @@ CDEPEND="dev-libs/libpcre
 		virtual/opengl
 		doc? ( dev-java/saxon:6.5 )
 		xcos? ( dev-java/commons-logging:0 ) )
-	matio? ( <sci-libs/matio-1.5 )
+	matio? ( >=sci-libs/matio-1.5 )
 	tk? ( dev-lang/tk )
 	umfpack? ( sci-libs/umfpack )"
 
@@ -82,7 +82,8 @@ DEPEND="${CDEPEND}
 	gui? (
 		>=virtual/jdk-1.5
 		doc? ( app-text/docbook-xsl-stylesheets
-			   dev-java/xml-commons-external:1.4 )
+			   dev-java/xml-commons-external:1.4 
+			   dev-java/jlatexmath-fop:1 )
 		xcos? ( dev-lang/ocaml ) )
 	test? (
 		dev-java/junit:4
@@ -163,7 +164,7 @@ src_prepare() {
 		java-pkg_jar-from commons-logging
 	fi
 	if use doc; then
-		java-pkg_jar-from saxon-6.5
+		java-pkg_jar-from saxon-6.5,jlatexmath-fop-1
 		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
 	fi
 	if use test; then
@@ -193,7 +194,7 @@ src_configure() {
 		--enable-relocatable \
 		--disable-rpath \
 		--with-docbook="${EPREFIX}/usr/share/sgml/docbook/xsl-stylesheets" \
-		--without-embedded-scirenderer \
+		--with-external-scirenderer \
 		$(use_enable debug) \
 		$(use_enable debug code-coverage) \
 		$(use_enable debug debug-C) \
