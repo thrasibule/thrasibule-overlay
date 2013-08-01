@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,7 +6,7 @@
 # WARNING: don't add to main tree without fixing QA issues first!
 ###############################################################################
 
-EAPI=4
+EAPI=5
 
 JAVA_PKG_IUSE="doc source"
 
@@ -17,7 +17,7 @@ MY_P=${PN}-${MY_PV}
 
 DESCRIPTION="Java(TM) Binding fot the OpenGL(TM) API"
 HOMEPAGE="http://jogamp.org/jogl/www/"
-SRC_URI="http://jogamp.org/deployment/${MY_PV}/archive/Sources/${MY_P}.tar.7z"
+SRC_URI="http://jogamp.org/deployment/v2.0.2-rc12/archive/Sources/${MY_P}.tar.7z"
 
 LICENSE="BSD"
 SLOT="2"
