@@ -67,7 +67,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.5
 		virtual/opengl
-		doc? ( dev-java/saxon:6.5 )
+		doc? ( dev-java/saxon:9 )
 		xcos? ( dev-java/commons-logging:0 ) )
 	matio? ( >=sci-libs/matio-1.5 )
 	tk? ( dev-lang/tk )
@@ -155,7 +155,7 @@ src_prepare() {
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer-1
 	java-pkg_jar-from avalon-framework-4.2,jeuclid-core
 	java-pkg_jar-from xmlgraphics-commons-1.5,commons-io-1
-	java-pkg_jar-from jogl-2 jogl.all.jar jogl2.jar
+	java-pkg_jar-from jogl-2 jogl-all.jar jogl2.jar
 	java-pkg_jar-from gluegen-2 gluegen-rt.jar gluegen2-rt.jar
 	java-pkg_jar-from batik-1.7 batik-all.jar
 	java-pkg_jar-from fop fop.jar
@@ -164,7 +164,8 @@ src_prepare() {
 		java-pkg_jar-from commons-logging
 	fi
 	if use doc; then
-		java-pkg_jar-from saxon-6.5,jlatexmath-fop-1
+		java-pkg_jar-from saxon-9 saxon.jar saxon9he.jar
+		java-pkg_jar-from jlatexmath-fop-1
 		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
 	fi
 	if use test; then
