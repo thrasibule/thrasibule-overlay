@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,7 +6,7 @@
 # WARNING: don't add to main tree without fixing QA issues first!
 ###############################################################################
 
-EAPI="4"
+EAPI=5
 
 JAVA_PKG_IUSE="doc source"
 
@@ -18,7 +18,7 @@ MY_P=${PN}-${MY_PV}
 DESCRIPTION="GlueGen is a tool which automatically generates the Java and JNI
 code necessary to call C libraries"
 HOMEPAGE="http://jogamp.org/gluegen/www/"
-SRC_URI="http://jogamp.org/deployment/${MY_PV}/archive/Sources/${MY_P}.tar.7z"
+SRC_URI="http://jogamp.org/deployment/v2.0.2-rc12/archive/Sources/${MY_P}.tar.7z"
 
 LICENSE="BSD"
 SLOT="2"
@@ -47,10 +47,7 @@ src_unpack() {
 }
 
 java_prepare() {
-	# preserve android.jar, FIXME can be built form source!
-	mv make/lib/android-sdk "${T}" || die
-	find -name '*.jar' -exec rm -v {} + || die
-	mv "${T}"/android-sdk make/lib/ || die
+	rm -rf make/lib
 }
 
 JAVA_ANT_REWRITE_CLASSPATH="yes"
