@@ -15,7 +15,7 @@ LOG_CONFIG="$LIBPATH/logging.properties"
 
 # Command assembly
 # Add libraries and sip-communicator bundles:
-CLASSPATH="$LIBPATH/felix.jar:$LIBPATH/bcprovider.jar:$SCDIR/sc-bundles/sc-launcher.jar:$SCDIR/sc-bundles/util.jar"
+CLASSPATH="$LIBPATH/felix.jar:$LIBPATH/bcprovider.jar:$SCDIR/sc-bundles/sc-launcher.jar:$SCDIR/sc-bundles/util.jar:$SCDIR/sc-bundles/systray-service.jar"
 # Set the system properties:
 SYSPROPS=( -Djna.library.path="$LIBPATH/native" -Dfelix.config.properties="file:$FELIX_CONFIG" -Djava.util.logging.config.file="$LOG_CONFIG" )
 # The full command:

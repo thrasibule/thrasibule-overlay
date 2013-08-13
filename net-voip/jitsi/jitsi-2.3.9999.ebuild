@@ -8,7 +8,7 @@ inherit java-pkg-2 java-ant-2 eutils multilib prefix
 
 DESCRIPTION="An audio/video SIP VoIP phone and instant messenger written in Java"
 HOMEPAGE="http://www.jitsi.org/"
-SRC_URI="https://download.jitsi.org/jitsi/nightly/src/${PN}-src-${PV}.zip"
+SRC_URI="https://download.jitsi.org/jitsi/nightly/src/${PN}-src-2.3-nightly.latest.zip"
 # This download comes with 30 Mb of useless jars.
 # SVN access is available, but requires an account at java.net.
 
