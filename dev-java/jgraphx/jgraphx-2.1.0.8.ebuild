@@ -17,7 +17,7 @@ DEPEND=">=virtual/jdk-1.5
 	app-arch/unzip"
 RDEPEND=">=virtual/jre-1.5"
 LICENSE="as-is"
-SLOT="2.0"
+SLOT="2.1"
 KEYWORDS="~amd64 ~x86"
 
 S="${WORKDIR}/${PN}"
