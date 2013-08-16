@@ -11,7 +11,7 @@ OASIS_BUILD_TESTS=1
 
 DESCRIPTION="GSL powered OCaml statistics library"
 HOMEPAGE="http://github.com/superbobry/pareto"
-SRC_URI="http://github.com/superbobry/pareto/archive/0.2.tar.gz"
+SRC_URI="http://github.com/superbobry/pareto/archive/${PV}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
