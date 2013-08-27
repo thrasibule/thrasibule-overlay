@@ -26,11 +26,12 @@ EANT_DOC_TARGET="doc"
 
 java_prepare() {
 	sed -i \
-	-e "s|jogl2.jar =.*|jogl2.jar =$(java-pkg_getjar jogl-2 jogl.all.jar)|" \
+	-e "s|jogl2.jar =.*|jogl2.jar =$(java-pkg_getjar jogl-2 jogl-all.jar)|" \
 	-e "s|gluegen2-rt.jar =.*|gluegen2-rt.jar =$(java-pkg_getjar gluegen-2 \
 	gluegen-rt.jar)|" \
 	-e "s|jlatexmath.jar =.*|jlatexmath.jar = $(java-pkg_getjars jlatexmath-1)|" \
 	scirenderer-libs.properties
+	epatch "${FILESDIR}"/joglrc12.diff
 }
 
 src_install() {
