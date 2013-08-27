@@ -59,7 +59,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
-		dev-java/jgraphx:2.0
+		dev-java/jgraphx:2.1
 		dev-java/jlatexmath:1
 		dev-java/jogl:2
 		>=dev-java/jrosetta-1.0.4:0
@@ -151,7 +151,7 @@ src_prepare() {
 
 	mkdir jar || die
 	pushd jar
-	java-pkg_jar-from jlatexmath-1,flexdock,skinlf,jgraphx-2.0
+	java-pkg_jar-from jlatexmath-1,flexdock,skinlf,jgraphx-2.1
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta,scirenderer-1
 	java-pkg_jar-from avalon-framework-4.2,jeuclid-core
 	java-pkg_jar-from xmlgraphics-commons-1.5,commons-io-1
