@@ -7,8 +7,8 @@ EAPI=5
 JAVA_PKG_OPT_USE="gui"
 VIRTUALX_REQUIRED="manual"
 
-inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
-	fortran-2 git-2 java-pkg-opt-2 toolchain-funcs virtualx
+inherit autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
+	fortran-2 git-r3 java-pkg-opt-2 toolchain-funcs virtualx
 
 # Comments:
 # - we don't rely on the configure script to find the right version of java
@@ -63,7 +63,6 @@ CDEPEND="dev-libs/libpcre
 		dev-java/jlatexmath:1
 		dev-java/jogl:2
 		>=dev-java/jrosetta-1.0.4:0
-		dev-java/scirenderer:1
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.5
 		virtual/opengl
@@ -89,8 +88,8 @@ DEPEND="${CDEPEND}
 		dev-java/junit:4
 		gui? ( ${VIRTUALX_DEPEND} ) )"
 
-EGIT_SOURCEDIR="${WORKDIR}/${PN}"
-S="${WORKDIR}/${PN}/${PN}"
+#EGIT_CHECKOUT_DIR="${WORKDIR}/${PN}"
+S="${S}/${PN}"
 DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
 
 pkg_pretend() {
@@ -123,7 +122,8 @@ src_prepare() {
 	epatch \
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
-		"${FILESDIR}/${P}-fix-random-runtime-failure.patch"
+		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
+		"${FILESDIR}/${P}-disable-staticlib.patch"
 
 	append-ldflags $(no-as-needed)
 
@@ -195,7 +195,7 @@ src_configure() {
 		--enable-relocatable \
 		--disable-rpath \
 		--with-docbook="${EPREFIX}/usr/share/sgml/docbook/xsl-stylesheets" \
-		--with-external-scirenderer \
+		--disable-static-system-lib \
 		$(use_enable debug) \
 		$(use_enable debug code-coverage) \
 		$(use_enable debug debug-C) \
