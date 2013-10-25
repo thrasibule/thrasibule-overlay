@@ -11,14 +11,13 @@ EAPI=5
 JAVA_PKG_IUSE="doc source"
 
 inherit java-pkg-2 java-ant-2
-
-MY_PV=v${PV/_/-}
-MY_P=${PN}-${MY_PV}
+MY_PV=v"${PV}"
+MY_P="${PN}"-"${MY_PV}"
 
 DESCRIPTION="GlueGen is a tool which automatically generates the Java and JNI
 code necessary to call C libraries"
 HOMEPAGE="http://jogamp.org/gluegen/www/"
-SRC_URI="http://jogamp.org/deployment/v2.0.2-rc12/archive/Sources/${MY_P}.tar.7z"
+SRC_URI="http://jogamp.org/deployment/archive/rc/${MY_PV}/archive/Sources/${MY_P}.tar.7z"
 
 LICENSE="BSD"
 SLOT="2"
