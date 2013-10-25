@@ -12,12 +12,12 @@ JAVA_PKG_IUSE="doc source"
 
 inherit java-pkg-2 java-ant-2
 
-MY_PV=v${PV/_/-}
+MY_PV=v${PV}
 MY_P=${PN}-${MY_PV}
 
 DESCRIPTION="Java(TM) Binding fot the OpenGL(TM) API"
 HOMEPAGE="http://jogamp.org/jogl/www/"
-SRC_URI="http://jogamp.org/deployment/v2.0.2-rc12/archive/Sources/${MY_P}.tar.7z"
+SRC_URI="http://jogamp.org/deployment/${MY_PV}/archive/Sources/${MY_P}.tar.7z"
 
 LICENSE="BSD"
 SLOT="2"
