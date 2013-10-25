@@ -1,3 +1,0 @@
->=dev-java/jogl-2.0_rc10
->=dev-java/gluegen-2.0_rc10
->=sci-mathematics/scilab-5.5.0
