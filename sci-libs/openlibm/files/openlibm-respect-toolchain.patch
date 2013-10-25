@@ -1,0 +1,30 @@
+--- Make.inc.orig	2013-07-02 22:11:50.789319117 -0400
++++ Make.inc	2013-07-02 22:15:03.526313473 -0400
+@@ -2,24 +2,15 @@
+ 
+ OS := $(shell uname)
+ 
+-FC = gfortran
+-FFLAGS += -O3
+ 
+-USEGCC = 1
+-USECLANG = 0
+-
+-
+-ifeq ($(USECLANG),1)
+-USEGCC = 0
+-CC = clang
++ifneq (,$(findstring clang,$(CC)))
+ CFLAGS_add += -fno-builtin
+ endif
+ 
+-ifeq ($(USEGCC),1)
+-CC = gcc
++ifneq (,$(findstring gcc,$(CC)))
+ CFLAGS_add += -fno-gnu89-inline
+ endif
+-AR = ar
++AR = :ar
+ 
+ ARCH := $(shell $(CC) -dumpmachine | sed "s/\([^-]*\).*$$/\1/")
+ ifeq ($(ARCH),mingw32)
