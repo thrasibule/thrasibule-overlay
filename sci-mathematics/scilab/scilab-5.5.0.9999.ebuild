@@ -18,7 +18,7 @@ inherit autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 # - can't build without docs (-doc) 
 
 DESCRIPTION="Scientific software package for numerical computations"
-LICENSE="CeCILL-2"
+LICENSE="CeCILL-2.1"
 HOMEPAGE="http://www.scilab.org/"
 EGIT_REPO_URI="git://git.scilab.org/scilab"
 EGIT_BRANCH="master"
@@ -235,8 +235,8 @@ src_test() {
 src_install() {
 	default
 	prune_libtool_files --all
-	#rm -rf "${D}"/usr/share/scilab/modules/*/tests
-	use bash-completion && dobashcomp "${FILESDIR}"/${PN}.bash_completion
+	rm -rf "${D}"/usr/share/scilab/modules/*/tests
+	use bash-completion && newbashcomp "${FILESDIR}"/"${PN}".bash_completion "${PN}" 
 }
 
 pkg_postinst() {
