@@ -7,25 +7,25 @@ EAPI=5
 JAVA_PKG_OPT_USE="gui"
 VIRTUALX_REQUIRED="manual"
 
-inherit autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
-	fortran-2 git-r3 java-pkg-opt-2 toolchain-funcs virtualx
+inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
+	fortran-2 java-pkg-opt-2 toolchain-funcs virtualx
 
-# Comments:
-# - we don't rely on the configure script to find the right version of java
-# packages. This should fix bug #41821
+MY_PV="${PV/_beta1/-beta-1}"
+MY_P="$PN"-"$MY_PV"
+
 # Things that don't work:
 # - tests
 # - can't build without docs (-doc) 
 
 DESCRIPTION="Scientific software package for numerical computations"
-LICENSE="CeCILL-2"
 HOMEPAGE="http://www.scilab.org/"
-EGIT_REPO_URI="git://git.scilab.org/scilab"
-EGIT_BRANCH="master"
+SRC_URI="http://www.scilab.org/download/${MY_PV}/${MY_P}-src.tar.gz"
 
+LICENSE="CeCILL-2.1"
 SLOT="0"
+KEYWORDS="~amd64 ~x86"
 IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
-	static-libs test tk +umfpack xcos"
+	static-libs test tk +umfpack +xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
 # ALL_LINGUAS variable defined in configure.ac
@@ -37,8 +37,6 @@ LINGUASLONG="de_DE ja_JP it_IT uk_UA pl_PL ru_RU"
 for l in ${LINGUASLONG}; do
 	IUSE="${IUSE} linguas_${l%_*}"
 done
-
-KEYWORDS="~amd64 ~x86"
 
 CDEPEND="dev-libs/libpcre
 	dev-libs/libxml2:2
@@ -81,16 +79,16 @@ DEPEND="${CDEPEND}
 	gui? (
 		>=virtual/jdk-1.5
 		doc? ( app-text/docbook-xsl-stylesheets
-			   dev-java/xml-commons-external:1.4 
+			   dev-java/xml-commons-external:1.4
 			   dev-java/jlatexmath-fop:1 )
 		xcos? ( dev-lang/ocaml ) )
 	test? (
 		dev-java/junit:4
 		gui? ( ${VIRTUALX_DEPEND} ) )"
 
-#EGIT_CHECKOUT_DIR="${WORKDIR}/${PN}"
-S="${S}/${PN}"
 DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
+
+S="${WORKDIR}"/"${MY_P}"
 
 pkg_pretend() {
 	use doc && CHECKREQS_MEMORY="512M" check-reqs_pkg_pretend
@@ -107,7 +105,7 @@ pkg_setup() {
 	FORTRAN_STANDARD="77 90"
 	fortran-2_pkg_setup
 	java-pkg-opt-2_pkg_setup
-	
+
 	ALL_LINGUAS="en_US"
 	for l in ${LINGUAS}; do
 		use linguas_${l} && ALL_LINGUAS="${ALL_LINGUAS} ${l}"
@@ -123,7 +121,9 @@ src_prepare() {
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
 		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
-		"${FILESDIR}/${P}-always-use-dynamic-stack.patch"
+		"${FILESDIR}/${P}-disable-static-systemlib.patch" \
+		"${FILESDIR}/${P}-always-use-dynamic-stack.patch" \
+		"${FILESDIR}/${P}-accessviolation.patch"
 
 	append-ldflags $(no-as-needed)
 
@@ -131,7 +131,7 @@ src_prepare() {
 	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
 	# use the LINGUAS variable that we set
-	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac
+	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac ||die
 
 	# make sure the DOCBOOK_ROOT variable is set
 	sed -i -e "s/xsl-stylesheets-\*/xsl-stylesheets/g" bin/scilab* || die
@@ -151,7 +151,7 @@ src_prepare() {
 
 	mkdir jar || die
 	pushd jar
-	java-pkg_jar-from jlatexmath-1,flexdock,skinlf,jgraphx-2.1
+	java-pkg_jar-from jgraphx-2.1,jlatexmath-1,flexdock,skinlf
 	java-pkg_jar-from jgoodies-looks-2.0,jrosetta
 	java-pkg_jar-from avalon-framework-4.2,jeuclid-core
 	java-pkg_jar-from xmlgraphics-commons-1.5,commons-io-1
@@ -235,8 +235,11 @@ src_test() {
 src_install() {
 	default
 	prune_libtool_files --all
-	#rm -rf "${D}"/usr/share/scilab/modules/*/tests
+	rm -rf "${D}"/usr/share/scilab/modules/*/tests ||die
 	use bash-completion && dobashcomp "${FILESDIR}"/${PN}.bash_completion
+	echo "SEARCH_DIRS_MASK=${EPREFIX}/usr/$(get_libdir)/scilab" \
+		> 50-"${PN}"
+	insinto /etc/revdep-rebuild && doins "50-${PN}"
 }
 
 pkg_postinst() {
