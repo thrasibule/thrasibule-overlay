@@ -24,7 +24,7 @@ SRC_URI="http://www.scilab.org/download/${MY_PV}/${MY_P}-src.tar.gz"
 LICENSE="CeCILL-2.1"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
+IUSE="bash-completion debug +doc fftw +gui +matio mpi nls openmp
 	static-libs test tk +umfpack +xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
@@ -40,7 +40,7 @@ done
 
 CDEPEND="dev-libs/libpcre
 	dev-libs/libxml2:2
-	sci-libs/hdf5
+	sci-libs/hdf5[mpi=]
 	>=sci-libs/arpack-3
 	sys-devel/gettext
 	sys-libs/ncurses
@@ -216,7 +216,8 @@ src_configure() {
 		$(use_with tk) \
 		$(use_with umfpack) \
 		$(use_with xcos) \
-		$(use_with xcos modelica)
+		$(use_with xcos modelica) \
+		$(use_with mpi)
 }
 
 src_compile() {

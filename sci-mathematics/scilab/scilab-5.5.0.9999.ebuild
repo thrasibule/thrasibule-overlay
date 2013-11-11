@@ -24,7 +24,7 @@ EGIT_REPO_URI="git://git.scilab.org/scilab"
 EGIT_BRANCH="master"
 
 SLOT="0"
-IUSE="bash-completion debug +doc fftw +gui +matio nls openmp
+IUSE="bash-completion debug +doc fftw +gui +matio mpi nls openmp
 	static-libs test tk +umfpack xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
@@ -38,11 +38,11 @@ for l in ${LINGUASLONG}; do
 	IUSE="${IUSE} linguas_${l%_*}"
 done
 
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 
 CDEPEND="dev-libs/libpcre
 	dev-libs/libxml2:2
-	sci-libs/hdf5
+	sci-libs/hdf5[mpi=]
 	>=sci-libs/arpack-3
 	sys-devel/gettext
 	sys-libs/ncurses
@@ -61,7 +61,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/jgoodies-looks:2.0
 		dev-java/jgraphx:2.1
 		dev-java/jlatexmath:1
-		dev-java/jogl:2
+		>=dev-java/jogl-2.0.2:2
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.5
@@ -164,7 +164,7 @@ src_prepare() {
 		java-pkg_jar-from commons-logging
 	fi
 	if use doc; then
-		java-pkg_jar-from saxon-9 saxon.jar saxon9he.jar
+	java-pkg_jar-from saxon-9 saxon.jar saxon9he.jar
 		java-pkg_jar-from jlatexmath-fop-1
 		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
 	fi
@@ -187,9 +187,6 @@ src_configure() {
 	export BLAS_LIBS="$($(tc-getPKG_CONFIG) --libs blas)"
 	export LAPACK_LIBS="$($(tc-getPKG_CONFIG) --libs lapack)"
 	export F77_LDFLAGS="${LDFLAGS}"
-	# gentoo bug #302621
-	has_version sci-libs/hdf5[mpi] && \
-		export CXX=mpicxx CC=mpicc
 
 	econf \
 		--enable-relocatable \
@@ -216,7 +213,8 @@ src_configure() {
 		$(use_with tk) \
 		$(use_with umfpack) \
 		$(use_with xcos) \
-		$(use_with xcos modelica)
+		$(use_with xcos modelica) \
+		$(use_with mpi)
 }
 
 src_compile() {
