@@ -28,17 +28,12 @@ IUSE="bash-completion debug +doc fftw +gui +matio mpi nls openmp
 	static-libs test tk +umfpack xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
-# ALL_LINGUAS variable defined in configure.ac
-LINGUAS="fr_FR zh_CN zh_TW ca_ES es_ES pt_BR"
+LINGUAS="fr_FR zh_CN zh_TW ru_RU ca_ES de_DE es_ES pt_BR ja_JP it_IT uk_UA pl_PL cs_CZ"
+LINGUAS_DOC="fr_FR pt_BR ja_JP ru_RU"
+
 for l in ${LINGUAS}; do
 	IUSE="${IUSE} linguas_${l}"
 done
-LINGUASLONG="de_DE ja_JP it_IT uk_UA pl_PL ru_RU"
-for l in ${LINGUASLONG}; do
-	IUSE="${IUSE} linguas_${l%_*}"
-done
-
-KEYWORDS=""
 
 CDEPEND="dev-libs/libpcre
 	dev-libs/libxml2:2
@@ -53,21 +48,20 @@ CDEPEND="dev-libs/libpcre
 		dev-java/avalon-framework:4.2
 		dev-java/batik:1.7
 		dev-java/commons-io:1
+		dev-java/commons-logging:0
 		>=dev-java/flexdock-1.2.4:0
 		dev-java/fop:0
 		dev-java/gluegen:2.1
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
-		dev-java/jgraphx:2.1
 		dev-java/jlatexmath:1
+		dev-java/jlatexmath-fop:1
 		dev-java/jogl:2.1
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.5
-		virtual/opengl
-		doc? ( dev-java/saxon:9 )
-		xcos? ( dev-java/commons-logging:0 ) )
+		virtual/opengl )
 	matio? ( >=sci-libs/matio-1.5 )
 	tk? ( dev-lang/tk )
 	umfpack? ( sci-libs/umfpack )"
@@ -81,9 +75,10 @@ DEPEND="${CDEPEND}
 	gui? (
 		>=virtual/jdk-1.5
 		doc? ( app-text/docbook-xsl-stylesheets
-			   dev-java/xml-commons-external:1.4 
-			   dev-java/jlatexmath-fop:1 )
-		xcos? ( dev-lang/ocaml ) )
+			   dev-java/xml-commons-external:1.4
+			   dev-java/saxon:9 )
+		xcos? ( dev-lang/ocaml
+				dev-java/jgraphx:2.1 ) )
 	test? (
 		dev-java/junit:4
 		gui? ( ${VIRTUALX_DEPEND} ) )"
@@ -107,15 +102,16 @@ pkg_setup() {
 	FORTRAN_STANDARD="77 90"
 	fortran-2_pkg_setup
 	java-pkg-opt-2_pkg_setup
-	
+
 	ALL_LINGUAS="en_US"
+	ALL_LINGUAS_DOC="en_US"
 	for l in ${LINGUAS}; do
 		use linguas_${l} && ALL_LINGUAS="${ALL_LINGUAS} ${l}"
 	done
-	for l in ${LINGUASLONG}; do
-		use linguas_${l%_*} && ALL_LINGUAS="${ALL_LINGUAS} ${l}"
+	for l in ${LINGUAS_DOC}; do
+		use linguas_${l} && ALL_LINGUAS_DOC="${ALL_LINGUAS_DOC} ${l}"
 	done
-	export ALL_LINGUAS ALL_LINGUAS_DOC=$ALL_LINGUAS
+	export ALL_LINGUAS ALL_LINGUAS_DOC
 }
 
 src_prepare() {
@@ -131,7 +127,7 @@ src_prepare() {
 	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
 	# use the LINGUAS variable that we set
-	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac
+	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac ||die
 
 	# make sure the DOCBOOK_ROOT variable is set
 	sed -i -e "s/xsl-stylesheets-\*/xsl-stylesheets/g" bin/scilab* || die
@@ -150,26 +146,25 @@ src_prepare() {
 	fi
 
 	mkdir jar || die
-	pushd jar
-	java-pkg_jar-from jlatexmath-1,flexdock,skinlf,jgraphx-2.1
-	java-pkg_jar-from jgoodies-looks-2.0,jrosetta
-	java-pkg_jar-from avalon-framework-4.2,jeuclid-core
-	java-pkg_jar-from xmlgraphics-commons-1.5,commons-io-1
-	java-pkg_jar-from jogl-2.1 jogl-all.jar jogl2.jar
-	java-pkg_jar-from gluegen-2.1 gluegen-rt.jar gluegen2-rt.jar
-	java-pkg_jar-from batik-1.7 batik-all.jar
-	java-pkg_jar-from fop fop.jar
-	java-pkg_jar-from javahelp jhall.jar
-	if use xcos; then
-		java-pkg_jar-from commons-logging
-	fi
-	if use doc; then
-	java-pkg_jar-from saxon-9 saxon.jar saxon9he.jar
+	pushd jar >/dev/null
+	if use gui; then
+		java-pkg_jar-from jlatexmath-1,flexdock,skinlf
+		java-pkg_jar-from jgoodies-looks-2.0,jrosetta
+		java-pkg_jar-from avalon-framework-4.2,jeuclid-core
+		java-pkg_jar-from xmlgraphics-commons-1.5,commons-io-1
+		java-pkg_jar-from jogl-2.1 jogl-all.jar jogl2.jar
+		java-pkg_jar-from gluegen-2.1 gluegen-rt.jar gluegen2-rt.jar
+		java-pkg_jar-from batik-1.7 batik-all.jar
+		java-pkg_jar-from fop fop.jar
+		java-pkg_jar-from javahelp jhall.jar
 		java-pkg_jar-from jlatexmath-fop-1
 		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
+		use xcos &&	java-pkg_jar-from jgraphx-2.1
+		use doc && java-pkg_jar-from saxon-9 saxon.jar saxon9he.jar
 	fi
 	if use test; then
 		java-pkg_jar-from junit-4 junit.jar junit4.jar
+		java-pkg_jar-from ant-junit
 	fi
 	popd
 
@@ -233,8 +228,11 @@ src_test() {
 src_install() {
 	default
 	prune_libtool_files --all
-	rm -rf "${D}"/usr/share/scilab/modules/*/tests
-	use bash-completion && newbashcomp "${FILESDIR}"/"${PN}".bash_completion "${PN}" 
+	rm -rf "${D}"/usr/share/scilab/modules/*/tests ||die
+	use bash-completion && newbashcomp "${FILESDIR}"/"${PN}".bash_completion "${PN}"
+	echo "SEARCH_DIRS_MASK=${EPREFIX}/usr/$(get_libdir)/scilab" \
+		> 50-"${PN}"
+	insinto /etc/revdep-rebuild && doins "50-${PN}"
 }
 
 pkg_postinst() {
