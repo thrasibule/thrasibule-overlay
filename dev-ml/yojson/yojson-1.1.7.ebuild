@@ -1,8 +1,8 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
 
 inherit findlib
 
@@ -16,9 +16,9 @@ KEYWORDS="~x86"
 IUSE="doc"
 
 DEPEND="dev-lang/ocaml
-		dev-ml/easy-format
-		dev-ml/biniou
-		dev-ml/cppo"
+		dev-ml/easy-format:=
+		dev-ml/biniou:=
+		dev-ml/cppo:="
 RDEPEND="${DEPEND}"
 
 src_compile() {
