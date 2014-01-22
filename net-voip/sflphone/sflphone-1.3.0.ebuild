@@ -1,42 +1,36 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-voip/sflphone/sflphone-1.0.1.ebuild,v 1.3 2012/03/02 14:58:32 elvanor Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-voip/sflphone/sflphone-1.2.3.ebuild,v 1.1 2013/08/03 16:13:58 elvanor Exp $
 
 EAPI=5
 
-inherit autotools eutils gnome2 kde4-base
+inherit autotools eutils kde4-base gnome2
 
-DESCRIPTION="A robust standards-compliant enterprise softphone"
+DESCRIPTION="SFLphone is a robust standards-compliant enterprise softphone, for desktop and embedded systems."
 HOMEPAGE="http://www.sflphone.org/"
-SRC_URI="http://projects.savoirfairelinux.com/attachments/download/5064/${P}.tar.gz"
+SRC_URI="https://projects.savoirfairelinux.com/attachments/download/9198/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug doxygen gnome gsm iax networkmanager speex static-libs"
+IUSE="debug doxygen gnome gsm kde networkmanager opus pulseaudio speex static-libs"
 
 CDEPEND="dev-cpp/commoncpp2
 	dev-libs/dbus-c++
 	dev-libs/expat
-	dev-libs/openssl
+	dev-libs/ilbc-rfc3951
 	dev-libs/libpcre
 	dev-libs/libyaml
+	dev-libs/openssl
 	media-libs/alsa-lib
-	media-libs/celt
-	media-libs/libilbc
 	media-libs/libsamplerate
-	media-sound/pulseaudio
+	opus? ( media-libs/opus )
+	pulseaudio? ( media-sound/pulseaudio )
 	net-libs/ccrtp
-	net-libs/iax
 	net-libs/libzrtpcpp
-	>=net-libs/pjsip-2.1
 	sys-apps/dbus
-	gsm? ( media-sound/gsm )
-	speex? ( media-libs/speex )
-	networkmanager? ( net-misc/networkmanager )
 	gnome? ( dev-libs/atk
 		dev-libs/check
-		dev-libs/log4c
 		gnome-base/libgnomeui
 		gnome-base/orbit:2
 		gnome-extra/evolution-data-server
@@ -48,77 +42,75 @@ CDEPEND="dev-cpp/commoncpp2
 		x11-libs/cairo
 		x11-libs/libICE
 		x11-libs/libnotify
-		x11-libs/libSM )"
+		x11-libs/libSM )
+	gsm? ( media-sound/gsm )
+	kde? ( kde-base/kdepimlibs
+		kde-base/kdelibs )
+	networkmanager? ( net-misc/networkmanager )
+	speex? ( media-libs/speex )"
 
 DEPEND="${CDEPEND}
+		>=net-libs/pjsip-2.1
 		>=dev-util/astyle-1.24
 		doxygen? ( app-doc/doxygen )
-		gnome? ( app-text/gnome-doc-utils )"
+		gnome? ( app-text/gnome-doc-utils )
+		virtual/pkgconfig"
 
 RDEPEND="${CDEPEND}"
 
-src_prepare() {
-	epatch "${FILESDIR}/${P}-makefile.patch" \
-		   "${FILESDIR}/${P}-ilbc.patch"
+REQUIRED_USE="|| ( gnome kde )"
 
-	cd daemon
-	#remove "target" from lib-names, remove dep to shipped pjsip
-	sed -i -e 's/-$(target)//' \
-		-e '/^\t\t\t-L/ d' \
-		-e 's!-I$(src)/libs/pjproject!-I/usr/include!' \
-		globals.mak || die "sed failed."
-	#respect CXXFLAGS
-	sed -i -e 's/CXXFLAGS="-g/CXXFLAGS="-g $CXXFLAGS /' \
-		configure.ac || die "sed failed."
-	rm -r libs/pjproject-2.0.1
+src_prepare() {
+	epatch "${FILESDIR}"/sflphone-externalpjsip.patch
+	cd "${S}/daemon"||die
+	rm -rf libs/pjproject-2.1.0 || die
 	eautoreconf
 
-	#TODO: remove shipped utilspp (from curlpp), use system one, see #55185
-
-	if use gnome; then
-		cd ../gnome
-		#fix as-needed
-		sed -i -e "s/X11_LIBS)/X11_LIBS) -lebook-1.2/" src/Makefile.am || die "sed failed."
-		eautoreconf
+	if use kde; then
+		S="${S}/kde"
+		sed -i -e "s|\.\.|\.\./sflphone-1.3.0/kde|" ../kde/src/klib/kcfg_settings.kcfgc||die
+		kde4-base_src_prepare
 	fi
 }
 
 src_configure() {
-	cd daemon
-	econf --disable-dependency-tracking $(use_with debug) \
-		$(use_with gsm) \
-		$(use_with networkmanager) \
-		$(use_with speex) \
-		$(use_enable static-libs static) \
-		$(use_enable doxygen) \
-		$(use_with iax iax2)
+	cd "${WORKDIR}/${P}/daemon"
+	econf --disable-dependency-tracking $(use_with debug) $(use_with gsm) \
+		$(use_with networkmanager) $(use_with speex) \
+		$(use_enable static-libs static) $(use_enable doxygen) \
+		$(use_with pulseaudio pulse) $(use_with opus)
 
+	#if use gnome && ! use kde; then
 	if use gnome; then
-		cd ../gnome
+		cd "${WORKDIR}/${P}/gnome" ||die
 		econf $(use_enable static-libs static)
 	fi
-	export APP_LDFLAGS=$(pkg-config --libs libpjproject)
+
+	use kde && kde4-base_src_configure
 }
 
 src_compile() {
-	cd daemon
+	cd "${WORKDIR}/${P}/daemon" ||die
 	emake
 
+	#if use gnome && ! use kde; then
 	if use gnome; then
-		cd ../gnome
+		cd ../gnome ||die
 		emake
 	fi
+	use kde && kde4-base_src_compile
 }
 
 src_install() {
-	cd daemon
-	emake -j1 DESTDIR="${D}" install
-	dodoc test/sflphonedrc-sample
-
 	if use gnome; then
-		cd ../gnome
+		S="${WORKDIR}/${P}/gnome"
 		gnome2_src_install
 	fi
+
+	use kde && kde4-base_src_install
+
+	cd "${WORKDIR}/${P}/daemon" ||die
+	emake -j1 DESTDIR="${D}" install
 }
 
 pkg_postinst() {
