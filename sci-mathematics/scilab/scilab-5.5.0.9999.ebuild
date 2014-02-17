@@ -7,25 +7,21 @@ EAPI=5
 JAVA_PKG_OPT_USE="gui"
 VIRTUALX_REQUIRED="manual"
 
-inherit autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
+inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 	fortran-2 git-r3 java-pkg-opt-2 toolchain-funcs virtualx
 
-# Comments:
-# - we don't rely on the configure script to find the right version of java
-# packages. This should fix bug #41821
 # Things that don't work:
 # - tests
-# - can't build without docs (-doc) 
 
 DESCRIPTION="Scientific software package for numerical computations"
-LICENSE="CeCILL-2.1"
 HOMEPAGE="http://www.scilab.org/"
 EGIT_REPO_URI="git://git.scilab.org/scilab"
-EGIT_BRANCH="master"
 
+LICENSE="CeCILL-2.1"
 SLOT="0"
+KEYWORDS=""
 IUSE="bash-completion debug +doc fftw +gui +matio mpi nls openmp
-	static-libs test tk +umfpack xcos"
+	static-libs test tk +umfpack +xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
 LINGUAS="fr_FR zh_CN zh_TW ru_RU ca_ES de_DE es_ES pt_BR ja_JP it_IT uk_UA pl_PL cs_CZ"
@@ -51,13 +47,13 @@ CDEPEND="dev-libs/libpcre
 		dev-java/commons-logging:0
 		>=dev-java/flexdock-1.2.4:0
 		dev-java/fop:0
-		dev-java/gluegen:2.1
+		=dev-java/gluegen-2.1.2:2.1
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
 		dev-java/jlatexmath:1
 		dev-java/jlatexmath-fop:1
-		dev-java/jogl:2.1
+		=dev-java/jogl-2.1.2:2.1
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.5
@@ -83,9 +79,9 @@ DEPEND="${CDEPEND}
 		dev-java/junit:4
 		gui? ( ${VIRTUALX_DEPEND} ) )"
 
-#EGIT_CHECKOUT_DIR="${WORKDIR}/${PN}"
-S="${S}/${PN}"
 DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
+
+S="${S}/${PN}"
 
 pkg_pretend() {
 	use doc && CHECKREQS_MEMORY="512M" check-reqs_pkg_pretend
@@ -101,6 +97,8 @@ pkg_setup() {
 	fi
 	FORTRAN_STANDARD="77 90"
 	fortran-2_pkg_setup
+	#bug 8053
+	unset F77
 	java-pkg-opt-2_pkg_setup
 
 	ALL_LINGUAS="en_US"
@@ -119,7 +117,8 @@ src_prepare() {
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
 		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
-		"${FILESDIR}/${P}-accessviolation.patch"
+		"${FILESDIR}/${P}-accessviolation.patch" \
+		"${FILESDIR}/${P}-nogui.patch"
 
 	append-ldflags $(no-as-needed)
 
