@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -20,9 +20,9 @@ RDEPEND="${DEPEND}"
 
 src_compile() {
 	emake -j1
-	use doc && make doc
+	use doc && emake doc
 }
 
-src_install() {
-	findlib_src_install
-}
+#src_install() {
+#	findlib_src_install
+#}
