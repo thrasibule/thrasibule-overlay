@@ -4,13 +4,12 @@
 
 EAPI=5
 
-EGIT_REPO_URI="git://github.com/JuliaLang/julia.git"
-
 inherit git-r3 elisp-common eutils multilib
 
 DESCRIPTION="High-performance programming language for technical computing"
 HOMEPAGE="http://julialang.org/"
-SRC_URI=""
+EGIT_REPO_URI="git://github.com/JuliaLang/julia.git"
+EGIT_MIN_CLONE_TYPE="single"
 
 LICENSE="MIT"
 SLOT="0"
@@ -81,7 +80,7 @@ src_test() {
 }
 
 src_install() {
-	emake install PREFIX="${D}/usr"
+	emake install DESTDIR="${D}"
 	cat > 99julia <<-EOF
 		LDPATH=${EROOT%/}/usr/$(get_libdir)/julia
 	EOF
