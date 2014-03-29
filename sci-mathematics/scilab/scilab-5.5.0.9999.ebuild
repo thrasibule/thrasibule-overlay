@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -20,7 +20,7 @@ EGIT_REPO_URI="git://git.scilab.org/scilab"
 LICENSE="CeCILL-2.1"
 SLOT="0"
 KEYWORDS=""
-IUSE="bash-completion debug +doc fftw +gui +matio mpi nls openmp
+IUSE="bash-completion debug doc emf fftw +gui +matio mpi nls openmp
 	static-libs test tk +umfpack +xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
 
@@ -39,6 +39,7 @@ CDEPEND="dev-libs/libpcre
 	sys-libs/ncurses
 	sys-libs/readline
 	virtual/lapack
+	emf? ( dev-java/freehep-graphicsio-emf )
 	fftw? ( sci-libs/fftw:3.0 )
 	gui? (
 		dev-java/avalon-framework:4.2
@@ -47,13 +48,13 @@ CDEPEND="dev-libs/libpcre
 		dev-java/commons-logging:0
 		>=dev-java/flexdock-1.2.4:0
 		dev-java/fop:0
-		=dev-java/gluegen-2.1.2:2.1
+		=dev-java/gluegen-2.1.4:2.1
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.0
 		dev-java/jlatexmath:1
 		dev-java/jlatexmath-fop:1
-		=dev-java/jogl-2.1.2:2.1
+		=dev-java/jogl-2.1.4:2.1
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/skinlf:0
 		dev-java/xmlgraphics-commons:1.5
@@ -74,7 +75,7 @@ DEPEND="${CDEPEND}
 			   dev-java/xml-commons-external:1.4
 			   dev-java/saxon:9 )
 		xcos? ( dev-lang/ocaml
-				dev-java/jgraphx:2.1 ) )
+				dev-java/jgraphx:2.5 ) )
 	test? (
 		dev-java/junit:4
 		gui? ( ${VIRTUALX_DEPEND} ) )"
@@ -120,8 +121,6 @@ src_prepare() {
 		"${FILESDIR}/${P}-accessviolation.patch" \
 		"${FILESDIR}/${P}-nogui.patch"
 
-	append-ldflags $(no-as-needed)
-
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
 	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
@@ -158,8 +157,12 @@ src_prepare() {
 		java-pkg_jar-from javahelp jhall.jar
 		java-pkg_jar-from jlatexmath-fop-1
 		java-pkg_jar-from xml-commons-external-1.4 xml-apis-ext.jar
-		use xcos &&	java-pkg_jar-from jgraphx-2.1
+		use xcos &&	java-pkg_jar-from jgraphx-2.5
 		use doc && java-pkg_jar-from saxon-9 saxon.jar saxon9he.jar
+	fi
+	if use emf; then
+		java-pkg_jar-from freehep-graphicsio-emf,freehep-graphics2d
+		java-pkg_jar-from freehep-graphicsio,freehep-io,freehep-util
 	fi
 	if use test; then
 		java-pkg_jar-from junit-4 junit.jar junit4.jar
@@ -199,6 +202,7 @@ src_configure() {
 		$(use_enable nls build-localization) \
 		$(use_enable static-libs static) \
 		$(use_enable test compilation-tests) \
+		$(use_with emf) \
 		$(use_with fftw) \
 		$(use_with gui) \
 		$(use_with gui javasci) \
