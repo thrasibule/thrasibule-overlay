@@ -16,5 +16,6 @@
   <flag name='matio'>Enable support for MATLAB file through <pkg>sci-libs/matio</pkg></flag>
   <flag name='xcos'>Enable building hybrid dynamic systems modeler and
   simulator Xcos</flag>
+  <flag name='emf'>Add suport for exporting to emf files</flag>
 </use>
 </pkgmetadata>
