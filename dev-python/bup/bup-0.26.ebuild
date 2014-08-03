@@ -10,7 +10,7 @@ inherit python-single-r1
 
 DESCRIPTION="Highly efficient file backup system based on the git packfile format"
 HOMEPAGE="https://github.com/bup/bup"
-SRC_URI="https://github.com/bup/${PN}/archive/${PV/_/-}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/bup/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 KEYWORDS="~amd64 ~x86"
 
 LICENSE="LGPL-2"
@@ -24,8 +24,6 @@ RDEPEND="${DEPEND}
 	fuse? ( dev-python/fuse-python )
 	parity? ( app-arch/par2cmdline )
 	tornado? ( www-servers/tornado  )"
-
-S="${WORKDIR}/${P/_/-}"
 
 src_configure() {
 	true
