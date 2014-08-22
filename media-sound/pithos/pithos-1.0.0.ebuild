@@ -6,7 +6,7 @@ EAPI=5
 
 DISTUTILS_SINGLE_IMPL=1
 
-PYTHON_COMPAT=( python3_3 )
+PYTHON_COMPAT=( python3_3 python3_4)
 inherit eutils distutils-r1
 
 if [[ ${PV} == 99999999 ]]; then
