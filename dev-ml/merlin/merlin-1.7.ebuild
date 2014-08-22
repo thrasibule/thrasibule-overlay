@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -7,8 +7,8 @@ EAPI=5
 inherit elisp-common
 
 DESCRIPTION="Context sensitive completion for Ocaml"
-HOMEPAGE="http://github.com/def-lkb/merlin/"
-SRC_URI="http://github.com/def-lkb/merlin/archive/v${PV}.tar.gz"
+HOMEPAGE="http://github.com/the-lambda-church/merlin/"
+SRC_URI="http://github.com/the-lambda-church/merlin/archive/v${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
@@ -22,16 +22,28 @@ DEPEND="dev-lang/ocaml
 RDEPEND="${DEPEND}"
 SITEFILE="50${PN}-gentoo.el"
 
-src_install() {
-	newbin ocamlmerlin.native ocamlmerlin
-	dobin omake-merlin jenga-merlin
-	dodoc README.md TODO CHANGELOG PROTOCOL.md
-	if use emacs; then 
-		elisp-compile emacs/merlin.el ||die
-		elisp-install "${PN}" emacs/merlin.{el,elc} ||die
-		elisp-site-file-install "${FILESDIR}/${SITEFILE}" || die
+src_prepare() {
+	sed -i -e "s|site-lisp|site-lisp/merlin|" Makefile
+}
+
+src_configure() {
+	econf --prefix "/usr" \
+	--vimdir "${D}/usr/share/vim/vimfiles"
+}
+
+src_compile() {
+	if ! use emacs; then
+		emake ocamlmerlin.native
+	else
+		emake all
 	fi
 }
+
+src_install() {
+	default
+	use emacs && elisp-site-file-install "${FILESDIR}/${SITEFILE}" || die
+}
+
 src_test() {
 	./test.sh ||die
 }
@@ -42,7 +54,7 @@ pkg_postinst() {
 	einfo "and type M-x merlin-mode to enable merlin in a buffer"
 	einfo "You might want to add a hook to tuareg to load it automatically"
 	einfo "(add-hook 'tuareg-mode-hook 'merlin-mode)"
-	einfo "To use autocomplete add (setq merlin-use-auto-complete-mode t)" 
+	einfo "To use autocomplete add (setq merlin-use-auto-complete-mode t)"
 }
 
 pkg_postrm() {
