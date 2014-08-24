@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -10,8 +10,8 @@ OASIS_BUILD_TESTS=1
 inherit oasis
 
 DESCRIPTION="OCaml bindings for the GSL library"
-HOMEPAGE="http://bitbucket.org/mmottl/gsl-ocaml"
-SRC_URI="${HOMEPAGE}/downloads/${P}.tar.gz"
+HOMEPAGE="http:///mmottl.github.io/gsl-ocaml"
+SRC_URI="http://github.com/mmottl/${PN}/releases/download/v${PV}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
