@@ -85,6 +85,7 @@ oasis_src_configure() {
 		$(oasis_use_enable ocamlopt is_native) \
 		${confargs} \
 		${oasis_configure_opts} \
+		"${oasis_configure_opts_arr[@]}" \
 		|| die
 }
 
