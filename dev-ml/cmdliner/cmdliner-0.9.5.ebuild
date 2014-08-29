@@ -10,13 +10,15 @@ DESCRIPTION="Declarative definition of command line interfaces for OCaml"
 HOMEPAGE="http://erratique.ch/software/cmdliner"
 SRC_URI="http://erratique.ch/software/${PN}/releases/${P}.tbz"
 
-LICENSE="BSD3"
+LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~x86"
 IUSE="doc"
 
-DEPEND=""
+DEPEND="dev-lang/ocaml:=[ocamlopt]"
 RDEPEND="${DEPEND}"
+
+DOCS=( README.md TODO.md CHANGES.md )
 
 src_compile() {
 	ocaml pkg/build.ml native=true native-dynlink=true
