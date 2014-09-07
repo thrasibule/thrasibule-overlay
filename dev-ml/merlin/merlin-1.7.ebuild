@@ -19,7 +19,8 @@ DEPEND="dev-lang/ocaml
 		dev-ml/menhir
 		dev-ml/sexplib
 		dev-ml/yojson"
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	vim? ( app-editors/vim[python] )"
 SITEFILE="50${PN}-gentoo.el"
 
 src_prepare() {
