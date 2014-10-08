@@ -31,6 +31,11 @@ src_configure() {
 		ANTLR="java -cp $(java-config -p antlr-3)"
 }
 
+src_install() {
+	prune_libtool_files
+	default
+}
+
 src_test() {
 	emake test
 }
