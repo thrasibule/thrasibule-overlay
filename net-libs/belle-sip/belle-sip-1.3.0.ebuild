@@ -6,14 +6,14 @@ EAPI="5"
 
 inherit eutils java-pkg-opt-2 multilib
 
-DESCRIPTION="Multimedia communication libraries written in C language for building VoIP applications"
-HOMEPAGE="http://www.pjsip.org/"
+DESCRIPTION="A SIP stack in C, with an object oriented API"
+HOMEPAGE="http://www.linphone.org/technical-corner/belle-sip"
 SRC_URI="http://download.savannah.gnu.org/releases/linphone/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="ssl test"
+IUSE="ssl static test"
 
 RDEPEND="=dev-libs/antlr-c-3.4
 	ssl? ( net-libs/polarssl )"
@@ -28,6 +28,7 @@ src_prepare() {
 src_configure() {
 	econf $(use_enable ssl tls) \
 		$(use_enable test tests) \
+		$(use_enable static) \
 		ANTLR="java -cp $(java-config -p antlr-3)"
 }
 

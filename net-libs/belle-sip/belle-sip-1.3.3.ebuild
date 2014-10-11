@@ -6,8 +6,8 @@ EAPI="5"
 
 inherit eutils git-r3 java-pkg-opt-2 multilib
 
-DESCRIPTION="Multimedia communication libraries written in C language for building VoIP applications"
-HOMEPAGE="http://www.pjsip.org/"
+DESCRIPTION="A SIP stack in C, with an object oriented API"
+HOMEPAGE="http://www.linphone.org/technical-corner/belle-sip"
 #SRC_URI="http://download.savannah.gnu.org/releases/linphone/${PN}/${P}.tar.gz"
 EGIT_REPO_URI="git://git.linphone.org/belle-sip"
 EGIT_COMMIT="${PV}"
