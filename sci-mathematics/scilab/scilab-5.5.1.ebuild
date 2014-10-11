@@ -19,7 +19,7 @@ SRC_URI="http://www.scilab.org/download/${PV}/${P}-src.tar.gz"
 
 LICENSE="CeCILL-2.1"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE="bash-completion debug doc emf fftw +gui +matio mpi nls openmp
 	static-libs test tk +umfpack +xcos"
 REQUIRED_USE="xcos? ( gui ) doc? ( gui )"
@@ -52,8 +52,8 @@ CDEPEND="dev-libs/libpcre
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.6
-		dev-java/jlatexmath:1
-		dev-java/jlatexmath-fop:1
+		>=dev-java/jlatexmath-1.0.3:1
+		>=dev-java/jlatexmath-fop-1.0.3:1
 		=dev-java/jogl-2.1.4:2.1
 		>=dev-java/jrosetta-1.0.4:0
 		dev-java/skinlf:0
@@ -117,10 +117,8 @@ src_prepare() {
 		"${FILESDIR}/${P}-gluegen.patch" \
 		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
 		"${FILESDIR}/${P}-accessviolation.patch" \
-		"${FILESDIR}/${P}-nogui.patch"
-
-	append-ldflags $(no-as-needed)
-	#append-ldflags -Wl,--no-allow-shlib-undefined
+		"${FILESDIR}/${P}-nogui.patch" \
+		"${FILESDIR}/${P}-missinglib.patch"
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
 	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
