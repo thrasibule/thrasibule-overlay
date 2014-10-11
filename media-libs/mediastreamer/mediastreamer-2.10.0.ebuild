@@ -18,7 +18,7 @@ KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
 # TODO: run-time test for ipv6: does it really need ortp[ipv6] ?
 IUSE="+alsa amr bindist coreaudio debug doc examples +filters g726 g729 gsm ilbc
 	ipv6 ntp-timestamp opengl opus +ortp oss pcap portaudio pulseaudio sdl silk +speex
-	static-libs test theora upnp v4l video x264 X"
+	static-libs test theora upnp vpx v4l video x264 X"
 
 REQUIRED_USE="|| ( oss alsa portaudio coreaudio pulseaudio )
 	video? ( || ( opengl sdl X ) )
@@ -46,6 +46,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 			sys-kernel/linux-headers )
 		theora? ( media-libs/libtheora )
 		sdl? ( media-libs/libsdl[video,X] )
+		vpx? ( media-libs/libvpx )
 		X? ( x11-libs/libX11
 			x11-libs/libXv ) )"
 DEPEND="${RDEPEND}
@@ -132,6 +133,7 @@ src_configure() {
 		$(use_enable theora)
 		$(use_enable upnp)
 		$(use_enable video)
+		$(use_enable vpx vp8)
 		$(use_enable v4l)
 		$(use_enable v4l libv4l2)
 		$(use_enable sdl)
