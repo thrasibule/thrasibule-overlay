@@ -4,11 +4,11 @@
 
 EAPI=5
 
-inherit base git-r3 multilib
+inherit base multilib
 
 DESCRIPTION="Open-source implementation of the Secure Real-time Transport Protocol (SRTP)"
 HOMEPAGE="http://srtp.sourceforge.net/srtp.html"
-EGIT_REPO_URI="http://github.com/cisco/libsrtp.git"
+SRC_URI="http://github.com/cisco/libsrtp/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
