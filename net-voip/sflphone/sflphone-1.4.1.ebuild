@@ -8,7 +8,7 @@ inherit autotools eutils kde4-base gnome2
 
 DESCRIPTION="SFLphone is a robust standards-compliant enterprise softphone, for desktop and embedded systems."
 HOMEPAGE="http://www.sflphone.org/"
-SRC_URI="https://projects.savoirfairelinux.com/attachments/download/9198/${P}.tar.gz"
+SRC_URI="http://projects.savoirfairelinux.com/attachments/download/14805/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -61,14 +61,15 @@ RDEPEND="${CDEPEND}"
 REQUIRED_USE="|| ( gnome kde )"
 
 src_prepare() {
-	epatch "${FILESDIR}"/sflphone-externalpjsip.patch
+	epatch "${FILESDIR}/sflphone-externalpjsip.patch" \
+		"${FILESDIR}/sflphone-zrtpcpp.patch"
 	cd "${S}/daemon"||die
-	rm -rf libs/pjproject-2.1.0 || die
+	rm -rf libs/pjproject-2.2.1 || die
 	eautoreconf
 
 	if use kde; then
 		S="${S}/kde"
-		sed -i -e "s|\.\.|\.\./sflphone-1.3.0/kde|" ../kde/src/klib/kcfg_settings.kcfgc||die
+		sed -i -e "s|\.\.|\.\./sflphone-1.4.0/kde|" ../kde/src/klib/kcfg_settings.kcfgc||die
 		kde4-base_src_prepare
 	fi
 }
