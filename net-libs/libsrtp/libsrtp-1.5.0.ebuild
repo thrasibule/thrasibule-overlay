@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit base multilib
+inherit base eutils multilib
 
 DESCRIPTION="Open-source implementation of the Secure Real-time Transport Protocol (SRTP)"
 HOMEPAGE="http://srtp.sourceforge.net/srtp.html"
@@ -14,6 +14,10 @@ LICENSE="BSD"
 SLOT="0"
 KEYWORDS="alpha amd64 ~arm ~hppa ia64 ppc ppc64 -sparc x86 ~x86-fbsd ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="aesicm console debug doc static-libs syslog"
+
+src_prepare() {
+	epatch ${FILESDIR}/${P}-symbol_collision.patch
+}
 
 src_configure() {
 	# stdout: default error output for messages in debug
