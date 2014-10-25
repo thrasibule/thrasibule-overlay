@@ -13,7 +13,7 @@ SRC_URI="http://www.pjsip.org/release/${PV}/pjproject-${PV}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="alsa cli doc examples ext-sound g711 g722 g7221 gsm l16 oss python speex srtp ssl"
+IUSE="alsa cli doc examples ext-sound g711 g722 g7221 gsm l16 oss python speex srtp ssl video"
 
 DEPEND="alsa? ( media-libs/alsa-lib )
 	gsm? ( media-sound/gsm )
@@ -45,7 +45,6 @@ src_configure() {
 		--enable-libsamplerate \
 		--disable-resample \
 		--disable-ilbc-codec \
-		--disable-video \
 		$(use_enable ssl )\
 		$(use_enable alsa sound) \
 		$(use_enable oss) \
@@ -56,6 +55,8 @@ src_configure() {
 		$(use_enable g7221 g7221-codec) \
 		$(use speex || echo '--disable-speex-codec --disable-speex-aec') \
 		$(use gsm || echo '--disable-gsm-codec') \
+		$(use_enable video) \
+		$(use video && echo '--enable-ffmpeg --disable-libyuv') \
 		--with-external-speex \
 		--with-external-pa \
 		--with-external-gsm \
