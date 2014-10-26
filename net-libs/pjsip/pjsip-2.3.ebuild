@@ -22,8 +22,8 @@ DEPEND="alsa? ( media-libs/alsa-lib )
 	ssl? ( dev-libs/openssl )
 	media-libs/libsamplerate
 	media-libs/portaudio
-	sys-apps/util-linux"
-	#ffmpeg? ( >=virtual/ffmpeg-9 )
+	sys-apps/util-linux
+	video? ( >=virtual/ffmpeg-9 )"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/pjproject-${PV}"
