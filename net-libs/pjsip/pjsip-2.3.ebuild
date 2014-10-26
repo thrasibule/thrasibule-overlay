@@ -53,10 +53,10 @@ src_configure() {
 		$(use_enable l16 l16-codec) \
 		$(use_enable g722 g722-codec) \
 		$(use_enable g7221 g7221-codec) \
-		$(use speex || echo '--disable-speex-codec --disable-speex-aec') \
-		$(use gsm || echo '--disable-gsm-codec') \
+		$(usex speex '' '--disable-speex-codec --disable-speex-aec') \
+		$(usex gsm '' '--disable-gsm-codec') \
 		$(use_enable video) \
-		$(use video && echo '--enable-ffmpeg --disable-libyuv') \
+		$(usex video '--enable-ffmpeg --disable-libyuv' '--disable-ffmpeg') \
 		--with-external-speex \
 		--with-external-pa \
 		--with-external-gsm \
