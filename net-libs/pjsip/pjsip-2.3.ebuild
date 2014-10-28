@@ -18,7 +18,7 @@ IUSE="alsa cli doc examples ext-sound g711 g722 g7221 gsm l16 oss python speex s
 DEPEND="alsa? ( media-libs/alsa-lib )
 	gsm? ( media-sound/gsm )
 	speex? ( media-libs/speex )
-	srtp? ( net-libs/srtp )
+	srtp? ( net-libs/libsrtp )
 	ssl? ( dev-libs/openssl )
 	media-libs/libsamplerate
 	media-libs/portaudio
