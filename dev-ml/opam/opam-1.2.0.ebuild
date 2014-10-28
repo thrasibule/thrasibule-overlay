@@ -14,8 +14,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="darcs git mercurial rsync"
 
 if [[ ${PV} != 9999 ]]; then
-	MY_PV="${PV/_/-}"
-	SRC_URI="https://github.com/ocaml/${PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/ocaml/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 else
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/ocaml/opam.git"
@@ -27,7 +26,8 @@ DEPEND="dev-lang/ocaml:=
 	dev-ml/ocamlgraph
 	dev-ml/cmdliner
 	dev-ml/cudf
-	dev-ml/dose3"
+	dev-ml/dose3
+	dev-ml/jsonm"
 
 RDEPEND="${DEPEND}
 	darcs? ( dev-vcs/darcs )
@@ -35,7 +35,9 @@ RDEPEND="${DEPEND}
 	mercurial? ( dev-vcs/mercurial )
 	rsync? ( net-misc/rsync )
 "
-S="${WORKDIR}/${PN}-${MY_PV}"
+src_compile() {
+	make -j1
+}
 
 pkg_postinst() {
 	elog 'You will need to run `opam init` before you start using opam. For'
