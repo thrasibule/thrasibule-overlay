@@ -23,6 +23,7 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-gccpragma.patch"
+	epatch "${FILESDIR}/${P}-deprecated.patch"
 }
 
 src_configure() {
