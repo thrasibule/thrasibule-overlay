@@ -4,11 +4,11 @@
 
 EAPI=5
 
-inherit autotools eutils multilib pax-utils
+inherit autotools eutils multilib pax-utils versionator
 
 DESCRIPTION="Video softphone based on the SIP protocol"
 HOMEPAGE="http://www.linphone.org/"
-SRC_URI="http://github.com/BelledonneCommunications/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="mirror://nongnu/${PN}/$(get_version_component_range 1-2).x/sources/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
