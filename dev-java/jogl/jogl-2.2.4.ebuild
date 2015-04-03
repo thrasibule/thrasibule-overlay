@@ -8,6 +8,8 @@
 
 EAPI=5
 
+RESTRICT="test"
+
 JAVA_PKG_IUSE="doc source test"
 
 inherit java-pkg-2 java-ant-2
@@ -45,8 +47,6 @@ DEPEND="${COMMON_DEP}
 	dev-java/ant-contrib:0
 	dev-java/ant-nodeps:0
 	dev-java/cpptasks:0"
-
-RESTRICT="test"
 
 S=${WORKDIR}/${MY_P}
 
