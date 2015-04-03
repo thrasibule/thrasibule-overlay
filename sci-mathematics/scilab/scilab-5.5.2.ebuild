@@ -50,7 +50,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/commons-logging:0
 		>=dev-java/flexdock-1.2.4:0
 		dev-java/fop:0
-		=dev-java/gluegen-2.24:2.2
+		=dev-java/gluegen-2.2.4:2.2
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
 		dev-java/jgoodies-looks:2.6
