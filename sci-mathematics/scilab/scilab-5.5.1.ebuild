@@ -37,7 +37,7 @@ CDEPEND="dev-libs/libpcre
 	>=sci-libs/arpack-3
 	sys-devel/gettext
 	sys-libs/ncurses
-	sys-libs/readline
+	sys-libs/readline:0
 	virtual/lapack
 	emf? (  dev-java/freehep-graphicsio
 			dev-java/freehep-graphicsio-emf
@@ -65,7 +65,7 @@ CDEPEND="dev-libs/libpcre
 		xcos? ( dev-java/jgraphx:2.5 )
 		)
 	matio? ( >=sci-libs/matio-1.5 )
-	tk? ( dev-lang/tk )
+	tk? ( dev-lang/tk:0 )
 	umfpack? ( sci-libs/umfpack )"
 
 RDEPEND="${CDEPEND}

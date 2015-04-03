@@ -37,7 +37,7 @@ CDEPEND="dev-libs/libpcre
 	>=sci-libs/arpack-3
 	sys-devel/gettext
 	sys-libs/ncurses
-	sys-libs/readline
+	sys-libs/readline:0
 	virtual/lapack
 	emf? ( dev-java/freehep-graphicsio-emf )
 	fftw? ( sci-libs/fftw:3.0 )
@@ -51,7 +51,7 @@ CDEPEND="dev-libs/libpcre
 		=dev-java/gluegen-2.1.4:2.1
 		dev-java/javahelp:0
 		dev-java/jeuclid-core:0
-		dev-java/jgoodies-looks:2.0
+		dev-java/jgoodies-looks:2.6
 		dev-java/jlatexmath:1
 		dev-java/jlatexmath-fop:1
 		=dev-java/jogl-2.1.4:2.1
@@ -60,7 +60,7 @@ CDEPEND="dev-libs/libpcre
 		dev-java/xmlgraphics-commons:1.5
 		virtual/opengl )
 	matio? ( >=sci-libs/matio-1.5 )
-	tk? ( dev-lang/tk )
+	tk? ( dev-lang/tk:0 )
 	umfpack? ( sci-libs/umfpack )"
 
 RDEPEND="${CDEPEND}
@@ -149,7 +149,7 @@ src_prepare() {
 	pushd jar >/dev/null
 	if use gui; then
 		java-pkg_jar-from jlatexmath-1,flexdock,skinlf
-		java-pkg_jar-from jgoodies-looks-2.0,jrosetta
+		java-pkg_jar-from jgoodies-looks-2.6,jrosetta
 		java-pkg_jar-from avalon-framework-4.2,jeuclid-core
 		java-pkg_jar-from xmlgraphics-commons-1.5,commons-io-1
 		java-pkg_jar-from jogl-2.1 jogl-all.jar jogl2.jar
