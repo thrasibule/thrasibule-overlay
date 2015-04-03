@@ -8,6 +8,8 @@
 
 EAPI=5
 
+RESTRICT="test" #require jardiff
+
 JAVA_PKG_IUSE="doc source test"
 
 inherit java-pkg-2 java-ant-2
@@ -37,8 +39,6 @@ DEPEND="${COMMON_DEP}
 	dev-java/ant-nodeps:0
 	dev-java/cpptasks:0
 	test? ( dev-java/junit:4 )"
-
-RESTRICT="test" #require jardiff
 
 S=${WORKDIR}/${MY_P}
 
