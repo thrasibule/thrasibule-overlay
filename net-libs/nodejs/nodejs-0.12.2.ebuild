@@ -49,8 +49,7 @@ src_configure() {
 	# Use target arch detection logic, see v8-3.18 ebuilds
 	case ${CHOST} in
 		i?86-*)
-			myarch="ia32"
-			myconf+=" -Dv8_target_arch=ia32" ;;
+			myarch="ia32" ;;
 		x86_64-*)
 			if [[ $ABI = x86 ]] ; then
 				myarch="ia32"
@@ -68,7 +67,8 @@ src_configure() {
 		--shared-libuv \
 		--shared-http-parser \
 		--shared-zlib \
-		--without-dtrace ${myconf} || die
+		--without-dtrace \
+		--dest-cpu=${myarch} ${myconf} || die
 }
 
 src_compile() {
