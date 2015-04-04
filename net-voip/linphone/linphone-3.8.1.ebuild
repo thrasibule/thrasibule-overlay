@@ -17,9 +17,9 @@ KEYWORDS="~amd64 ~x86"
 IUSE="assistant doc gsm-nonstandard gtk ipv6 libnotify ncurses nls speex sqlite srtp ssl test tools upnp video zrtp"
 
 RDEPEND="
-	>=media-libs/mediastreamer-2.11.0[video?,srtp?,zrtp?]
+	>=media-libs/mediastreamer-2.11.1[video?,srtp?,zrtp?]
 	=net-libs/belle-sip-1.4.0[ssl?]
-	>=net-libs/ortp-0.24.0
+	>=net-libs/ortp-0.24.1
 	virtual/udev
 	gtk? (
 		dev-libs/glib:2
