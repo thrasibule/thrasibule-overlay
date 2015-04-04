@@ -16,14 +16,15 @@ KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
 # Many cameras will not work or will crash an application if mediastreamer2 is
 # not built with v4l2 support (taken from configure.ac)
 # TODO: run-time test for ipv6: does it really need ortp[ipv6] ?
-IUSE="+alsa amr bindist coreaudio debug doc dtls examples +filters g726 g729 gsm ilbc mkv ntp-timestamp opengl opus +ortp oss pcap portaudio pulseaudio sdl silk +speex static-libs test theora upnp vpx v4l video x264 X zrtp"
+IUSE="+alsa amr bindist coreaudio debug doc dtls examples +filters g726 g729 gsm ilbc mkv ntp-timestamp opengl opus +ortp oss pcap portaudio pulseaudio sdl silk +speex srtp static-libs test theora upnp vpx v4l video x264 X zrtp"
 
 REQUIRED_USE="|| ( oss alsa portaudio coreaudio pulseaudio )
 	video? ( || ( opengl sdl X ) )
 	theora? ( video )
 	X? ( video )
 	v4l? ( video )
-	opengl? ( video )"
+	opengl? ( video )
+	zrtp? ( srtp)"
 
 RDEPEND="alsa? ( media-libs/alsa-lib )
 	g726? ( >=media-libs/spandsp-0.0.6_pre1 )
@@ -34,7 +35,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	portaudio? ( media-libs/portaudio )
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.21 )
 	speex? ( >=media-libs/speex-1.2_beta3 )
-	net-libs/libsrtp
+	srtp? ( net-libs/libsrtp )
 	upnp? ( net-libs/libupnp )
 	video? (
 		virtual/ffmpeg
@@ -142,6 +143,7 @@ src_configure() {
 		$(use_enable X xv)
 		$(use_enable zrtp)
 		$(use doc || echo ac_cv_path_DOXYGEN=false)
+		$(use srtp ||echo --with-srtp=none)
 	)
 
 	# Mac OS X Audio Queue is an audio recording facility, available on
