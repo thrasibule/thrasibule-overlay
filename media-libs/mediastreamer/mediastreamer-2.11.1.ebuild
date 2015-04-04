@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/media-libs/mediastreamer/mediastreamer-2.9.0.ebuild,v 1.5 2014/01/18 10:32:07 hwoarang Exp $
 
@@ -29,7 +29,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	g726? ( >=media-libs/spandsp-0.0.6_pre1 )
 	gsm? ( media-sound/gsm )
 	opus? ( media-libs/opus )
-	ortp? ( >=net-libs/ortp-0.24.0 )
+	ortp? ( >=net-libs/ortp-0.24.1 )
 	pcap? ( sys-libs/libcap )
 	portaudio? ( media-libs/portaudio )
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.21 )
@@ -38,7 +38,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	upnp? ( net-libs/libupnp )
 	video? (
 		virtual/ffmpeg
-		mkv? ( media-libs/matroska )
+		mkv? ( media-libs/libmatroska )
 		opengl? ( media-libs/glew
 			virtual/opengl
 			x11-libs/libX11 )
@@ -141,7 +141,6 @@ src_configure() {
 		$(use_enable X x11)
 		$(use_enable X xv)
 		$(use_enable zrtp)
-		--with-ebml=/usr/include
 		$(use doc || echo ac_cv_path_DOXYGEN=false)
 	)
 
