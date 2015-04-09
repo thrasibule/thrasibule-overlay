@@ -24,7 +24,7 @@ REQUIRED_USE="|| ( oss alsa portaudio coreaudio pulseaudio )
 	X? ( video )
 	v4l? ( video )
 	opengl? ( video )
-	zrtp? ( srtp)"
+	zrtp? ( srtp )"
 
 RDEPEND="alsa? ( media-libs/alsa-lib )
 	g726? ( >=media-libs/spandsp-0.0.6_pre1 )
