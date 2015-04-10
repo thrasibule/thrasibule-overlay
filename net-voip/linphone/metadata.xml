@@ -12,6 +12,7 @@
 			(needs gtk enabled)</flag>
 		<flag name='gsm-nonstandard'>Support non-standard GSM frequencies
 		</flag>
+		<flag name='lime'></flag>
 		<flag name='sqlite'>Turn on compilation of message storage</flag>
 		<flag name='srtp'></flag>
 		<flag name='zrtp'></flag>

@@ -12,9 +12,9 @@ SRC_URI="mirror://nongnu/${PN}/$(get_version_component_range 1-2).x/sources/${P}
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~x86"
 # TODO: run-time test for ipv6: does it need mediastreamer[ipv6]?
-IUSE="assistant doc gsm-nonstandard gtk ipv6 libnotify ncurses nls speex sqlite srtp ssl test tools upnp video zrtp"
+IUSE="assistant doc gsm-nonstandard gtk ipv6 libnotify lime ncurses nls speex sqlite srtp ssl test tools upnp video zrtp"
 
 RDEPEND="
 	>=media-libs/mediastreamer-2.11.1[video?,srtp?,zrtp?]
@@ -29,6 +29,7 @@ RDEPEND="
 		libnotify? ( x11-libs/libnotify )
 	)
 	gsm-nonstandard? ( media-libs/mediastreamer[gsm] )
+	lime? ( >=net-libs/polarssl-1.3 )
 	ncurses? (
 		sys-libs/readline:0
 		sys-libs/ncurses
@@ -81,6 +82,7 @@ src_configure() {
 		$(use_enable upnp)
 		$(use_enable gtk gtk_ui)
 		$(use_enable libnotify notify)
+		$(use_enable lime)
 		$(use_enable ipv6)
 		--disable-truespeech
 		$(use_enable gsm-nonstandard nonstandard-gsm)
