@@ -3,6 +3,10 @@
 # $Header: /var/cvsroot/gentoo-x86/media-libs/mediastreamer/ChangeLog,v 1.75 2014/01/18 10:32:07 hwoarang Exp $
 
   10 Apr 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/mediastreamer-2.11.1-fix-tools.patch, mediastreamer-2.11.1.ebuild:
+  media-libs/mediastreamer: media-libs/mediastreamer fix tools compilation
+
+  10 Apr 2015; Guillaume Horel <guillaume.horel@gmail.com>
   mediastreamer-2.11.1.ebuild, metadata.xml:
   media-libs/mediastreamer: cleanup use flags
 

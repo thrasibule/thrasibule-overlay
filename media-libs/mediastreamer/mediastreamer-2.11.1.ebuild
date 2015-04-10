@@ -97,7 +97,8 @@ src_prepare() {
 		configure.ac || die
 
 	epatch "${FILESDIR}/${P}-v4l-automagic.patch" \
-		"${FILESDIR}/${P}-tests.patch"
+		"${FILESDIR}/${P}-tests.patch" \
+		"${FILESDIR}/${P}-fix-tools.patch"
 
 	eautoreconf
 }
@@ -121,7 +122,6 @@ src_configure() {
 		$(use_enable filters)
 		$(use_enable g726 spandsp)
 		$(use_enable gsm)
-		$(use_enable mkv matroska)
 		$(use_enable ntp-timestamp)
 		$(use_enable opengl glx)
 		$(use_enable opus)
