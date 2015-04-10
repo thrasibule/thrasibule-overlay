@@ -1,0 +1,5 @@
+*mediastreamer-x264-1.5.1 (10 Apr 2015)
+
+  10 Apr 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +mediastreamer-x264-1.5.1.ebuild, +metadata.xml:
+  media-plugins/mediastreamer-x264: version bump
