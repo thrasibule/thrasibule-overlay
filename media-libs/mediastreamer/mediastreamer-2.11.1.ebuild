@@ -12,11 +12,11 @@ SRC_URI="mirror://nongnu/linphone/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0/4"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~x86"
 # Many cameras will not work or will crash an application if mediastreamer2 is
 # not built with v4l2 support (taken from configure.ac)
 # TODO: run-time test for ipv6: does it really need ortp[ipv6] ?
-IUSE="+alsa amr bindist coreaudio debug doc dtls examples +filters g726 g729 gsm ilbc mkv ntp-timestamp opengl opus +ortp oss pcap portaudio pulseaudio sdl silk +speex srtp static-libs test theora upnp vpx v4l video x264 X zrtp"
+IUSE="+alsa amr bindist coreaudio debug doc dtls examples +filters g726 g729 gsm ilbc ntp-timestamp opengl opus +ortp oss pcap portaudio pulseaudio sdl silk +speex srtp static-libs test theora upnp vpx v4l video x264 X zrtp"
 
 REQUIRED_USE="|| ( oss alsa portaudio coreaudio pulseaudio )
 	video? ( || ( opengl sdl X ) )
@@ -39,7 +39,6 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	upnp? ( net-libs/libupnp )
 	video? (
 		virtual/ffmpeg
-		mkv? ( media-libs/libmatroska )
 		opengl? ( media-libs/glew
 			virtual/opengl
 			x11-libs/libX11 )
