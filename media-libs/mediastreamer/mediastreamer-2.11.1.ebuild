@@ -62,7 +62,7 @@ DEPEND="${RDEPEND}
 PDEPEND="amr? ( !bindist? ( media-plugins/mediastreamer-amr ) )
 	g729? ( !bindist? ( media-plugins/mediastreamer-bcg729 ) )
 	ilbc? ( media-plugins/mediastreamer-ilbc )
-	video? ( x264? ( media-plugins/mediastreamer-x264 ) )
+	video? ( x264? ( >=media-plugins/mediastreamer-x264-1.5 ) )
 	silk? ( !bindist? ( media-plugins/mediastreamer-silk ) )"
 
 src_prepare() {
