@@ -1,0 +1,5 @@
+*belle-sip-1.4.1 (08 May 2015)
+
+  08 May 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +belle-sip-1.4.1.ebuild, +metadata.xml, -belle-sip-1.4.0.ebuild:
+  net-libs/belle-sip: version bump
