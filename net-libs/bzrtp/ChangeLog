@@ -1,0 +1,5 @@
+*bzrtp-1.0.2 (08 May 2015)
+
+  08 May 2015; Guillaume Horel <guillaume.horel@gmail.com> +bzrtp-1.0.2.ebuild,
+  +metadata.xml, -bzrtp-1.0.1.ebuild:
+  net-libs/bzrtp: version bump
