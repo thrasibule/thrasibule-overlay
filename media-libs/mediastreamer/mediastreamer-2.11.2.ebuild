@@ -8,7 +8,8 @@ inherit autotools eutils
 
 DESCRIPTION="Mediastreaming library for telephony application"
 HOMEPAGE="http://www.linphone.org/"
-SRC_URI="mirror://nongnu/linphone/${PN}/${P}.tar.gz"
+SRC_URI="https://github.com/BelledonneCommunications/${PN}2/archive/${PV}.tar.gz -> ${P}.tar.gz"
+#SRC_URI="mirror://nongnu/linphone/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0/4"
@@ -30,7 +31,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	g726? ( >=media-libs/spandsp-0.0.6_pre1 )
 	gsm? ( media-sound/gsm )
 	opus? ( media-libs/opus )
-	ortp? ( >=net-libs/ortp-0.24.1 )
+	ortp? ( >=net-libs/ortp-0.24.2 )
 	pcap? ( sys-libs/libcap )
 	portaudio? ( media-libs/portaudio )
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.21 )
@@ -63,6 +64,8 @@ PDEPEND="amr? ( !bindist? ( media-plugins/mediastreamer-amr ) )
 	ilbc? ( media-plugins/mediastreamer-ilbc )
 	video? ( x264? ( >=media-plugins/mediastreamer-x264-1.5 ) )
 	silk? ( !bindist? ( media-plugins/mediastreamer-silk ) )"
+
+S="${WORKDIR}/${PN}2-${PV}"
 
 src_prepare() {
 	# variable causes "command not found" warning and is not
