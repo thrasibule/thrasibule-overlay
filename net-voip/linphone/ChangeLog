@@ -1,0 +1,5 @@
+*linphone-3.8.2 (11 May 2015)
+
+  11 May 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +linphone-3.8.2.ebuild, -linphone-3.8.1.ebuild:
+  net-voip/linphone: version bump
