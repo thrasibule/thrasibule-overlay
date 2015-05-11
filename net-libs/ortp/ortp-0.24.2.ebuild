@@ -8,7 +8,8 @@ inherit eutils
 
 DESCRIPTION="Open Real-time Transport Protocol (RTP, RFC3550) stack"
 HOMEPAGE="http://www.linphone.org/"
-SRC_URI="mirror://nongnu/linphone/${PN}/sources/${P}.tar.gz"
+SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
+#SRC_URI="mirror://nongnu/linphone/${PN}/sources/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0/9"

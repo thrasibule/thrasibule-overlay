@@ -1,0 +1,5 @@
+*ortp-0.24.2 (11 May 2015)
+
+  11 May 2015; Guillaume Horel <guillaume.horel@gmail.com> +ortp-0.24.2.ebuild,
+  -ortp-0.24.1.ebuild:
+  net-libs/ortp: version bump
