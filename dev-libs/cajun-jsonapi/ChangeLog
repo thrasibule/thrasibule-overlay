@@ -1,0 +1,5 @@
+*cajun-jsonapi-2.0.3 (04 Jun 2015)
+
+  04 Jun 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +cajun-jsonapi-2.0.3.ebuild, +metadata.xml:
+  dev-libs/cajun-jsonapi: new ebuild
