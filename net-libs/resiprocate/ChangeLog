@@ -1,0 +1,6 @@
+*resiprocate-1.9.9 (04 Jun 2015)
+
+  04 Jun 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/resiprocate-1.9.9-berkdb.patch, +metadata.xml,
+  +resiprocate-1.9.9.ebuild:
+  net-libs/resiprocate: new package
