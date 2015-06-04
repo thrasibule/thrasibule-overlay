@@ -1,0 +1,5 @@
+*quantlib-1.4 (04 Jun 2015)
+
+  04 Jun 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/50quantlib-gentoo.el, +metadata.xml, +quantlib-1.4.ebuild:
+  dev-libs/quantlib: version bump
