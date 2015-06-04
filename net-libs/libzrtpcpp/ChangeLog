@@ -1,6 +1,12 @@
 # ChangeLog for net-libs/libzrtpcpp
-# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/net-libs/libzrtpcpp/ChangeLog,v 1.24 2014/09/13 16:24:26 mgorny Exp $
+
+*libzrtpcpp-4.4.0 (04 Jun 2015)
+
+  04 Jun 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +libzrtpcpp-4.4.0.ebuild:
+  net-libs/libzrtpcpp: version bump
 
 *libzrtpcpp-4.2.4 (13 Sep 2014)
 
