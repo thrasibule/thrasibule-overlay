@@ -1,0 +1,4 @@
+  05 Jun 2015; Guillaume Horel <guillaume.horel@gmail.com> +metadata.xml,
+  -files/zarith-1.0-bytecode.patch, -files/zarith-1.0-optnotrequired.patch,
+  -zarith-1.0.ebuild, -zarith-1.2.1.ebuild, zarith-1.3.ebuild:
+  dev-ml/zarith: clean up ebuilds

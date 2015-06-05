@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -13,14 +13,16 @@ SRC_URI="http://forge.ocamlcore.org/frs/download.php/1471/${P}.tgz"
 LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug doc mpir +ocamlopt"
+IUSE="debug doc +gmp mpir +ocamlopt"
 
 RDEPEND=">=dev-lang/ocaml-3.12.1:=[ocamlopt?]
-		 !mpir? ( dev-libs/gmp )
+		 gmp? ( dev-libs/gmp:0 )
 		 mpir? ( sci-libs/mpir )"
 
 DEPEND="${RDEPEND}
 		dev-lang/perl"
+
+REQUIRED_USE="^^ ( mpir gmp )"
 
 src_configure() {
 	MY_OPTS="-ocamllibdir /usr/$(get_libdir) -installdir \
