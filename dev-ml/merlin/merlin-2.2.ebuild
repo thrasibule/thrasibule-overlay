@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -12,13 +12,12 @@ SRC_URI="http://github.com/the-lambda-church/merlin/archive/v${PV}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64"
 IUSE="emacs vim"
 
-DEPEND="dev-lang/ocaml
-		dev-ml/menhir
-		dev-ml/sexplib
-		dev-ml/yojson"
+DEPEND="dev-lang/ocaml:=
+		dev-ml/findlib
+		dev-ml/yojson:="
 RDEPEND="${DEPEND}
 	vim? ( app-editors/vim[python] )"
 SITEFILE="50${PN}-gentoo.el"
@@ -29,7 +28,7 @@ src_prepare() {
 
 src_configure() {
 	econf --prefix "/usr" \
-	--vimdir "${D}/usr/share/vim/vimfiles"
+	--vimdir "/usr/share/vim/vimfiles"
 }
 
 src_compile() {

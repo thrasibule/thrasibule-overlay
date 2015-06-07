@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer>
+<email>guillaume.horel@gmail.com</email>
+<name>Guillaume Horel</name>
+</maintainer>
+<longdescription lang="en">
+Context sensitive completion for OCaml
+</longdescription>
+<use>
+<flag name='vim'>Install vim plugin</flag>
+</use>
+</pkgmetadata>
