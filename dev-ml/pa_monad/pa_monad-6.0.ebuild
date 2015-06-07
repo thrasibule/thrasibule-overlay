@@ -1,8 +1,8 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
 
 inherit findlib
 
@@ -12,7 +12,7 @@ SRC_URI="http://www.cas.mcmaster.ca/~carette/pa_monad/${PN}.tar.gz"
 
 LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE="doc"
 
 DEPEND="dev-lang/ocaml"
