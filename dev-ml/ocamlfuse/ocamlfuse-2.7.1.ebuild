@@ -1,17 +1,14 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
 
-EGIT_REPO_URI="git://github.com/astrada/ocamlfuse.git"
-
-inherit oasis git-2
+inherit oasis
 
 DESCRIPTION="OCaml binding for fuse"
 HOMEPAGE="http://sourceforge.net/apps/mediawiki/ocamlfuse"
-SRC_URI=""
-
+SRC_URI="https://github.com/astrada/ocamlfuse/archive/v2.7.1_cvs2.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -21,6 +18,6 @@ IUSE=""
 DEPEND=">=dev-ml/camlidl-0.9.5
 	dev-lang/ocaml"
 RDEPEND="${DEPEND}"
-S="${WORKDIR}/${P}-cvs~oasis1"
+S="${WORKDIR}/${P}_cvs2"
 
 DOCS=( "README.md" )
