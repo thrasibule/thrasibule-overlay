@@ -12,7 +12,7 @@ SRC_URI="https://github.com/astrada/ocamlfuse/archive/v2.7.1_cvs2.tar.gz -> ${P}
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE=""
 
 DEPEND=">=dev-ml/camlidl-0.9.5
