@@ -1,0 +1,6 @@
+*google-drive-ocamlfuse-0.5.16 (07 Jun 2015)
+
+  07 Jun 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +google-drive-ocamlfuse-0.5.16.ebuild, +metadata.xml,
+  -google-drive-ocamlfuse-0.5.2.ebuild:
+  dev-ml/google-drive-ocamlfuse: version bump
