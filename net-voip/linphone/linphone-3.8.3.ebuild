@@ -8,9 +8,8 @@ inherit autotools eutils multilib pax-utils versionator
 
 DESCRIPTION="Video softphone based on the SIP protocol"
 HOMEPAGE="http://www.linphone.org/"
-SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
-#SRC_URI="mirror://nongnu/${PN}/$(get_version_component_range 1-2).x/sources/${P}.tar.gz"
-
+#SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
+SRC_URI="https://www.github.com/BelledonneCommunications/linphone/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0/7"
 KEYWORDS="~x86"
@@ -69,7 +68,7 @@ src_prepare() {
 
 	# removing bundled libs dir prevent them to be reconf
 	rm -r mediastreamer2 oRTP || die
-
+	echo "#define LIBLINPHONE_GIT_VERSION \"${PV}\"" >liblinphone_gitversion.h
 	eautoreconf
 }
 
