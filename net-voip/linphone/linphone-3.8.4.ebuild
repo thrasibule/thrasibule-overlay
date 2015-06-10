@@ -25,7 +25,6 @@ RDEPEND="
 		dev-libs/glib:2
 		>=gnome-base/libglade-2.4.0:2.0
 		>=x11-libs/gtk+-2.4.0:2
-		assistant? ( >=net-libs/libsoup-2.26 )
 		libnotify? ( x11-libs/libnotify )
 	)
 	gsm-nonstandard? ( media-libs/mediastreamer[gsm] )
