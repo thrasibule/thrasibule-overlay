@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-java/antlr/antlr-3.1.3-r2.ebuild,v 1.4 2009/12/29 17:33:15 josejx Exp $
 
@@ -20,11 +20,11 @@ COMMON_DEPEND=">=dev-java/stringtemplate-3.2.1
 	 >=dev-java/antlr-2.7.7:0[java]
 	 gunit? ( dev-java/junit:4 )"
 
-RDEPEND=">=virtual/jre-1.5
+RDEPEND=">=virtual/jre-1.5:*
 	${COMMON_DEPEND}"
 
 DEPEND="${RDEPEND}
-	>=virtual/jdk-1.5"
+	>=virtual/jdk-1.5:*"
 
 java_prepare() {
 	rm -v lib/*.jar || die
