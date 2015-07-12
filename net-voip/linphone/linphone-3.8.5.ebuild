@@ -8,16 +8,16 @@ inherit autotools eutils multilib pax-utils versionator
 
 DESCRIPTION="Video softphone based on the SIP protocol"
 HOMEPAGE="http://www.linphone.org/"
-#SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
-SRC_URI="https://www.github.com/BelledonneCommunications/linphone/archive/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
+#SRC_URI="https://www.github.com/BelledonneCommunications/linphone/archive/${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0/7"
 KEYWORDS="~x86"
 # TODO: run-time test for ipv6: does it need mediastreamer[ipv6]?
-IUSE="assistant doc gsm-nonstandard gtk ipv6 libnotify lime ncurses nls speex sqlite srtp ssl test tools upnp video zrtp"
+IUSE="assistant doc dtls gsm-nonstandard gtk ipv6 libnotify lime ncurses nls speex sqlite srtp ssl test tools upnp video zrtp"
 
 RDEPEND="
-	>=media-libs/mediastreamer-2.11.2[video?,srtp?,zrtp?]
+	>=media-libs/mediastreamer-2.11.2[dtls?,srtp?,video?,zrtp?]
 	=net-libs/belle-sip-1.4.1[ssl?]
 	>=net-libs/ortp-0.24.2
 	virtual/udev
@@ -88,6 +88,7 @@ src_configure() {
 		$(use_enable speex)
 		# seems not used, TODO: ask in ml
 		$(use_enable test tests)
+		$(use_enable dtls)
 		$(use_enable video)
 		$(use_enable zrtp)
 		$(usex gtk "$(use_enable assistant)" "--disable-assistant")

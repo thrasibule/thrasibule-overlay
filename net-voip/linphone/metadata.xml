@@ -10,9 +10,10 @@
 	<use>
 		<flag name='assistant'>Turn on assistant compiling
 			(needs gtk enabled)</flag>
+		<flag name='dtls'></flag>
 		<flag name='gsm-nonstandard'>Support non-standard GSM frequencies
 		</flag>
-		<flag name='lime'></flag>
+		<flag name='lime'>secure messaging</flag>
 		<flag name='sqlite'>Turn on compilation of message storage</flag>
 		<flag name='srtp'></flag>
 		<flag name='zrtp'></flag>
