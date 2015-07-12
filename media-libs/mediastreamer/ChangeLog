@@ -2,6 +2,19 @@
 # Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/media-libs/mediastreamer/ChangeLog,v 1.75 2014/01/18 10:32:07 hwoarang Exp $
 
+*mediastreamer-9999 (12 Jul 2015)
+
+  12 Jul 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/mediastreamer-9999-fix-tools.patch,
+  +files/mediastreamer-9999-tests.patch,
+  +files/mediastreamer-9999-v4l-automagic.patch, +mediastreamer-9999.ebuild,
+  -files/mediastreamer-2.9.0-libav9.patch,
+  -files/mediastreamer-2.9.0-tests.patch,
+  -files/mediastreamer-2.9.0-underlinking.patch,
+  -files/mediastreamer-2.9.0-v4l-automagic.patch,
+  -files/mediastreamer-2.9.0-xxd.patch, -mediastreamer-2.9.0.ebuild:
+  media-libs/mediastreamer: version bump and drop 2.9.0
+
 *mediastreamer-2.11.2 (11 May 2015)
 
   11 May 2015; Guillaume Horel <guillaume.horel@gmail.com>
