@@ -57,7 +57,7 @@ DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen )
 	opengl? ( dev-util/xxdi )
-	test? ( >=dev-util/cunit-2.1_p2[ncurses] )
+	test? ( >=dev-util/cunit-2.1_p2 )
 	X? ( x11-proto/videoproto )"
 
 PDEPEND="amr? ( !bindist? ( media-plugins/mediastreamer-amr ) )
@@ -80,7 +80,7 @@ src_prepare() {
 
 	# change default paths
 	sed -i \
-		-e "s:\(prefix/share\):\1/${PN}:" \
+		-e "s:\(/share\):\1/${PN}:" \
 		configure.ac || die "patching configure.ac failed"
 
 	# fix doc installation dir
@@ -99,8 +99,7 @@ src_prepare() {
 		configure.ac || die
 
 	epatch "${FILESDIR}/${P}-v4l-automagic.patch" \
-		"${FILESDIR}/${P}-tests.patch" \
-		"${FILESDIR}/${P}-fix-tools.patch"
+		"${FILESDIR}/${P}-tests.patch"
 
 	eautoreconf
 }
