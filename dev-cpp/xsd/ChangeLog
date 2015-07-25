@@ -1,0 +1,6 @@
+*xsd-4.0.0 (25 Jul 2015)
+
+  25 Jul 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/4.0.0-disable_examples_and_tests.patch, +files/4.0.0-fix_include.patch,
+  +metadata.xml, +xsd-4.0.0.ebuild:
+  dev-cpp/xsd: version bump
