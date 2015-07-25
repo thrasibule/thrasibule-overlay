@@ -1,0 +1,5 @@
+*sofia-sip-9999 (25 Jul 2015)
+
+  25 Jul 2015; Guillaume Horel <guillaume.horel@gmail.com> +metadata.xml,
+  +sofia-sip-9999.ebuild:
+  net-libs/sofia-sip: live ebuild
