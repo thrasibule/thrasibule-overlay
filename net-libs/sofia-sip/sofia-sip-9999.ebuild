@@ -24,7 +24,7 @@ DEPEND="${RDEPEND}
 RESTRICT="test"
 
 DOCS=( AUTHORS ChangeLog README README.developers RELEASE TODO )
-
+EGIT_BRANCH="bc"
 src_prepare() {
 	./autogen.sh
 }
