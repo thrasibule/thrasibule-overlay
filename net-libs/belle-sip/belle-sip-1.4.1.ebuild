@@ -24,7 +24,7 @@ DEPEND="${RDEPEND}
 src_configure (){
 	./autogen.sh
 	econf $(use_enable ssl tls) \
-		$(usex test "" --disable-tests) \
+		$(use_enable test tests) \
 		ANTLR="java -cp $(java-config -p antlr-3)"
 }
 
