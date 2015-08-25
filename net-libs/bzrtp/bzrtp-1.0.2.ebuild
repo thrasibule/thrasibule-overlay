@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -15,7 +15,8 @@ SLOT="0"
 KEYWORDS="~x86"
 IUSE="debug doc test"
 
-DEPEND="net-libs/polarssl"
+DEPEND="net-libs/polarssl
+	dev-libs/libxml2"
 RDEPEND="${DEPEND}"
 
 src_test() {
