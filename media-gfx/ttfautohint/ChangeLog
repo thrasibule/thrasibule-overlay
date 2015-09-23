@@ -1,0 +1,3 @@
+  23 Sep 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  ttfautohint-1.3.ebuild:
+  media-gfx/ttfautohint: fix Header
