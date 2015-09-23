@@ -12,9 +12,10 @@ VIRTUALX_REQUIRED="manual"
 inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 	fortran-2 java-pkg-opt-2 toolchain-funcs virtualx
 
+MY_PV="6.0.0-alpha-1"
 DESCRIPTION="Scientific software package for numerical computations"
 HOMEPAGE="http://www.scilab.org/"
-SRC_URI="http://www.scilab.org/download/${PV}/${P}-src.tar.gz"
+SRC_URI="http://www.scilab.org/download/${MY_PV}/${PN}-${MY_PV}-src.tar.gz"
 
 LICENSE="CeCILL-2.1"
 SLOT="0"
@@ -30,7 +31,8 @@ for l in ${LINGUAS}; do
 	IUSE="${IUSE} linguas_${l}"
 done
 
-CDEPEND="dev-libs/libpcre
+CDEPEND="dev-cpp/eigen[sparse]
+	dev-libs/libpcre
 	dev-libs/libxml2:2
 	sci-libs/hdf5[mpi=]
 	>=sci-libs/arpack-3
@@ -75,7 +77,7 @@ DEPEND="${CDEPEND}
 	virtual/pkgconfig
 	debug? ( dev-util/lcov )
 	gui? (
-		>=virtual/jdk-1.6
+		>=virtual/jdk-1.8
 		doc? ( app-text/docbook-xsl-stylesheets
 			   dev-java/xml-commons-external:1.4
 			   dev-java/saxon:9 )
@@ -86,6 +88,8 @@ DEPEND="${CDEPEND}
 		gui? ( ${VIRTUALX_DEPEND} ) )"
 
 DOCS=( "ACKNOWLEDGEMENTS" "README_Unix" "Readme_Visual.txt" )
+
+S="${WORKDIR}/${PN}-${MY_PV}"
 
 pkg_pretend() {
 	use doc && CHECKREQS_MEMORY="512M" check-reqs_pkg_pretend
@@ -120,9 +124,6 @@ src_prepare() {
 	epatch \
 		"${FILESDIR}/${P}-followlinks.patch" \
 		"${FILESDIR}/${P}-gluegen.patch" \
-		"${FILESDIR}/${P}-fix-random-runtime-failure.patch" \
-		"${FILESDIR}/${P}-accessviolation.patch" \
-		"${FILESDIR}/${P}-missinglib.patch" \
 		"${FILESDIR}/${P}-batik-1.8.patch" \
 		"${FILESDIR}/${P}-fop-2.0.patch" \
 		"${FILESDIR}/${P}-xmlgraphics-common-2.0.patch"
@@ -132,7 +133,7 @@ src_prepare() {
 	append-ldflags $(no-as-needed)
 
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
-	use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
+	#use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
 	# use the LINGUAS variable that we set
 	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac ||die
