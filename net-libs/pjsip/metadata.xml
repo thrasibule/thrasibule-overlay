@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer>
+<email>guillaume.horel@gmail.com</email>
+<name>Guillaume Horel</name>
+</maintainer>
+<longdescription lang="en">
+</longdescription>
+<use>
+<flag name='cli'>install command line tools</flag>
+<flag name='ext-sound'></flag>
+<flag name='g711'></flag>
+<flag name='g722'></flag>
+<flag name='g7221'></flag>
+<flag name='l16'></flag>
+<flag name='srtp'></flag>
+<flag name='python'>install python bindings</flag>
+<flag name='video'></flag>
+</use>
+</pkgmetadata>

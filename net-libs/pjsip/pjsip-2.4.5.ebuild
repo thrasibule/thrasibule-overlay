@@ -31,8 +31,7 @@ S="${WORKDIR}/pjproject-${PV}"
 src_prepare() {
 	epatch "${FILESDIR}/${P}-libsamplerate.patch" \
 		"${FILESDIR}/no_libasound.patch" \
-		"${FILESDIR}/reduce_pjmedia_linkage.patch" \
-		"${FILESDIR}/reduce_pjlib_linkage.patch"
+		"${FILESDIR}/reduce_pjmedia_linkage.patch"
 	epatch_user
 	rm -rf third_party/{gsm,ilbc,portaudio,resample,speex,srtp}
 }

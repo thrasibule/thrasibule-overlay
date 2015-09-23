@@ -1,0 +1,9 @@
+*pjsip-2.4.5 (23 Sep 2015)
+
+  23 Sep 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/pjsip-2.4.5-libsamplerate.patch,
+  +files/pjsip-2.4.5-reduce-pjlib-linkage.patch, +metadata.xml,
+  +pjsip-2.4.5.ebuild, -files/disable-samples.patch,
+  -files/pjsip-2.1-libav.patch, -files/pjsip-2.1-libsamplerate.patch,
+  -files/pjsip-2.1-srtp.patch, -pjsip-2.1.ebuild, pjsip-2.3.ebuild:
+  net-libs/pjsip: version bump and drop old version
