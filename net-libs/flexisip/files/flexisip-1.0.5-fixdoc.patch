@@ -1,0 +1,17 @@
+--- flexisip-1.0.5-orig/doc/latex_include_generator.sh	2015-09-24 21:11:31.051080409 -0400
++++ flexisip-1.0.5/doc/latex_include_generator.sh	2015-09-24 21:12:14.154649307 -0400
+@@ -6,11 +6,11 @@
+ 
+ #../src/flexisip --dump-format tex --dump-default all > flexisip.tmp.tex
+ 
+-echo '\\begin{verbatim}' > flexisip-help.tmp.tex
++echo '\begin{verbatim}' > flexisip-help.tmp.tex
+ ../src/flexisip --help | sed 'sY../src/YY'>> flexisip-help.tmp.tex
+-echo '\\end{verbatim}' >> flexisip-help.tmp.tex
++echo '\end{verbatim}' >> flexisip-help.tmp.tex
+ 
+ modules=`../src/flexisip --dump-default all | grep module:: | sed 's/\[//g' | sed 's/\]//g'`
+ for m in $modules
+-do ../src/flexisip --dump-format tex --dump-default $m > `echo $m | sed 's/://g'`.tmp.tex
++do ../src/flexisip --dump-format tex --dump-default $m |sed 's/\([&$]\)/\\\1/g' > `echo $m | sed 's/://g'`.tmp.tex
+ done

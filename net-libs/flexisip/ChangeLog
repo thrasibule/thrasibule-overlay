@@ -1,0 +1,5 @@
+*flexisip-1.0.5 (25 Sep 2015)
+
+  25 Sep 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/flexisip-1.0.5-fixdoc.patch, +flexisip-1.0.5.ebuild, +metadata.xml:
+  net-libs/flexisip: version bump
