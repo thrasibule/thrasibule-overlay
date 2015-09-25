@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-voip/linphone/linphone-3.6.1.ebuild,v 1.1 2013/10/09 18:58:15 hasufell Exp $
+# $Id$
 
 EAPI=5
 
@@ -31,7 +31,7 @@ RDEPEND="
 	lime? ( >=net-libs/polarssl-1.3 )
 	ncurses? (
 		sys-libs/readline:0
-		sys-libs/ncurses
+		sys-libs/ncurses:0
 	)
 	sqlite? ( dev-db/sqlite:3 )
 	tools? ( dev-libs/libxml2 )
@@ -87,7 +87,7 @@ src_configure() {
 		$(use_enable gsm-nonstandard nonstandard-gsm)
 		$(use_enable speex)
 		# seems not used, TODO: ask in ml
-		$(use_enable test tests)
+		$(usex test "" --disable-tests)
 		$(use_enable dtls)
 		$(use_enable video)
 		$(use_enable zrtp)
