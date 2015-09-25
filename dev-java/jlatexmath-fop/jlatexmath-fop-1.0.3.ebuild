@@ -1,6 +1,6 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -18,7 +18,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 CDEPEND="dev-java/jlatexmath:1
-	dev-java/xmlgraphics-commons:1.5
+	dev-java/xmlgraphics-commons:2
 	>=dev-java/fop-0.9.5:0"
 DEPEND=">=virtual/jdk-1.5
 	${CDEPEND}"
