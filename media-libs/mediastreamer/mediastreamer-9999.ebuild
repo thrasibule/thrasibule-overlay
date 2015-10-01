@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/mediastreamer/mediastreamer-2.9.0.ebuild,v 1.5 2014/01/18 10:32:07 hwoarang Exp $
+# $Id$
 
 EAPI=5
 
@@ -14,7 +14,7 @@ EGIT_REPO_URI="git://git.linphone.org/mediastreamer2"
 
 LICENSE="GPL-2"
 SLOT="0/5"
-KEYWORDS="~x86"
+KEYWORDS=""
 # Many cameras will not work or will crash an application if mediastreamer2 is
 # not built with v4l2 support (taken from configure.ac)
 # TODO: run-time test for ipv6: does it really need ortp[ipv6] ?
