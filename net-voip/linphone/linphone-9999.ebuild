@@ -4,12 +4,12 @@
 
 EAPI=5
 
-inherit autotools eutils multilib pax-utils versionator
+inherit autotools eutils git-r3 multilib pax-utils versionator
 
 DESCRIPTION="Video softphone based on the SIP protocol"
 HOMEPAGE="http://www.linphone.org/"
-#SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
-SRC_URI="https://www.github.com/BelledonneCommunications/linphone/archive/${PV}.tar.gz -> ${P}.tar.gz"
+EGIT_REPO_URI="https://github.com/BelledonneCommunications/linphone.git"
+EGIT_MIN_CLONE_TYPE="single"
 LICENSE="GPL-2"
 SLOT="0/7"
 KEYWORDS="~x86"
@@ -112,4 +112,16 @@ src_install() {
 src_test() {
 	cd tester ||die
 	./liblinphone_tester
+}
+
+pkg_preinst() {
+	gnome2_icon_savelist
+}
+
+pkg_postinst() {
+	gnome2_icon_cache_update
+}
+
+pkg_postrm() {
+	gnome2_icon_cache_update
 }

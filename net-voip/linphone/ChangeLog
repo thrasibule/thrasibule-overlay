@@ -1,3 +1,9 @@
+*linphone-9999 (04 Oct 2015)
+
+  04 Oct 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +linphone-9999.ebuild, linphone-3.8.5.ebuild:
+  net-voip/linphone: add live version
+
 *linphone-3.8.5 (12 Jul 2015)
 
   12 Jul 2015; Guillaume Horel <guillaume.horel@gmail.com>
