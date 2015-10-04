@@ -4,11 +4,13 @@
 
 EAPI=5
 
-inherit autotools eutils
+inherit autotools eutils git-r3
 
 DESCRIPTION="Mediastreaming library for telephony application"
 HOMEPAGE="http://www.linphone.org/"
-SRC_URI="https://github.com/BelledonneCommunications/${PN}2/archive/${PV}.tar.gz -> ${P}.tar.gz"
+EGIT_REPO_URI="git://git.linphone.org/mediastreamer2.git"
+EGIT_COMMIT="2.11.2"
+#SRC_URI="https://github.com/BelledonneCommunications/${PN}2/archive/${PV}.tar.gz -> ${P}.tar.gz"
 #SRC_URI="mirror://nongnu/linphone/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
@@ -65,7 +67,7 @@ PDEPEND="amr? ( !bindist? ( media-plugins/mediastreamer-amr ) )
 	video? ( x264? ( >=media-plugins/mediastreamer-x264-1.5 ) )
 	silk? ( !bindist? ( media-plugins/mediastreamer-silk ) )"
 
-S="${WORKDIR}/${PN}2-${PV}"
+#S="${WORKDIR}/${PN}2-${PV}"
 
 src_prepare() {
 	# variable causes "command not found" warning and is not
