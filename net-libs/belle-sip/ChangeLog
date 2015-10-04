@@ -1,3 +1,9 @@
+*belle-sip-9999 (04 Oct 2015)
+
+  04 Oct 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +belle-sip-9999.ebuild, belle-sip-1.4.1.ebuild:
+  add live version
+
   20 Jul 2015; Guillaume Horel <guillaume.horel@gmail.com>
   -belle-sip-1.3.0.ebuild, -belle-sip-1.3.3.ebuild,
   -files/belle-sip-1.3.0-deprecated.patch,

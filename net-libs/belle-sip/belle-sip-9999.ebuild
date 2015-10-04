@@ -4,11 +4,12 @@
 
 EAPI="5"
 
-inherit eutils multilib
+inherit eutils git-r3 multilib
 
 DESCRIPTION="A SIP stack in C, with an object oriented API"
 HOMEPAGE="http://www.linphone.org/technical-corner/belle-sip"
-SRC_URI="https://github.com/BelledonneCommunications/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+EGIT_REPO_URI="http://github.com/BelledonneCommunications/${PN}.git"
+#SRC_URI="https://github.com/BelledonneCommunications/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
