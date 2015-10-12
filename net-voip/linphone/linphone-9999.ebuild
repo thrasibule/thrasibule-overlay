@@ -18,7 +18,7 @@ IUSE="assistant doc dtls gsm-nonstandard gtk ipv6 libnotify lime ncurses nls spe
 
 RDEPEND="
 	>=media-libs/mediastreamer-2.11.2[dtls?,srtp?,video?,zrtp?]
-	=net-libs/belle-sip-1.4.1[ssl?]
+	>=net-libs/belle-sip-1.4.1[ssl?]
 	>=net-libs/ortp-0.24.2
 	virtual/udev
 	gtk? (
