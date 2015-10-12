@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit autotools eutils git-r3 multilib pax-utils versionator
+inherit autotools eutils git-r3 gnome2-utils multilib pax-utils versionator
 
 DESCRIPTION="Video softphone based on the SIP protocol"
 HOMEPAGE="http://www.linphone.org/"
