@@ -1,0 +1,5 @@
+*menhir-20151026 (29 Oct 2015)
+
+  29 Oct 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +menhir-20151026.ebuild, +metadata.xml:
+  version bump
