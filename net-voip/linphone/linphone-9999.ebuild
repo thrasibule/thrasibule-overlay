@@ -11,15 +11,15 @@ HOMEPAGE="http://www.linphone.org/"
 EGIT_REPO_URI="https://github.com/BelledonneCommunications/linphone.git"
 EGIT_MIN_CLONE_TYPE="single"
 LICENSE="GPL-2"
-SLOT="0/7"
-KEYWORDS="~x86"
+SLOT="0/8"
+KEYWORDS=""
 # TODO: run-time test for ipv6: does it need mediastreamer[ipv6]?
 IUSE="assistant doc dtls gsm-nonstandard gtk ipv6 libnotify lime ncurses nls speex sqlite srtp ssl test tools upnp video zrtp"
 
 RDEPEND="
-	>=media-libs/mediastreamer-2.11.2[dtls?,srtp?,video?,zrtp?]
+	>=media-libs/mediastreamer-2.12.0[dtls?,srtp?,video?,zrtp?]
 	>=net-libs/belle-sip-1.4.1[ssl?]
-	>=net-libs/ortp-0.24.2
+	>=net-libs/ortp-0.25.0
 	virtual/udev
 	gtk? (
 		dev-libs/glib:2

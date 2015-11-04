@@ -1,3 +1,10 @@
+*linphone-3.9.0 (04 Nov 2015)
+
+  04 Nov 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +linphone-3.9.0.ebuild, -linphone-3.8.1.ebuild, -linphone-3.8.5.ebuild,
+  linphone-9999.ebuild:
+  version bump
+
 *linphone-9999 (04 Oct 2015)
 
   04 Oct 2015; Guillaume Horel <guillaume.horel@gmail.com>

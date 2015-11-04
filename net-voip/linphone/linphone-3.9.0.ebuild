@@ -4,22 +4,22 @@
 
 EAPI=5
 
-inherit autotools eutils multilib pax-utils versionator
+inherit eutils multilib pax-utils versionator
 
 DESCRIPTION="Video softphone based on the SIP protocol"
 HOMEPAGE="http://www.linphone.org/"
-#SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
-SRC_URI="https://www.github.com/BelledonneCommunications/linphone/archive/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="mirror://nongnu/linphone/3.9.x/sources/${P}.tar.gz"
+
 LICENSE="GPL-2"
-SLOT="0/7"
+SLOT="0/8"
 KEYWORDS="~x86"
 # TODO: run-time test for ipv6: does it need mediastreamer[ipv6]?
 IUSE="assistant doc dtls gsm-nonstandard gtk ipv6 libnotify lime ncurses nls speex sqlite srtp ssl test tools upnp video zrtp"
 
 RDEPEND="
-	>=media-libs/mediastreamer-2.11.2[dtls?,srtp?,video?,zrtp?]
-	=net-libs/belle-sip-1.4.1[ssl?]
-	>=net-libs/ortp-0.24.2
+	>=media-libs/mediastreamer-2.12.0[dtls?,srtp?,video?,zrtp?]
+	>=net-libs/belle-sip-1.4.1[ssl?]
+	>=net-libs/ortp-0.25.0
 	virtual/udev
 	gtk? (
 		dev-libs/glib:2
@@ -64,11 +64,6 @@ src_prepare() {
 	sed -i \
 		-e "s:lib\(/liblinphone\):$(get_libdir)\1:" configure.ac \
 		|| die "patching configure.ac failed"
-
-	# removing bundled libs dir prevent them to be reconf
-	rm -r mediastreamer2 oRTP || die
-	echo "#define LIBLINPHONE_GIT_VERSION \"${PV}\"" >liblinphone_gitversion.h
-	eautoreconf
 }
 
 src_configure() {
