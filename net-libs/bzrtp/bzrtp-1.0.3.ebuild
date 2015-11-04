@@ -22,3 +22,8 @@ RDEPEND="${DEPEND}"
 src_test() {
 	cd test && ./bzrtpTest
 }
+
+src_install() {
+	default
+	prune_libtool_files
+}
