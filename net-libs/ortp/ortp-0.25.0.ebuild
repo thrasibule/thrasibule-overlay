@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-libs/ortp/ortp-0.23.0.ebuild,v 1.2 2015/02/25 10:31:24 pacho Exp $
+# $Id$
 
 EAPI=5
 
@@ -8,11 +8,11 @@ inherit eutils
 
 DESCRIPTION="Open Real-time Transport Protocol (RTP, RFC3550) stack"
 HOMEPAGE="http://www.linphone.org/"
-SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
-#SRC_URI="mirror://nongnu/linphone/${PN}/sources/${P}.tar.gz"
+#SRC_URI="https://www.linphone.org/snapshots/sources/${PN}/${P}.tar.gz"
+SRC_URI="mirror://nongnu/linphone/${PN}/sources/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
-SLOT="0/9"
+SLOT="0/10"
 KEYWORDS="~x86"
 IUSE="debug doc examples minimal ntp-timestamp ssl"
 

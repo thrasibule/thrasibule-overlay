@@ -1,3 +1,9 @@
+*ortp-0.25.0 (04 Nov 2015)
+
+  04 Nov 2015; Guillaume Horel <guillaume.horel@gmail.com> +ortp-0.25.0.ebuild,
+  -ortp-0.24.2.ebuild, ortp-9999.ebuild:
+  version bump
+
 *ortp-9999 (12 Jul 2015)
 
   12 Jul 2015; Guillaume Horel <guillaume.horel@gmail.com> +ortp-9999.ebuild:

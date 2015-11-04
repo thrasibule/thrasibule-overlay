@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-libs/ortp/ortp-0.23.0.ebuild,v 1.2 2015/02/25 10:31:24 pacho Exp $
+# $Id$
 
 EAPI=5
 
@@ -11,8 +11,8 @@ HOMEPAGE="http://www.linphone.org/"
 EGIT_REPO_URI="git://git.linphone.org/ortp"
 
 LICENSE="LGPL-2.1"
-SLOT="0/9"
-KEYWORDS="~x86"
+SLOT="0/10"
+KEYWORDS=""
 IUSE="debug doc examples minimal ntp-timestamp ssl"
 
 RDEPEND="ssl? ( dev-libs/openssl:0= )"
