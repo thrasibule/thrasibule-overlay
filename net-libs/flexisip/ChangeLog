@@ -1,3 +1,10 @@
+*flexisip-1.0.6 (04 Nov 2015)
+
+  04 Nov 2015; Guillaume Horel <guillaume.horel@gmail.com>
+  +files/flexisip-1.0.6-fixdoc.patch, +flexisip-1.0.6.ebuild,
+  -files/flexisip-1.0.5-fixdoc.patch, -flexisip-1.0.5.ebuild:
+  version bump
+
 *flexisip-1.0.5 (25 Sep 2015)
 
   25 Sep 2015; Guillaume Horel <guillaume.horel@gmail.com>
