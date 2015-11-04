@@ -13,7 +13,7 @@ EGIT_REPO_URI="http://github.com/BelledonneCommunications/${PN}.git"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 IUSE="ssl test"
 
 RDEPEND=">=dev-libs/antlr-c-3.4
@@ -32,4 +32,9 @@ src_configure (){
 src_test() {
 	cd tester||die
 	./belle_sip_tester||die
+}
+
+src_install() {
+	default
+	prune_libtool_files
 }

@@ -32,3 +32,8 @@ src_test() {
 	cd tester||die
 	./belle_sip_tester||die
 }
+
+src_install() {
+	default
+	prune_libtools_files
+}
