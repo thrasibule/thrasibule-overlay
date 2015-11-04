@@ -16,7 +16,7 @@ KEYWORDS="~x86"
 IUSE=""
 
 DEPEND="dev-libs/boost
-	dev-libs/re2c"
+	dev-util/re2c"
 RDEPEND="sci-libs/clasp
 	sci-libs/gringo"
 
