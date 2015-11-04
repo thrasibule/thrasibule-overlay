@@ -1,5 +1,0 @@
-*biber-2.0 (27 Apr 2015)
-
-  27 Apr 2015; Guillaume Horel <guillaume.horel@gmail.com> +biber-2.0.ebuild,
-  +files/biber-2.0-drop-mozilla-ca.patch, +metadata.xml:
-  dev-tex/biber: version bump
