@@ -13,7 +13,7 @@ HOMEPAGE="http://www.linphone.org/"
 EGIT_REPO_URI="git://git.linphone.org/mediastreamer2"
 
 LICENSE="GPL-2"
-SLOT="0/5"
+SLOT="0/6"
 KEYWORDS=""
 # Many cameras will not work or will crash an application if mediastreamer2 is
 # not built with v4l2 support (taken from configure.ac)

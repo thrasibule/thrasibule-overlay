@@ -11,31 +11,31 @@ HOMEPAGE="http://www.linphone.org/"
 SRC_URI="mirror://nongnu/linphone/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
-SLOT="0/3"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+SLOT="0/6"
+KEYWORDS="~x86"
 # Many cameras will not work or will crash an application if mediastreamer2 is
 # not built with v4l2 support (taken from configure.ac)
 # TODO: run-time test for ipv6: does it really need ortp[ipv6] ?
-IUSE="+alsa amr bindist coreaudio debug doc examples +filters g726 g729 gsm ilbc
-	ipv6 ntp-timestamp opengl opus +ortp oss pcap portaudio pulseaudio sdl silk +speex
-	static-libs test theora upnp vpx v4l video x264 X"
+IUSE="+alsa amr bindist coreaudio debug doc dtls examples +filters g726 g729 gsm ilbc ntp-timestamp opengl opus +ortp oss pcap portaudio pulseaudio sdl silk +speex srtp static-libs test theora upnp vpx v4l video x264 X zrtp"
 
 REQUIRED_USE="|| ( oss alsa portaudio coreaudio pulseaudio )
 	video? ( || ( opengl sdl X ) )
 	theora? ( video )
 	X? ( video )
 	v4l? ( video )
-	opengl? ( video )"
+	opengl? ( video )
+	zrtp? ( srtp )"
 
 RDEPEND="alsa? ( media-libs/alsa-lib )
 	g726? ( >=media-libs/spandsp-0.0.6_pre1 )
 	gsm? ( media-sound/gsm )
 	opus? ( media-libs/opus )
-	ortp? ( >=net-libs/ortp-0.21.0[ipv6?] )
+	ortp? ( >=net-libs/ortp-0.25.0 )
 	pcap? ( sys-libs/libcap )
 	portaudio? ( media-libs/portaudio )
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.21 )
 	speex? ( >=media-libs/speex-1.2_beta3 )
+	srtp? ( net-libs/libsrtp )
 	upnp? ( net-libs/libupnp )
 	video? (
 		virtual/ffmpeg
@@ -48,7 +48,8 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 		sdl? ( media-libs/libsdl[video,X] )
 		vpx? ( media-libs/libvpx )
 		X? ( x11-libs/libX11
-			x11-libs/libXv ) )"
+			x11-libs/libXv ) )
+	zrtp? ( net-libs/bzrtp )"
 DEPEND="${RDEPEND}
 	dev-util/intltool
 	virtual/pkgconfig
@@ -60,7 +61,7 @@ DEPEND="${RDEPEND}
 PDEPEND="amr? ( !bindist? ( media-plugins/mediastreamer-amr ) )
 	g729? ( !bindist? ( media-plugins/mediastreamer-bcg729 ) )
 	ilbc? ( media-plugins/mediastreamer-ilbc )
-	video? ( x264? ( media-plugins/mediastreamer-x264 ) )
+	video? ( x264? ( >=media-plugins/mediastreamer-x264-1.5 ) )
 	silk? ( !bindist? ( media-plugins/mediastreamer-silk ) )"
 
 src_prepare() {
@@ -97,7 +98,7 @@ src_prepare() {
 
 	epatch "${FILESDIR}/${P}-v4l-automagic.patch" \
 		"${FILESDIR}/${P}-tests.patch" \
-		"${FILESDIR}/${P}-xxd.patch"
+		"${FILESDIR}/${P}-fix-tools.patch"
 
 	eautoreconf
 }
@@ -117,10 +118,10 @@ src_configure() {
 		$(use_enable pulseaudio)
 		$(use_enable coreaudio macsnd)
 		$(use_enable debug)
+		$(use_enable dtls)
 		$(use_enable filters)
 		$(use_enable g726 spandsp)
 		$(use_enable gsm)
-		$(use_enable ipv6)
 		$(use_enable ntp-timestamp)
 		$(use_enable opengl glx)
 		$(use_enable opus)
@@ -139,8 +140,9 @@ src_configure() {
 		$(use_enable sdl)
 		$(use_enable X x11)
 		$(use_enable X xv)
-
+		$(use_enable zrtp)
 		$(use doc || echo ac_cv_path_DOXYGEN=false)
+		$(use srtp ||echo --with-srtp=none)
 	)
 
 	# Mac OS X Audio Queue is an audio recording facility, available on
