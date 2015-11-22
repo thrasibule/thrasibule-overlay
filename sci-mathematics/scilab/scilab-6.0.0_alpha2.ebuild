@@ -12,7 +12,7 @@ VIRTUALX_REQUIRED="manual"
 inherit eutils autotools bash-completion-r1 check-reqs fdo-mime flag-o-matic \
 	fortran-2 java-pkg-opt-2 toolchain-funcs virtualx
 
-MY_PV="6.0.0-alpha-1"
+MY_PV="${PV%_alpha2}-alpha-2"
 DESCRIPTION="Scientific software package for numerical computations"
 HOMEPAGE="http://www.scilab.org/"
 SRC_URI="http://www.scilab.org/download/${MY_PV}/${PN}-${MY_PV}-src.tar.gz"
@@ -126,8 +126,12 @@ src_prepare() {
 		"${FILESDIR}/${P}-gluegen.patch" \
 		"${FILESDIR}/${P}-batik-1.8.patch" \
 		"${FILESDIR}/${P}-fop-2.0.patch" \
-		"${FILESDIR}/${P}-xmlgraphics-common-2.0.patch"
+		"${FILESDIR}/${P}-xmlgraphics-common-2.0.patch" \
+		"${FILESDIR}/${P}-underlinking.patch" \
+		"${FILESDIR}/${P}-underlinking2.patch" \
+		"${FILESDIR}/${P}-underlinking3.patch"
 
+	cp "${FILESDIR}/.depend" "${S}/modules/scicos" ||die
 	# works for me on x86, but users are having
 	# trouble without see #282 on github
 	append-ldflags $(no-as-needed)
@@ -184,7 +188,7 @@ src_prepare() {
 	popd
 
 	java-pkg-opt-2_src_prepare
-	eautoconf
+	eautoreconf
 }
 
 src_configure() {

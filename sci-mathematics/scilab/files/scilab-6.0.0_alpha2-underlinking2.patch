@@ -1,0 +1,24 @@
+diff -urN scilab-6.0.0-alpha-2-orig/modules/core/Makefile.am scilab-6.0.0-alpha-2/modules/core/Makefile.am
+--- scilab-6.0.0-alpha-2-orig/modules/core/Makefile.am	2015-11-18 22:17:26.192562761 -0500
++++ scilab-6.0.0-alpha-2/modules/core/Makefile.am	2015-11-18 22:19:28.446452511 -0500
+@@ -121,18 +121,14 @@
+ 	sci_gateway/cpp/sci_tlist.cpp \
+ 	sci_gateway/cpp/sci_mlist.cpp \
+ 	sci_gateway/cpp/sci_isfield.cpp \
+-	sci_gateway/cpp/sci_fieldnames.cpp
+-
+-if ENABLE_DEBUG
+-GATEWAY_CPP_SOURCES += \
+-    sci_gateway/cpp/sci_inspectorDeleteUnreferencedItems.cpp \
++	sci_gateway/cpp/sci_fieldnames.cpp \
++    	sci_gateway/cpp/sci_inspectorDeleteUnreferencedItems.cpp \
+ 	sci_gateway/cpp/sci_inspectorGetItem.cpp \
+ 	sci_gateway/cpp/sci_inspectorGetItemCount.cpp \
+ 	sci_gateway/cpp/sci_inspectorGetUnreferencedItem.cpp \
+ 	sci_gateway/cpp/sci_inspectorShowItem.cpp \
+ 	sci_gateway/cpp/sci_inspectorShowUnreferencedItem.cpp \
+ 	sci_gateway/cpp/sci_inspectorGetFunctionList.cpp
+-endif
+ 
+ libscicore_la_CPPFLAGS = \
+     -I$(srcdir)/includes/ \

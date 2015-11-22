@@ -1,0 +1,14 @@
+diff -urN scilab-6.0.0-alpha-2-orig/modules/graphics/Makefile.am scilab-6.0.0-alpha-2/modules/graphics/Makefile.am
+--- scilab-6.0.0-alpha-2-orig/modules/graphics/Makefile.am	2015-11-19 21:23:31.605847850 -0500
++++ scilab-6.0.0-alpha-2/modules/graphics/Makefile.am	2015-11-19 21:32:46.127377394 -0500
+@@ -515,8 +515,8 @@
+ CHECK_SRC= $(GRAPHICS_C_SOURCES) $(GATEWAY_C_SOURCES)
+ INCLUDE_FLAGS = $(libscigraphics_la_CPPFLAGS)
+ 
+-libscigraphics_la_LIBADD = libscigraphics-algo.la
+-
++libscigraphics_la_LIBADD = libscigraphics-algo.la \
++	$(top_srcdir)/modules/renderer/libscirenderer.la
+ 
+ 
+ #### graphics : gateway declaration ####
