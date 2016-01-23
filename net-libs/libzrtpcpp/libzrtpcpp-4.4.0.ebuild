@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-libs/libzrtpcpp/libzrtpcpp-4.2.4.ebuild,v 1.1 2014/09/13 16:24:26 mgorny Exp $
+# $Id$
 
 EAPI=5
 
@@ -11,7 +11,7 @@ HOMEPAGE="http://www.gnutelephony.org/index.php/GNU_ZRTP"
 # https://github.com/wernerd/ZRTPCPP/releases
 SRC_URI="http://github.com/wernerd/ZRTPCPP/archive/tags/V${PV}.tar.gz -> ${P}.tar.gz"
 
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~x86"
 LICENSE="GPL-3"
 IUSE="sqlite"
 SLOT="0/4"
