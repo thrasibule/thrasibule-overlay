@@ -1,10 +1,10 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI=5
+EAPI=6
 
-inherit versionator
+inherit eutils versionator
 
 DESCRIPTION="Library of C++ utilities -- meta-programming tests, smart pointers, containers"
 HOMEPAGE="http://codesynthesis.com/projects/libcutl/"
@@ -22,4 +22,9 @@ DEPEND="${RDEPEND}"
 src_configure() {
 	econf --with-external-boost \
 		--with-external-expat
+}
+
+src_install() {
+	prune_libtool_files --all
+	default
 }
