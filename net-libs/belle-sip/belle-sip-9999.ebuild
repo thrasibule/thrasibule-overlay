@@ -1,15 +1,14 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI="5"
+EAPI=6
 
 inherit eutils git-r3 multilib
 
 DESCRIPTION="A SIP stack in C, with an object oriented API"
 HOMEPAGE="http://www.linphone.org/technical-corner/belle-sip"
 EGIT_REPO_URI="http://github.com/BelledonneCommunications/${PN}.git"
-#SRC_URI="https://github.com/BelledonneCommunications/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -18,6 +17,7 @@ IUSE="ssl test"
 
 RDEPEND=">=dev-libs/antlr-c-3.4
 	ssl? ( net-libs/polarssl )"
+
 DEPEND="${RDEPEND}
 	>=dev-java/antlr-3.3:3
 	test? ( dev-util/cunit )"
@@ -26,7 +26,7 @@ src_configure (){
 	./autogen.sh
 	econf $(use_enable ssl tls) \
 		$(use_enable test tests) \
-		ANTLR="java -cp $(java-config -p antlr-3)"
+		ANTLR="/usr/bin/antlr3"
 }
 
 src_test() {

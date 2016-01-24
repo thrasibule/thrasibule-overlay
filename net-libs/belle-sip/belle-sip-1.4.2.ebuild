@@ -1,8 +1,8 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI="5"
+EAPI=6
 
 inherit eutils multilib
 
@@ -25,7 +25,7 @@ src_configure (){
 	./autogen.sh
 	econf $(use_enable ssl tls) \
 		$(use_enable test tests) \
-		ANTLR="java -cp $(java-config -p antlr-3)"
+		ANTLR="/usr/bin/antlr3"
 }
 
 src_test() {
@@ -35,5 +35,5 @@ src_test() {
 
 src_install() {
 	default
-	prune_libtools_files
+	prune_libtool_files
 }
