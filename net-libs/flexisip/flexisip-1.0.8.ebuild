@@ -1,8 +1,8 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
 inherit autotools flag-o-matic
 
@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~x86"
 IUSE="doc odbc presence protobuf redis transcoder"
 
-DEPEND="net-libs/sofia-sip
+DEPEND=">=net-libs/sofia-sip-1.13.3
 	net-libs/ortp
 	doc? ( virtual/latex-base )
 	redis? ( dev-libs/hiredis )
@@ -27,6 +27,7 @@ DEPEND="net-libs/sofia-sip
 RDEPEND="${DEPEND}"
 
 src_prepare() {
+	default
 	epatch "${FILESDIR}/${P}-fixdoc.patch"
 	append-cxxflags -fpermissive
 	eautoreconf
