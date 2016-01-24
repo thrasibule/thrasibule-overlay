@@ -5,12 +5,12 @@
 EAPI=6
 PYTHON_COMPAT=( python{2_6,2_7} )
 
-inherit distutils-r1 subversion
+inherit distutils-r1
 
 DESCRIPTION="Djvu encoder with foreground/background separation"
-ESVN_REPO_URI="svn://svn.code.sf.net/p/gamera/code/trunk/gamera"
+SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 HOMEPAGE="http://gamera.informatik.hsnr.de"
-KEYWORDS=""
+KEYWORDS="~x86"
 SLOT="0"
 LICENSE="GPL-3"
 IUSE=""
