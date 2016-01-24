@@ -1,8 +1,8 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-java/antlr/antlr-3.1.3-r2.ebuild,v 1.4 2009/12/29 17:33:15 josejx Exp $
+# $Id$
 
-EAPI=5
+EAPI=6
 JAVA_PKG_IUSE="source"
 
 inherit eutils java-pkg-2 java-ant-2
@@ -13,11 +13,11 @@ HOMEPAGE="http://www.antlr.org/"
 SRC_URI="https://github.com/antlr/website-antlr3/blob/gh-pages/download/${P}.tar.gz?raw=true -> ${P}.tar.gz"
 LICENSE="BSD"
 SLOT="3"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE="gunit"
 
-COMMON_DEPEND=">=dev-java/stringtemplate-3.2.1
-	 >=dev-java/antlr-2.7.7:0[java]
+COMMON_DEPEND=">=dev-java/stringtemplate-3.2.1:0
+	 >=dev-java/antlr-2.7.7:0
 	 gunit? ( dev-java/junit:4 )"
 
 RDEPEND=">=virtual/jre-1.5:*
@@ -37,6 +37,8 @@ java_prepare() {
 	[[ $(egrep "^[^#]" ${propertyfile} | egrep "antlr.version" | wc -l) != 1 ]] \
 		&& die "Unknown property found"
 	sed -i "s/^\(antlr.version\)=.*$/\1=${version}/" ${propertyfile} || die
+	epatch "${FILESDIR}/${PN}-jdk-1.8.patch"
+	default
 }
 
 antlr2() {
