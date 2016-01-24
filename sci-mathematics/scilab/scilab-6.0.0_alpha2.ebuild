@@ -1,8 +1,8 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=6
 
 RESTRICT="test"
 
@@ -134,11 +134,14 @@ src_prepare() {
 	cp "${FILESDIR}/.depend" "${S}/modules/scicos" ||die
 	# works for me on x86, but users are having
 	# trouble without see #282 on github
-	append-ldflags $(no-as-needed)
-
+	#append-ldflags $(no-as-needed)
+	#append-ldflags "-Wl,--no-undefined"
 	# increases java heap to 512M when building docs (sync with cheqreqs above)
 	#use doc && epatch "${FILESDIR}/${P}-java-heap.patch"
 
+	#speed up configure
+	sed -i -e "/DEFAULT_JAR_DIR=/d" m4/java.m4 ||die
+	
 	# use the LINGUAS variable that we set
 	sed -i -e "/^ALL_LINGUAS=/d" -e "/^ALL_LINGUAS_DOC=/d" -i configure.ac ||die
 
@@ -169,7 +172,7 @@ src_prepare() {
 		java-pkg_jar-from gluegen-2.2 gluegen-rt.jar gluegen2-rt.jar
 		java-pkg_jar-from fop fop.jar
 		java-pkg_jar-from javahelp jhall.jar
-		java-pkg_jar-from jlatexmath-fop-1
+		java-pkg_jar-from jlatexmath-fop-1,commons-logging
 		use xcos &&	java-pkg_jar-from jgraphx-2.5
 		if use doc; then
 			java-pkg_jar-from --build-only batik-1.8 batik-all.jar
