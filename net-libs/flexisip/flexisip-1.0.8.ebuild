@@ -15,7 +15,8 @@ SLOT="0"
 KEYWORDS="~x86"
 IUSE="doc odbc presence protobuf redis transcoder"
 
-DEPEND=">=net-libs/sofia-sip-1.13.3
+DEPEND="dev-libs/xerces-c
+	>=net-libs/sofia-sip-1.13.3
 	net-libs/ortp
 	doc? ( virtual/latex-base )
 	redis? ( dev-libs/hiredis )
@@ -28,7 +29,8 @@ RDEPEND="${DEPEND}"
 
 src_prepare() {
 	default
-	epatch "${FILESDIR}/${P}-fixdoc.patch"
+	epatch "${FILESDIR}/${P}-fixdoc.patch" \
+		"${FILESDIR}/${P}-bellesip.patch"
 	append-cxxflags -fpermissive
 	eautoreconf
 }
