@@ -1,3 +1,9 @@
+*sofia-sip-1.13.3 (24 Jan 2016)
+
+  24 Jan 2016; Guillaume Horel <guillaume.horel@gmail.com>
+  +sofia-sip-1.13.3.ebuild, sofia-sip-9999.ebuild:
+  net-libs/sofia-sip: version bump
+
 *sofia-sip-9999 (25 Jul 2015)
 
   25 Jul 2015; Guillaume Horel <guillaume.horel@gmail.com> +metadata.xml,

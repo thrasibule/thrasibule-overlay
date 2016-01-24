@@ -1,18 +1,25 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI=5
+EAPI=6
 
-inherit git-r3
+inherit autotools eutils git-r3
+
+if [[ ${PV} == "9999" ]]; then
+	KEYWORKDS=""
+else
+	KEYWORDS="~amd64 ~x86"
+	EGIT_COMMIT="e8521c"
+fi
+
+EGIT_REPO_URI="https://github.com/BelledonneCommunications/${PN}.git"
 
 DESCRIPTION="RFC3261 compliant SIP User-Agent library"
 HOMEPAGE="http://sofia-sip.sourceforge.net/"
-EGIT_REPO_URI="https://github.com/BelledonneCommunications/${PN}.git"
 
 LICENSE="LGPL-2.1+ BSD public-domain" # See COPYRIGHT
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 IUSE="ssl static-libs"
 
 RDEPEND="dev-libs/glib:2
@@ -25,8 +32,10 @@ RESTRICT="test"
 
 DOCS=( AUTHORS ChangeLog README README.developers RELEASE TODO )
 EGIT_BRANCH="bc"
+
 src_prepare() {
-	./autogen.sh
+	default
+	eautoreconf
 }
 
 src_configure() {
@@ -36,6 +45,6 @@ src_configure() {
 }
 
 src_install() {
+	prune_libtool_files --all
 	default
-	rm -f "${ED}"usr/lib*/lib${PN}*.la
 }
