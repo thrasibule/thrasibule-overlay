@@ -1,0 +1,5 @@
+*gsl-ocaml-1.19.1 (15 Feb 2016)
+
+  15 Feb 2016; Guillaume Horel <guillaume.horel@gmail.com>
+  +gsl-ocaml-1.19.1.ebuild, -gsl-ocaml-1.17.2.ebuild:
+  dev-ml/gsl-ocaml: version bump
