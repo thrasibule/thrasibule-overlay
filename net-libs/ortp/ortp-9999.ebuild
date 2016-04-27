@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -11,7 +11,7 @@ HOMEPAGE="http://www.linphone.org/"
 EGIT_REPO_URI="git://git.linphone.org/ortp"
 
 LICENSE="LGPL-2.1"
-SLOT="0/10"
+SLOT="0/11"
 KEYWORDS=""
 IUSE="debug doc examples minimal ntp-timestamp ssl"
 
