@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-<maintainer>
+<maintainer type="person">
 <email>guillaume.horel@gmail.com</email>
 <name>Guillaume Horel</name>
 </maintainer>
+<upstream>
+  <remote-id type="github">the-lambda-curch/merlin</remote-id>
+</upstream>
 <longdescription lang="en">
 Context sensitive completion for OCaml
 </longdescription>
